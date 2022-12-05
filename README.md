@@ -1,6 +1,6 @@
 # -这是数据库课设
 
-##更新说明
+## 更新说明
 
 -- 2022/12/5
 
@@ -9,7 +9,7 @@ UseDruidConnection：通过Druid连接池连接数据库
 GetTable：对应每张表的接口存放在该包中
 
 
-##GitHub保存项目
+## GitHub保存项目
 
 idea中，VCS -- GET FROM VERSION CONTROL 获取项目
 
