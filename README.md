@@ -4,9 +4,11 @@
 
 -- 2022/12/5
 
-UseDruidConnection：通过Druid连接池连接数据库
+暂时使用文件夹src
 
-GetTable：对应每张表的接口存放在该包中
+package UseDruidConnection：通过Druid连接池连接数据库
+
+package Entity：存放实体类
 
 
 ## GitHub保存项目
