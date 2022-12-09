@@ -12,7 +12,7 @@ public class DAOBase implements DAO{
         Connection conn = null;
         //硬连接的 方式获取Connection对象
         try {
-            String url = "jdbc:sqlserver://82.157.243.176:1433; DatabaseName=MasterGraduate;user=cqk;password=123456";
+            String url = "jdbc:sqlserver://82.157.243.176:1433; DatabaseName=MasterGraduate;user=cqk;password=123456;TrustServerCertificate=true;";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             try {
                 conn = DriverManager.getConnection(url);
