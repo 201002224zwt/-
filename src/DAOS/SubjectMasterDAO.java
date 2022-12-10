@@ -1,0 +1,14 @@
+package DAOS;
+
+import Entity.SubjectMaster;
+
+/**
+ * @author caoqike
+ * @date 2022-12-08 21:48:19
+ */
+public interface SubjectMasterDAO {
+    void addSubjectMaster(SubjectMaster subjectMaster);
+    void updateSubjectMaster(SubjectMaster subjectMaster);
+    void deleteSubjectMaster(SubjectMaster subjectMaster);
+    SubjectMaster getSubjectMaster(String id);
+}
