@@ -25,6 +25,10 @@ public class hs_platform {
         this.materials = materials;
     }
 
+    public hs_platform() {
+
+    }
+
     public Master getMaster() {
         return master;
     }

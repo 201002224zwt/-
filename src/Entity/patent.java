@@ -29,6 +29,10 @@ public class patent {
         this.materials = materials;
     }
 
+    public patent() {
+
+    }
+
     public String getId_patent() {
         return id_patent;
     }

@@ -5,6 +5,10 @@ import java.sql.Blob;
 public class textbook {
     private Master master;
 
+    public textbook() {
+
+    }
+
     public Master getMaster() {
         return master;
     }

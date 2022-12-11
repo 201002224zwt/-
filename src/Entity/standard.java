@@ -24,6 +24,10 @@ public class standard {
         this.materials = materials;
     }
 
+    public standard() {
+
+    }
+
 
     public Master getMaster() {
         return master;
