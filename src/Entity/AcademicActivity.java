@@ -6,7 +6,7 @@ public class AcademicActivity {
     String activity_id;
     String master_id;
     String activity_name;
-    String data;
+    String date;
     String report_name;
     //以File形式读入图片
     File certificate;
@@ -39,12 +39,12 @@ public class AcademicActivity {
         this.activity_name = activity_name;
     }
 
-    public String getData() {
-        return data;
+    public String getDate() {
+        return date;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getReport_name() {
