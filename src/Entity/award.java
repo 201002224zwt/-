@@ -18,6 +18,10 @@ public class award {
     private String time;
     private Blob materials;
 
+    public award(){
+
+    }
+
 
     public award(String id_award, String name, int reward_grade, int award_grade, String ranking, String time, Blob materials) {
         this.id_award = id_award;

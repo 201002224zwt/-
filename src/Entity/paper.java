@@ -29,6 +29,10 @@ public class paper {
         this.materials = materials;
     }
 
+    public paper() {
+
+    }
+
     public Master getMaster() {
         return master;
     }
