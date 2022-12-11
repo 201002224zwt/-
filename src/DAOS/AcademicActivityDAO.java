@@ -3,25 +3,29 @@ package DAOS;
 import Entity.AcademicActivity;
 import Entity.Master;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.List;
+
 public interface AcademicActivityDAO {
     //增加
-    public void addAcademicActivity(AcademicActivity activity);
+    void addAcademicActivity(AcademicActivity activity);
     //删除
-    public void deleteAcademicActivity(String ActivityId);
+    void deleteAcademicActivity(String ActivityId);
     //修改
-    public void updateAcademicActivity(AcademicActivity activity);
+    void updateAcademicActivity(AcademicActivity activity);
 
     //修改导师意见
-    public void updateTutorView(boolean permitted);
+    void updateTutorView(boolean permitted, String ActivityId);
 
     //修改学院意见
-    public void updateSubjectMasterView(boolean permitted);
+    void updateSubjectMasterView(boolean permitted, String ActivityId);
 
     //导入图片
-
+    void conservePicture(FileInputStream file, String ActivityId, String ImageType);
 
     //修改演讲题目
 
     //查找
-    public Master getAcademicActivity(String MasterId);
+    List<AcademicActivity> getAcademicActivity(String MasterId);
 }

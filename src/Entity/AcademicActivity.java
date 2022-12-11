@@ -1,15 +1,16 @@
 package Entity;
 
-import java.io.File;
+import java.io.*;
+import java.sql.Date;
 
 public class AcademicActivity {
     String activity_id;
     String master_id;
     String activity_name;
-    String date;
+    Date date;
     String report_name;
     //以File形式读入图片
-    File certificate;
+    InputStream certificate;
     String image_type;
     boolean tutor_view;
     boolean master_view;
@@ -39,11 +40,11 @@ public class AcademicActivity {
         this.activity_name = activity_name;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -55,11 +56,11 @@ public class AcademicActivity {
         this.report_name = report_name;
     }
 
-    public File getCertificate() {
-        return certificate;
+    public FileInputStream getCertificate() {
+        return (FileInputStream) certificate;
     }
 
-    public void setCertificate(File certificate) {
+    public void setCertificate(FileInputStream certificate) {
         this.certificate = certificate;
     }
 
