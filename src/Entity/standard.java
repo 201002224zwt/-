@@ -3,6 +3,13 @@ package Entity;
 import java.sql.Blob;
 
 public class standard {
+    private Master master;
+
+
+    public standard(Master master) {
+        this.master = master;
+    }
+
     private String id_standard;
     private String name;
     private String standard_level;
@@ -15,6 +22,15 @@ public class standard {
         this.standard_level = standard_level;
         this.time = time;
         this.materials = materials;
+    }
+
+
+    public Master getMaster() {
+        return master;
+    }
+
+    public void setMaster(Master master) {
+        this.master = master;
     }
 
 

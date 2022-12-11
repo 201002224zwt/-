@@ -4,6 +4,12 @@ package Entity;
 import java.sql.Blob;
 
 public class report {
+    private Master master;
+
+    public report(Master master) {
+        this.master = master;
+    }
+
     private String id_report;
     private String name;
     private int type;
@@ -22,6 +28,15 @@ public class report {
         this.ranking = ranking;
         this.materials = materials;
     }
+
+    public Master getMaster() {
+        return master;
+    }
+
+    public void setMaster(Master master) {
+        this.master = master;
+    }
+
 
     public String getId_report() {
         return id_report;

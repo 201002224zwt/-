@@ -3,6 +3,20 @@ package Entity;
 import java.sql.Blob;
 
 public class textbook {
+    private Master master;
+
+    public Master getMaster() {
+        return master;
+    }
+
+    public void setMaster(Master master) {
+        this.master = master;
+    }
+
+    public textbook(Master master) {
+        this.master = master;
+    }
+
     private String id_text;
     private String name;
     private String press;

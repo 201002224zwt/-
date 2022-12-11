@@ -3,6 +3,12 @@ package Entity;
 import java.sql.Blob;
 
 public class patent {
+    private Master master;
+
+    public patent(Master master) {
+        this.master = master;
+    }
+
     private String id_patent;
     private String name;
     private int type;
@@ -30,6 +36,15 @@ public class patent {
     public void setId_patent(String id_patent) {
         this.id_patent = id_patent;
     }
+
+    public Master getMaster() {
+        return master;
+    }
+
+    public void setMaster(Master master) {
+        this.master = master;
+    }
+
 
     public String getName() {
         return name;
