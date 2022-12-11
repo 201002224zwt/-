@@ -2,10 +2,30 @@ package Entity;
 
 import java.sql.Blob;
 
-public class textbook {
+public class hs_platform {
     private Master master;
 
-    public textbook() {
+    public hs_platform(Master master) {
+        this.master = master;
+    }
+
+    private String id_platform;
+    private String name;
+    private String unit;
+    private String time;
+    private int ranking;
+    private Blob materials;
+
+    public hs_platform(String id_platform, String name, String unit, String time, int ranking, Blob materials) {
+        this.id_platform = id_platform;
+        this.name = name;
+        this.unit = unit;
+        this.time = time;
+        this.ranking = ranking;
+        this.materials = materials;
+    }
+
+    public hs_platform() {
 
     }
 
@@ -17,32 +37,12 @@ public class textbook {
         this.master = master;
     }
 
-    public textbook(Master master) {
-        this.master = master;
+    public String getId_platform() {
+        return id_platform;
     }
 
-    private String id_text;
-    private String name;
-    private String press;
-    private String time;
-    private int ranking;
-    private Blob materials;
-
-    public textbook(String id_text, String name, String press, String time, int ranking, Blob materials) {
-        this.id_text = id_text;
-        this.name = name;
-        this.press = press;
-        this.time = time;
-        this.ranking = ranking;
-        this.materials = materials;
-    }
-
-    public String getId_text() {
-        return id_text;
-    }
-
-    public void setId_text(String id_text) {
-        this.id_text = id_text;
+    public void setId_platform(String id_platform) {
+        this.id_platform = id_platform;
     }
 
     public String getName() {
@@ -53,12 +53,12 @@ public class textbook {
         this.name = name;
     }
 
-    public String getPress() {
-        return press;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setPress(String press) {
-        this.press = press;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public String getTime() {
