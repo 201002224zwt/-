@@ -1,9 +1,7 @@
 package DAOS;
 
 import Entity.AcademicActivity;
-import Entity.Master;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 
@@ -24,8 +22,11 @@ public interface AcademicActivityDAO {
     //导入图片
     void conservePicture(FileInputStream file, String ActivityId, String ImageType);
 
+    void conservePicture(AcademicActivity aa);
+
+    //按照研究生学号查找提交的学术活动记录
+    List<AcademicActivity> getAcademicActivity(String MasterId);
+
     //修改演讲题目
 
-    //查找
-    List<AcademicActivity> getAcademicActivity(String MasterId);
 }

@@ -1,6 +1,7 @@
 package Entity;
 
 import java.io.*;
+import java.security.cert.Certificate;
 import java.sql.Date;
 
 public class AcademicActivity {
@@ -10,7 +11,7 @@ public class AcademicActivity {
     Date date;
     String report_name;
     //以File形式读入图片
-    InputStream certificate;
+    String certificate;
     String image_type;
     boolean tutor_view;
     boolean master_view;
@@ -56,13 +57,55 @@ public class AcademicActivity {
         this.report_name = report_name;
     }
 
-    public FileInputStream getCertificate() {
-        return (FileInputStream) certificate;
+    public String getCertificate() {
+        return certificate;
     }
 
-    public void setCertificate(FileInputStream certificate) {
+    public InputStream getCertificateStream(){
+        try {
+            return new FileInputStream(this.certificate);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void setCertificate(String certificate) {
         this.certificate = certificate;
     }
+
+    //    public InputStream getCertificate() {
+//
+//        return certificate;
+//    }
+//
+//    public void setCertificate(InputStream certificate){
+//        this.certificate = certificate;
+//    }
+//
+//    public void setCertificate(byte[] certificate) {
+//        this.certificate = null;
+//        String localpath = "C:\\Users\\lhdyf123\\Desktop\\";
+//        String path = localpath+this.activity_id.trim().replace(':','_')+"."+this.getImage_type();
+//        System.out.println(this.toString());
+//        //System.out.println(path);
+//        File file = new File(path);
+//        FileInputStream fileInputStream = null;
+//        try{
+//            OutputStream output = new FileOutputStream(file);
+//            BufferedOutputStream bufferedOutput = new BufferedOutputStream(output);
+//            bufferedOutput.write(certificate);
+//            fileInputStream= new FileInputStream(file);
+//            file.deleteOnExit();
+//            this.certificate = fileInputStream;
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        //this.certificate = certificate;
+//    }
 
     public String getImage_type() {
         return image_type;
@@ -86,5 +129,19 @@ public class AcademicActivity {
 
     public void setMaster_view(boolean master_view) {
         this.master_view = master_view;
+    }
+
+    @Override
+    public String toString() {
+        return "AcademicActivity{" +
+                "activity_id='" + activity_id + '\'' +
+                ", master_id='" + master_id + '\'' +
+                ", activity_name='" + activity_name + '\'' +
+                ", date=" + date +
+                ", report_name='" + report_name + '\'' +
+                ", image_type='" + image_type + '\'' +
+                ", tutor_view=" + tutor_view +
+                ", master_view=" + master_view +
+                '}';
     }
 }

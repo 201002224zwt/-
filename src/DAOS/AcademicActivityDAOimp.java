@@ -1,10 +1,7 @@
 package DAOS;
 import Entity.AcademicActivity;
-import Entity.Master;
-import Entity.standard;
-import User.UserManage;
+import jdk.internal.util.xml.impl.Input;
 
-import java.awt.*;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -136,12 +133,31 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
     }
 
     @Override
+    public void conservePicture(AcademicActivity aa) {
+        //构造连接
+        Connection con;
+        con = getConnection();
+        try {
+            String sql="Update AcademicActivity set Certificate = ?,ImageType = ? where ActivityId = ? ";
+            PreparedStatement psmt = con.prepareStatement(sql);
+            psmt.setBinaryStream(1, aa.getCertificateStream());
+            psmt.setString(2, aa.getImage_type());
+            psmt.setString(3,aa.getActivity_id());
+            psmt.executeUpdate();
+            psmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
     public List<AcademicActivity> getAcademicActivity(String MasterId) {
         Connection con = null;
         List<AcademicActivity> l = new ArrayList<>();
         try{
             con = getConnection();
-            String sql="select MasterId from AcademicActivity where mid = ?";
+            String sql="select * from AcademicActivity where mid = ?";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1,MasterId);
             ResultSet rs = psmt.executeQuery();
@@ -153,7 +169,24 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
                 a.setTutor_view(rs.getBoolean("TutorView"));
                 a.setMaster_view(rs.getBoolean("MasterView"));
                 a.setImage_type(rs.getString("ImageType"));
-                a.setCertificate((FileInputStream) rs.getBinaryStream("Certificate"));
+                //a.setCertificate(rs.getBinaryStream("Certificate"));
+
+                InputStream in = rs.getBinaryStream("Certificate");
+                String path = "d:\\image\\"+ a.getActivity_id().trim().replace(':','_') +".jpg";
+                DataOutputStream sos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(path)));
+                int len;
+                byte[] b = new byte[1024];
+                System.out.println(in);
+                while((len = in.read(b))!= -1){
+                    sos.write(b,0,len);
+                }
+                sos.close();
+                in.close();
+//                byte[] imageBytes = null;
+//                imageBytes = new byte[rs.getBinaryStream("Certificate").available()];
+//                a.setCertificate( imageBytes);
+                a.setCertificate(path);
+
                 l.add(a);
             }
             psmt.close();
@@ -169,4 +202,7 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
         }
         return l;
     }
+
+
+
 }
