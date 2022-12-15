@@ -3,6 +3,8 @@ package DAOS;
 import Entity.Course;
 import Entity.Teacher;
 
+import java.util.LinkedList;
+
 /**
  * @author Administrator
  * @version 1.0
@@ -17,6 +19,15 @@ public interface CourseDAO {
         //修改
         public void updateCourse(Course course);
         //查找
-        public Teacher getCourse(String courseid);
+        public Course getCourse(String courseid);
 
+        //改变状态
+        public void changeCourseState(String courseid,int status);
+
+        //返回全部课程信息
+        public LinkedList<Course> getAllCourses(String subid);
+
+
+        //返回特定状态的课程信息
+        public LinkedList<Course> getStateCourses(String subid,int state);
 }

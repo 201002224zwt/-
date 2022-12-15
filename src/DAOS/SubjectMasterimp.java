@@ -1,10 +1,14 @@
 package DAOS;
 
+import Entity.Master;
 import Entity.SubjectMaster;
 import User.UserManage;
+import User.UserType;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -29,11 +33,7 @@ public class SubjectMasterimp extends DAOBase implements SubjectMasterDAO {
 
 
             //?????????д?????
-            try {
-                UserManage.saveInfo(subjectMaster);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            UserManage.saveInfo(subjectMaster);
 
 
         } catch (SQLException e) {
@@ -53,6 +53,30 @@ public class SubjectMasterimp extends DAOBase implements SubjectMasterDAO {
 
     @Override
     public SubjectMaster getSubjectMaster(String id) {
-        return null;
+
+        String sql="select * from SubjectMaster where smid=?";
+
+        Connection con = null;
+        SubjectMaster subjectMaster =null;
+        try{
+            con = getConnection();
+            PreparedStatement psmt = con.prepareStatement(sql);
+            psmt.setString(1, id);
+            ResultSet rs = psmt.executeQuery();
+            while (rs.next()){
+                subjectMaster = new SubjectMaster(UserType.SubjectMaster,id,null,id, rs.getString("subid"),rs.getString("name"));
+            }
+            psmt.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                con.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return subjectMaster;
     }
 }

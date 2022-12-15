@@ -1,13 +1,16 @@
+
 package DAOS;
 
+import Entity.Course;
 import Entity.Master;
 import User.UserManage;
+import User.UserType;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
 /**
  * @author zhuwentao
  * @version 1.0
@@ -24,20 +27,18 @@ public class MasterDAOimp extends DAOBase implements MasterDAO {
             String sql="insert into Master values(?,?,?,?,?)";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, master.getSid());
-            psmt.setString(2, master.getName());
-            psmt.setString(3, master.getSubject().subid);
-            psmt.setString(4, master.getAddmissiontime());
+            psmt.setString(2, master.getMenid());
+            psmt.setString(3, master.getName());
+
+            System.out.println(master.getAddmissiontime().toString());
+            psmt.setDate(4, master.getAddmissiontime());
             psmt.setInt(5, master.getStype());
             psmt.executeUpdate();
             psmt.close();
 
 
-            //设置该教师的登录账号
-            try {
-                UserManage.saveInfo(master);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            //设置该学生的登录账号
+            UserManage.saveInfo(master);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -55,6 +56,30 @@ public class MasterDAOimp extends DAOBase implements MasterDAO {
 
     @Override
     public Master getMaster(String id) {
-        return null;
+        String sql="select * from Master where mid=?";
+
+        Connection con = null;
+       Master master =null;
+        try{
+            con = getConnection();
+            PreparedStatement psmt = con.prepareStatement(sql);
+            psmt.setString(1, id);
+            ResultSet rs = psmt.executeQuery();
+            while (rs.next()){
+                master = new Master(UserType.Master,id,null,rs.getString("mid"), rs.getString("name"),rs.getString("menid"),rs.getDate("admissiontime"),rs.getInt("type"));
+            }
+            psmt.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                con.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return master;
+
     }
 }

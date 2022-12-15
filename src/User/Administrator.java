@@ -5,6 +5,9 @@ package User;
 import DAOS.DAOFactory;
 import Entity.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
@@ -17,28 +20,42 @@ public class Administrator extends User{
 
     @Override
     public void menu() {
-        System.out.println("1.录入学科负责人信息");
-        System.out.println("2.录入授课教师信息");
-        System.out.println("3.录入导师信息");
-        System.out.println("4.录入学生信息");
-        System.out.println("5.录入学科基本信息");
-        System.out.println("6.录入课程基本信息");
-        System.out.println("请选择：");
-        Scanner sc=new Scanner(System.in);
-        int choose=sc.nextInt();
-        switch (choose)
+
+
+        while(true)
         {
+            System.out.println("\n\n\n");
+            System.out.println("-------------研究生培养管理员功能菜单-------------");
+            System.out.println("1.录入学科负责人信息");
+            System.out.println("2.录入授课教师信息");
+            System.out.println("3.录入导师信息");
+            System.out.println("4.录入学生信息");
+            System.out.println("5.录入学科基本信息");
+            System.out.println("6.录入课程基本信息");
+            System.out.println("7.退出系统");
+            System.out.println("请选择：");
+            Scanner sc=new Scanner(System.in);
+            int choose=sc.nextInt();
+            switch (choose)
+            {
             case 1:
                 addSubjectMaster();
                 break;
 
-                //补全
+            //补全
             case 2:
                 addTeacher();
                 break;
 
             case 3:
-                addMaster();
+                addMentor();
+                break;
+            case 4:
+                try {
+                    addMaster();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 break;
 
             case 5:
@@ -48,10 +65,34 @@ public class Administrator extends User{
             case 6:
                 addCourse();
                 break;
+            case 7:
+                System.out.println("感谢使用！");
+                return;
         }
+        }
+
     }
 
+    public void addMentor(){
+        Scanner sc=new Scanner(System.in);
+        System.out.println("------------新建导师信息-------------");
+        System.out.println("导师名称：");
+        String name=sc.next();
 
+        System.out.println("导师工号：");
+        String tid=sc.next();
+
+        System.out.println("所属学科号：");
+        String subid=sc.next();
+
+        System.out.println("登录密码：");
+        String passwd=sc.next();
+
+        Mentor mentor=new Mentor(UserType.Mentor,tid,passwd,tid,subid,name);
+        DAOFactory.getMentorDAO().addMentor(mentor);
+        System.out.println("录入导师信息成功!");
+
+    }
     public void addSubject(){
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建学科信息-------------");
@@ -88,7 +129,7 @@ public class Administrator extends User{
     }
     public void addTeacher(){
         Scanner sc=new Scanner(System.in);
-        System.out.println("------------新建导师信息-------------");
+        System.out.println("------------新建授课教师信息-------------");
         System.out.println("教师名称：");
         String name=sc.next();
 
@@ -112,7 +153,7 @@ public class Administrator extends User{
 
         System.out.println("所属学科号：");
         String subid=sc.next();
-        Subject subject = DAOFactory.getSubjectDAO().getSubject(subid);
+
 
         System.out.println("授课教师工号：");
         String tid=sc.next();
@@ -129,37 +170,45 @@ public class Administrator extends User{
         System.out.println("课程状态：");
         int state = 0;
 
-        Course course=new Course(id,subject,tid,name,hours,applications,state);
+        Course course=new Course(id,subid,tid,name,hours,applications,state);
         DAOFactory.getCourseDAO().addCourse(course);
         System.out.println("录入课程基本信息成功!");
 
     }
 
-    public void addMaster(){
+    public void addMaster() throws ParseException {
         Scanner sc=new Scanner(System.in);
-        System.out.println("------------新建学生信息-------------");
-        System.out.println("学生学号：");
+        System.out.println("------------新建研究生信息-------------");
+        System.out.println("研究生学号：");
         String id=sc.next();
 
-        System.out.println("学生姓名：");
+        System.out.println("研究生姓名：");
         String name=sc.next();
 
         System.out.println("登录密码：");
         String passwd=sc.next();
 
-        System.out.println("所属学科号：");
+        System.out.println("导师工号：");
         String subid=sc.next();
-        Subject subject = DAOFactory.getSubjectDAO().getSubject(subid);
+
 
         System.out.println("入学时间：");
         String addmissiontime=sc.next();
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(addmissiontime);
+
+        //将java.util.Date转换为java.sql.Date的方法是调用构造器
+        java.sql.Date bDate = new java.sql.Date(date.getTime());
 
         System.out.println("学历类型：");
+        System.out.println("1.硕士研究生 2.博士研究生");
+        System.out.println("请选择：");
         int stype=Integer.parseInt(sc.next());
 
-        Master master =new Master(UserType.Master,id,passwd,id,name,subject,addmissiontime,stype);
+
+
+        Master master =new Master(UserType.Master,id,passwd,id,name,subid, bDate,stype);
         DAOFactory.getMasterDAO().addMaster(master);
-        System.out.println("录入学生信息成功!");
+        System.out.println("录入研究生信息成功!");
 
     }
 

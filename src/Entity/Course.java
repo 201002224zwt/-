@@ -7,14 +7,14 @@ package Entity;
  */
 public class Course {
     private String couseid;//课程号
-    private Subject subid;//对应学科
+    private String  subid;//对应学科
     private String tid;//教授课程教师
     private String name;//课程名称
     private int hours;//课时
     private int applications;//选课人数
     private int state;//课程状态
 
-    public Course(String couseid, Subject subid, String tid, String name, int hours, int applications, int state) {
+    public Course(String couseid, String subid, String tid, String name, int hours, int applications, int state) {
         this.couseid = couseid;
         this.subid = subid;
         this.tid = tid;
@@ -28,7 +28,7 @@ public class Course {
         return couseid;
     }
 
-    public Subject getSubid() {
+    public String getSubid() {
         return subid;
     }
 
@@ -50,5 +50,33 @@ public class Course {
 
     public int getState() {
         return state;
+    }
+
+    public void setCouseid(String couseid) {
+        this.couseid = couseid;
+    }
+
+    public void setSubid(String subid) {
+        this.subid = subid;
+    }
+
+    public void setTid(String tid) {
+        this.tid = tid;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
+
+    public void setApplications(int applications) {
+        this.applications = applications;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 }

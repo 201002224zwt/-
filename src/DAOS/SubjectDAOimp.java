@@ -11,7 +11,7 @@ import java.sql.SQLException;
  */
 public class SubjectDAOimp extends DAOBase implements SubjectDAO {
 
-    private static final String SUBJECT_INSERT_SQL = "INSERT INTO Entity.Subject(subid,name) VALUES(?,?)";
+    private static final String SUBJECT_INSERT_SQL = "INSERT INTO Subject(subid,name) VALUES(?,?)";
     @Override
     public void addSubject(Subject subject) {
         Connection con = null;

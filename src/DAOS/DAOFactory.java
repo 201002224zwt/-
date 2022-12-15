@@ -42,13 +42,19 @@ public class DAOFactory {
     }
 
     //MentorDAO
-//    public static MentorDAO getMentorDAO(){
-//        return new MentorDAOimp();
-//    }
+    public static MentorDAO getMentorDAO(){
+        return new MentorDAOimp();
+    }
 
     //SubjectMasterDAO
     public static SubjectMasterDAO getSubjectMasterDAO(){
         return new SubjectMasterimp();
     }
+
+    //ChooseDAO
+    public static ChooseDAO getChooseDAO(){return  new ChooseDAOimp();}
+
+    //UserDAO
+    public static UserDAO getUserDAO(){return  new UserDAOimp();}
 
 }

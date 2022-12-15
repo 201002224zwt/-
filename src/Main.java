@@ -52,11 +52,7 @@ public class Main {
                 break;
             case 2:
                 System.out.println("register");
-                try {
-                    um.register();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                um.register();
                 break;
 
         }

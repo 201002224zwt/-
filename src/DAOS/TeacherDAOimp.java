@@ -1,11 +1,14 @@
 package DAOS;
 
+import Entity.Mentor;
 import Entity.Teacher;
 import User.UserManage;
+import User.UserType;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -30,11 +33,7 @@ public class TeacherDAOimp extends DAOBase implements TeacherDAO{
 
 
             //设置该教师的登录账号
-            try {
-                UserManage.saveInfo(teacher);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            UserManage.saveInfo(teacher);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -49,9 +48,30 @@ public class TeacherDAOimp extends DAOBase implements TeacherDAO{
     public void updateTeacher(Teacher teacher) {
 
     }
-
+    private static final String TEACHER_SELECT_SQL = "SELECT * FROM Teacher WHERE tid=?";
     @Override
     public Teacher getTeacher(String id) {
-      return null;
+        Connection con = null;
+        Teacher teacher =null;
+        try{
+            con = getConnection();
+            PreparedStatement psmt = con.prepareStatement(TEACHER_SELECT_SQL);
+            psmt.setString(1, id);
+            ResultSet rs = psmt.executeQuery();
+            while (rs.next()){
+                teacher=new Teacher(UserType.Teacher, id,null,id,rs.getString("name"));
+            }
+            psmt.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                con.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return teacher;
     }
 }

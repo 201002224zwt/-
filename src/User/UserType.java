@@ -1,10 +1,10 @@
 package User;
+
 public enum UserType {
         Administrator,
         SubjectMaster,//学科负责人
         Teacher,//授课教师
         Master,
-        Guider,//导师
-        Doctor,
+        Mentor,//导师
 }
 
