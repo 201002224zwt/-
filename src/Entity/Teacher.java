@@ -1,25 +1,23 @@
 package Entity;
 import User.User;
 import User.UserType;
+import User.Menu;
 /**
  * @author zhuwentao
  * @version 1.0
  * @data 2022/12/9 19:29
  */
 
-public class Teacher extends User{
+public class Teacher {
     private String id;//导师工号
     private String name;//导师姓名
 
 
 
-    public Teacher(UserType type, String loginname, String passwd,String id, String name) {
-        super(type,loginname,passwd);
+    public Teacher(String id, String name) {
         this.id = id;
         this.name = name;
     }
-
-
 
     public String getId() {
         return id;
@@ -45,8 +43,6 @@ public class Teacher extends User{
                 '}';
     }
 
-    @Override
-    public void menu() {
-        System.out.println("t");
-    }
+
+
 }

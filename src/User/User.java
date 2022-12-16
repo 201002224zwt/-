@@ -2,13 +2,15 @@ package User;
 
 import java.io.Serializable;
 
-public  abstract  class  User implements Serializable{
+public  abstract  class  User implements Serializable,Menu{
     private static final long serialVersionUID = 1;
         UserType type;
         String loadname;//id
         String passwd;
 
-    public  abstract void menu() ;
+
+    //public  abstract void menu() ;
+    public static void menu(){}
 
     public User(UserType type, String loadname, String passwd) {
             this.type = type;
@@ -39,5 +41,14 @@ public  abstract  class  User implements Serializable{
 
     public void setPasswd(String passwd) {
         this.passwd = passwd;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "type=" + type +
+                ", loadname='" + loadname + '\'' +
+                ", passwd='" + passwd + '\'' +
+                '}';
     }
 }

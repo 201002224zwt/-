@@ -25,16 +25,11 @@ public class SubjectMasterimp extends DAOBase implements SubjectMasterDAO {
         try {
             //???????д???????
             PreparedStatement psmt = con.prepareStatement(SUBJECTMASTER_INSERT_SQL);
-            psmt.setString(1, subjectMaster.smid);
-            psmt.setString(2, subjectMaster.subid);
-            psmt.setString(3, subjectMaster.name);
+            psmt.setString(1, subjectMaster.getSmid());
+            psmt.setString(2, subjectMaster.getSubid());
+            psmt.setString(3, subjectMaster.getName());
             psmt.executeUpdate();
             psmt.close();
-
-
-            //?????????д?????
-            UserManage.saveInfo(subjectMaster);
-
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -64,7 +59,7 @@ public class SubjectMasterimp extends DAOBase implements SubjectMasterDAO {
             psmt.setString(1, id);
             ResultSet rs = psmt.executeQuery();
             while (rs.next()){
-                subjectMaster = new SubjectMaster(UserType.SubjectMaster,id,null,id, rs.getString("subid"),rs.getString("name"));
+                subjectMaster = new SubjectMaster(id, rs.getString("subid"),rs.getString("name"));
             }
             psmt.close();
 

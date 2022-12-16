@@ -36,9 +36,8 @@ public class MasterDAOimp extends DAOBase implements MasterDAO {
             psmt.executeUpdate();
             psmt.close();
 
-
             //设置该学生的登录账号
-            UserManage.saveInfo(master);
+            //UserManage.saveInfo(master);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,7 +65,7 @@ public class MasterDAOimp extends DAOBase implements MasterDAO {
             psmt.setString(1, id);
             ResultSet rs = psmt.executeQuery();
             while (rs.next()){
-                master = new Master(UserType.Master,id,null,rs.getString("mid"), rs.getString("name"),rs.getString("menid"),rs.getDate("admissiontime"),rs.getInt("type"));
+                master = new Master(rs.getString("mid"), rs.getString("name"),rs.getString("menid"),rs.getDate("admissiontime"),rs.getInt("type"));
             }
             psmt.close();
 
@@ -82,4 +81,8 @@ public class MasterDAOimp extends DAOBase implements MasterDAO {
         return master;
 
     }
+
+
+
+
 }

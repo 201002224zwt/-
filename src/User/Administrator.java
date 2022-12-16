@@ -2,6 +2,7 @@
 package User;
 //import User.*;
 
+import DAOS.DAO;
 import DAOS.DAOFactory;
 import Entity.*;
 
@@ -15,200 +16,205 @@ import java.util.Scanner;
  * @date 2022-12-08 21:17:51
  */
 
-//ÑĞ¾¿ÉúÅàÑø¹ÜÀíÔ±
-public class Administrator extends User{
+//ç ”ç©¶ç”ŸåŸ¹å…»ç®¡ç†å‘˜
+public class Administrator extends User implements Menu{
 
-    @Override
-    public void menu() {
+    public static void menu() {
 
 
         while(true)
         {
             System.out.println("\n\n\n");
-            System.out.println("-------------ÑĞ¾¿ÉúÅàÑø¹ÜÀíÔ±¹¦ÄÜ²Ëµ¥-------------");
-            System.out.println("1.Â¼ÈëÑ§¿Æ¸ºÔğÈËĞÅÏ¢");
-            System.out.println("2.Â¼ÈëÊÚ¿Î½ÌÊ¦ĞÅÏ¢");
-            System.out.println("3.Â¼Èëµ¼Ê¦ĞÅÏ¢");
-            System.out.println("4.Â¼ÈëÑ§ÉúĞÅÏ¢");
-            System.out.println("5.Â¼ÈëÑ§¿Æ»ù±¾ĞÅÏ¢");
-            System.out.println("6.Â¼Èë¿Î³Ì»ù±¾ĞÅÏ¢");
-            System.out.println("7.ÍË³öÏµÍ³");
-            System.out.println("ÇëÑ¡Ôñ£º");
+            System.out.println("-------------ç ”ç©¶ç”ŸåŸ¹å…»ç®¡ç†å‘˜åŠŸèƒ½èœå•-------------");
+            System.out.println("1.å½•å…¥å­¦ç§‘è´Ÿè´£äººä¿¡æ¯");
+            System.out.println("2.å½•å…¥æˆè¯¾æ•™å¸ˆä¿¡æ¯");
+            System.out.println("3.å½•å…¥å¯¼å¸ˆä¿¡æ¯");
+            System.out.println("4.å½•å…¥å­¦ç”Ÿä¿¡æ¯");
+            System.out.println("5.å½•å…¥å­¦ç§‘åŸºæœ¬ä¿¡æ¯");
+            System.out.println("6.å½•å…¥è¯¾ç¨‹åŸºæœ¬ä¿¡æ¯");
+            System.out.println("7.é€€å‡ºç³»ç»Ÿ");
+            System.out.println("è¯·é€‰æ‹©ï¼š");
             Scanner sc=new Scanner(System.in);
             int choose=sc.nextInt();
             switch (choose)
             {
-            case 1:
-                addSubjectMaster();
-                break;
+                case 1:
+                    addSubjectMaster();
+                    break;
 
-            //²¹È«
-            case 2:
-                addTeacher();
-                break;
+                //è¡¥å…¨
+                case 2:
+                    addTeacher();
+                    break;
 
-            case 3:
-                addMentor();
-                break;
-            case 4:
-                try {
-                    addMaster();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                break;
+                case 3:
+                    addMentor();
+                    break;
+                case 4:
+                    try {
+                        addMaster();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    break;
 
-            case 5:
-                addSubject();
-                break;
+                case 5:
+                    addSubject();
+                    break;
 
-            case 6:
-                addCourse();
-                break;
-            case 7:
-                System.out.println("¸ĞĞ»Ê¹ÓÃ£¡");
-                return;
-        }
+                case 6:
+                    addCourse();
+                    break;
+                case 7:
+                    System.out.println("æ„Ÿè°¢ä½¿ç”¨ï¼");
+                    return;
+            }
         }
 
     }
 
-    public void addMentor(){
+    public static void addMentor(){
         Scanner sc=new Scanner(System.in);
-        System.out.println("------------ĞÂ½¨µ¼Ê¦ĞÅÏ¢-------------");
-        System.out.println("µ¼Ê¦Ãû³Æ£º");
+        System.out.println("------------æ–°å»ºå¯¼å¸ˆä¿¡æ¯-------------");
+        System.out.println("å¯¼å¸ˆåç§°ï¼š");
         String name=sc.next();
 
-        System.out.println("µ¼Ê¦¹¤ºÅ£º");
+        System.out.println("å¯¼å¸ˆå·¥å·ï¼š");
         String tid=sc.next();
 
-        System.out.println("ËùÊôÑ§¿ÆºÅ£º");
+        System.out.println("æ‰€å±å­¦ç§‘å·ï¼š");
         String subid=sc.next();
 
-        System.out.println("µÇÂ¼ÃÜÂë£º");
+        System.out.println("ç™»å½•å¯†ç ï¼š");
         String passwd=sc.next();
 
-        Mentor mentor=new Mentor(UserType.Mentor,tid,passwd,tid,subid,name);
+        Mentor mentor=new Mentor(tid,subid,name);
         DAOFactory.getMentorDAO().addMentor(mentor);
-        System.out.println("Â¼Èëµ¼Ê¦ĞÅÏ¢³É¹¦!");
+        mentor m = new mentor(UserType.Mentor,tid,passwd);
+        UserManage.saveInfo(m);
+        System.out.println("å½•å…¥å¯¼å¸ˆä¿¡æ¯æˆåŠŸ!");
 
     }
-    public void addSubject(){
+    public static void addSubject(){
         Scanner sc=new Scanner(System.in);
-        System.out.println("------------ĞÂ½¨Ñ§¿ÆĞÅÏ¢-------------");
-        System.out.println("Ñ§¿ÆÃû³Æ£º");
+        System.out.println("------------æ–°å»ºå­¦ç§‘ä¿¡æ¯-------------");
+        System.out.println("å­¦ç§‘åç§°ï¼š");
         String name=sc.next();
 
-        System.out.println("Ñ§¿ÆºÅ£º");
+        System.out.println("å­¦ç§‘å·ï¼š");
         String subid=sc.next();
 
 
         Subject subject=new Subject(subid,name);
         DAOFactory.getSubjectDAO().addSubject(subject);
-        System.out.println("Â¼ÈëÑ§¿ÆĞÅÏ¢³É¹¦!");
+        System.out.println("å½•å…¥å­¦ç§‘ä¿¡æ¯æˆåŠŸ!");
 
     }
-    public void addSubjectMaster(){
+    public static void addSubjectMaster(){
         Scanner sc=new Scanner(System.in);
-        System.out.println("------------ĞÂ½¨Ñ§¿Æ¸ºÔğÈËĞÅÏ¢-------------");
-        System.out.println("ĞÕÃû£º");
+        System.out.println("------------æ–°å»ºå­¦ç§‘è´Ÿè´£äººä¿¡æ¯-------------");
+        System.out.println("å§“åï¼š");
         String name=sc.next();
 
-        System.out.println("¹¤×÷±àºÅ£º");
+        System.out.println("å·¥ä½œç¼–å·ï¼š");
         String smid=sc.next();
-        System.out.println("µÇÂ¼ÃÜÂë£º");
+        System.out.println("ç™»å½•å¯†ç ï¼š");
         String passwd=sc.next();
-        System.out.println("Ëù¹ÜÀíµÄÑ§¿ÆºÅ£º");
+        System.out.println("æ‰€ç®¡ç†çš„å­¦ç§‘å·ï¼š");
         String subid=sc.next();
 
 
-        SubjectMaster subjectMaster=new SubjectMaster(UserType.SubjectMaster,smid,passwd,smid,subid,name);
-
+        SubjectMaster subjectMaster=new SubjectMaster(smid,subid,name);
+        subjectmaster s = new subjectmaster(UserType.SubjectMaster,smid,passwd);
         DAOFactory.getSubjectMasterDAO().addSubjectMaster(subjectMaster);
+        UserManage.saveInfo(s);
 
     }
-    public void addTeacher(){
+    public static void addTeacher(){
         Scanner sc=new Scanner(System.in);
-        System.out.println("------------ĞÂ½¨ÊÚ¿Î½ÌÊ¦ĞÅÏ¢-------------");
-        System.out.println("½ÌÊ¦Ãû³Æ£º");
+        System.out.println("------------æ–°å»ºæˆè¯¾æ•™å¸ˆä¿¡æ¯-------------");
+        System.out.println("æ•™å¸ˆåç§°ï¼š");
         String name=sc.next();
 
-        System.out.println("½ÌÊ¦¹¤ºÅ£º");
+        System.out.println("æ•™å¸ˆå·¥å·ï¼š");
         String tid=sc.next();
 
-        System.out.println("µÇÂ¼ÃÜÂë£º");
+        System.out.println("ç™»å½•å¯†ç ï¼š");
         String passwd=sc.next();
 
-        Teacher teacher=new Teacher(UserType.Teacher,tid,passwd,tid,name);
+        Teacher teacher=new Teacher(tid,name);
         DAOFactory.getTeacherDAO().addTeacher(teacher);
-        System.out.println("Â¼Èëµ¼Ê¦ĞÅÏ¢³É¹¦!");
+        teacher t = new teacher(UserType.Teacher,tid,passwd);
+        UserManage.saveInfo(t);
+        System.out.println("å½•å…¥å¯¼å¸ˆä¿¡æ¯æˆåŠŸ!");
 
     }
 
-    public void addCourse(){
+    public static void addCourse(){
         Scanner sc=new Scanner(System.in);
-        System.out.println("------------ĞÂ½¨¿Î³Ì»ù±¾ĞÅÏ¢-------------");
-        System.out.println("¿Î³ÌºÅ£º");
+        System.out.println("------------æ–°å»ºè¯¾ç¨‹åŸºæœ¬ä¿¡æ¯-------------");
+        System.out.println("è¯¾ç¨‹å·ï¼š");
         String id=sc.next();
 
-        System.out.println("ËùÊôÑ§¿ÆºÅ£º");
+        System.out.println("æ‰€å±å­¦ç§‘å·ï¼š");
         String subid=sc.next();
 
 
-        System.out.println("ÊÚ¿Î½ÌÊ¦¹¤ºÅ£º");
+        System.out.println("æˆè¯¾æ•™å¸ˆå·¥å·ï¼š");
         String tid=sc.next();
 
-        System.out.println("¿Î³ÌÃû³Æ£º");
+        System.out.println("è¯¾ç¨‹åç§°ï¼š");
         String name=sc.next();
 
-        System.out.println("Ñ§Ê±£º");
+        System.out.println("å­¦æ—¶ï¼š");
         int hours= Integer.parseInt(sc.next());
 
-        System.out.println("Ñ¡¿ÎÈËÊı£º");
+        System.out.println("é€‰è¯¾äººæ•°ï¼š");
         int applications=Integer.parseInt(sc.next());
 
-        System.out.println("¿Î³Ì×´Ì¬£º");
+        System.out.println("è¯¾ç¨‹çŠ¶æ€ï¼š");
         int state = 0;
 
         Course course=new Course(id,subid,tid,name,hours,applications,state);
         DAOFactory.getCourseDAO().addCourse(course);
-        System.out.println("Â¼Èë¿Î³Ì»ù±¾ĞÅÏ¢³É¹¦!");
+        System.out.println("å½•å…¥è¯¾ç¨‹åŸºæœ¬ä¿¡æ¯æˆåŠŸ!");
 
     }
 
-    public void addMaster() throws ParseException {
+    public static void addMaster() throws ParseException {
         Scanner sc=new Scanner(System.in);
-        System.out.println("------------ĞÂ½¨ÑĞ¾¿ÉúĞÅÏ¢-------------");
-        System.out.println("ÑĞ¾¿ÉúÑ§ºÅ£º");
+        System.out.println("------------æ–°å»ºç ”ç©¶ç”Ÿä¿¡æ¯-------------");
+        System.out.println("ç ”ç©¶ç”Ÿå­¦å·ï¼š");
         String id=sc.next();
 
-        System.out.println("ÑĞ¾¿ÉúĞÕÃû£º");
+        System.out.println("ç ”ç©¶ç”Ÿå§“åï¼š");
         String name=sc.next();
 
-        System.out.println("µÇÂ¼ÃÜÂë£º");
+        System.out.println("ç™»å½•å¯†ç ï¼š");
         String passwd=sc.next();
 
-        System.out.println("µ¼Ê¦¹¤ºÅ£º");
+        System.out.println("å¯¼å¸ˆå·¥å·ï¼š");
         String subid=sc.next();
 
 
-        System.out.println("ÈëÑ§Ê±¼ä£º");
+        System.out.println("å…¥å­¦æ—¶é—´ï¼š");
         String addmissiontime=sc.next();
         Date date = new SimpleDateFormat("yyyy-MM-dd").parse(addmissiontime);
 
-        //½«java.util.Date×ª»»Îªjava.sql.DateµÄ·½·¨ÊÇµ÷ÓÃ¹¹ÔìÆ÷
+        //å°†java.util.Dateè½¬æ¢ä¸ºjava.sql.Dateçš„æ–¹æ³•æ˜¯è°ƒç”¨æ„é€ å™¨
         java.sql.Date bDate = new java.sql.Date(date.getTime());
 
-        System.out.println("Ñ§ÀúÀàĞÍ£º");
-        System.out.println("1.Ë¶Ê¿ÑĞ¾¿Éú 2.²©Ê¿ÑĞ¾¿Éú");
-        System.out.println("ÇëÑ¡Ôñ£º");
+        System.out.println("å­¦å†ç±»å‹ï¼š");
+        System.out.println("1.ç¡•å£«ç ”ç©¶ç”Ÿ 2.åšå£«ç ”ç©¶ç”Ÿ");
+        System.out.println("è¯·é€‰æ‹©ï¼š");
         int stype=Integer.parseInt(sc.next());
 
-
-
-        Master master =new Master(UserType.Master,id,passwd,id,name,subid, bDate,stype);
+        Master master =new Master(id,name,subid, bDate,stype);
         DAOFactory.getMasterDAO().addMaster(master);
-        System.out.println("Â¼ÈëÑĞ¾¿ÉúĞÅÏ¢³É¹¦!");
+        master m = new master(UserType.Master,id,passwd);
+
+        DAOFactory.getUserDAO().addUser(m);
+        System.out.println("å½•å…¥ç ”ç©¶ç”Ÿä¿¡æ¯æˆåŠŸ!");
 
     }
 

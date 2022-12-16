@@ -5,16 +5,16 @@ import java.security.cert.Certificate;
 import java.sql.Date;
 
 public class AcademicActivity {
-    String activity_id;
-    String master_id;
-    String activity_name;
-    Date date;
-    String report_name;
+    private String activity_id;
+    private String master_id;
+    private String activity_name;
+    private Date date;
+    private String report_name;
     //以File形式读入图片
-    String certificate;
-    String image_type;
-    boolean tutor_view;
-    boolean master_view;
+    private String certificate;
+    private String image_type;
+    private boolean tutor_view;
+    private boolean master_view;
 
 
     public String getActivity_id() {

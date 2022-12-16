@@ -57,4 +57,8 @@ public class DAOFactory {
     //UserDAO
     public static UserDAO getUserDAO(){return  new UserDAOimp();}
 
+    public static AcademicActivityDAO getAcademicActivityDAO(){
+        return new AcademicActivityDAOimp();
+    }
+
 }

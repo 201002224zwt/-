@@ -21,27 +21,29 @@ public class UserManage {
     }
     public  void register() {
 
-        System.out.println("ÇëÊäÈëÓÃ»§Ãû£º");
+        System.out.println("è¯·è¾“å…¥ç”¨æˆ·åï¼š");
         Scanner sc=new Scanner(System.in);
 
         String name=sc.next();
-        System.out.println("ÇëÊäÈëÃÜÂë£º");
+        System.out.println("è¯·è¾“å…¥å¯†ç ï¼š");
         String passwd=sc.next();
         UserType type=UserType.Administrator;
-        User user= new Administrator(type,name,passwd);//ÎÄ¼şÊä³öÁ÷
+        User user= new Administrator(type,name,passwd);//æ–‡ä»¶è¾“å‡ºæµ
 
         saveInfo(user);
 
     }
 
-    public void login() throws IOException, ClassNotFoundException {
+
+    public UserType login() throws IOException, ClassNotFoundException {
+        UserType usertype = null;
         String name;
         String passwd;
-        System.out.println("ÇëÊäÈëÓÃ»§Ãû£º");
+        System.out.println("è¯·è¾“å…¥ç”¨æˆ·åï¼š");
         Scanner sc=new Scanner(System.in);
 
         name=sc.next();
-        System.out.println("ÇëÊäÈëÃÜÂë£º");
+        System.out.println("è¯·è¾“å…¥å¯†ç ï¼š");
         passwd=sc.next();
 
         int flag=0;
@@ -59,27 +61,28 @@ public class UserManage {
         Iterator<User> itr = objs.iterator();
 
         while (itr.hasNext()) {
-                User u=itr.next();
-            System.out.println(u.loadname);
-                if (u.loadname.trim().equals(name)){
-                    flag=1;
-                    if (u.passwd.trim().equals(passwd)){
-                        System.out.println("µÇÂ¼³É¹¦");
-                        System.out.println(u.type);
-                        u.menu();
-                    }
-                    else
-                    {
-                        System.out.println("ÃÜÂë´íÎó");
-                    }
-                    break;
+            User u=itr.next();
+            System.out.println(u.toString());
+            if (u.loadname.trim().equals(name)){
+                flag=1;
+                if (u.passwd.trim().equals(passwd)){
+                    System.out.println("ç™»å½•æˆåŠŸ");
+                    System.out.println(u.type);
+                    u.menu();
+                    usertype = u.type;
                 }
-
-
+                else
+                {
+                    System.out.println("å¯†ç é”™è¯¯");
+                }
+                break;
+            }
         }
         if (flag==0){
-            System.out.println("ÓÃ»§Ãû²»´æÔÚ");
+            System.out.println("ç”¨æˆ·åä¸å­˜åœ¨");
         }
+
+        return usertype;
 
 
     }

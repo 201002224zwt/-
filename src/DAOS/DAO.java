@@ -6,6 +6,5 @@ import java.sql.Connection;
  * @date 2022-12-03 20:14:53
  */
 public interface DAO {
-
-    Connection getConnection();
+    Connection getConnection() ;
 }

@@ -1,17 +1,17 @@
 package DAOS;
 
-import Entity.*;
 import User.User;
 import User.Administrator;
-import User.UserManage;
 import User.UserType;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-
+import User.master;
+import User.mentor;
+import User.subjectmaster;
+import User.teacher;
 /**
  * @author caoqike
  * @date 2022-12-12 09:06:12
@@ -20,11 +20,11 @@ public class UserDAOimp  extends DAOBase implements UserDAO{
 
     @Override
     public void addUser(User user) {
-        //¹¹ÔìÁ¬½Ó
+        //æ„é€ è¿æ¥
         Connection con = null;
         con = getConnection();
         try {
-            //Ôö¼ÓÒ»Ìõ¼ÇÂ¼
+            //å¢åŠ ä¸€æ¡è®°å½•
             String sql="insert into UserInfo values(?,?,?)";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, user.getLoadname());
@@ -60,32 +60,26 @@ public class UserDAOimp  extends DAOBase implements UserDAO{
             while (rs.next()){
                 switch (rs.getString("type").trim()){
                     case "Master":
-                        Master master=DAOFactory.getMasterDAO().getMaster(rs.getString("loadname"));
-                        //Ö»ÓĞÃÜÂëĞèÒª¸ù¾İUser±í ½«null Ìæ»»
-                        master.setPasswd(rs.getString("passwd"));
-
-                        list.add(master);
+                        master m = new master(UserType.valueOf("Master"),rs.getString("loadname"),rs.getString("passwd"));
+                        list.add(m);
                         break;
                     case "Mentor":
-                        Mentor mentor=DAOFactory.getMentorDAO().getMentor(rs.getString("loadname"));
-                        mentor.setPasswd(rs.getString("passwd"));
-                        list.add(mentor);
+                        mentor men = new mentor(UserType.Mentor,rs.getString("loadname"),rs.getString("passwd"));
+                        list.add(men);
                         break;
                     case "SubjectMaster":
-                        SubjectMaster subjectMaster=DAOFactory.getSubjectMasterDAO().getSubjectMaster(rs.getString("loadname"));
-                        subjectMaster.setPasswd(rs.getString("passwd"));
-                        list.add(subjectMaster);
+                        subjectmaster s = new subjectmaster(UserType.SubjectMaster,rs.getString("loadname"),rs.getString("passwd"));
+                        list.add(s);
                         break;
                     case "Teacher":
-                        Teacher teacher=DAOFactory.getTeacherDAO().getTeacher(rs.getString("loadname"));
-                        teacher.setPasswd(rs.getString("passwd"));
-                        list.add(teacher);
+                        teacher t = new teacher(UserType.Teacher,rs.getString("loadname"),rs.getString("passwd"));
+                        list.add(t);
                         break;
                     case "Administrator":
                         Administrator administrator=new Administrator(UserType.Administrator,rs.getString("loadname"),rs.getString("passwd"));
-                           list.add(administrator);
-                           break;
-                    }
+                        list.add(administrator);
+                        break;
+                }
 
 
 

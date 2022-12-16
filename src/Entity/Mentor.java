@@ -1,18 +1,19 @@
 package Entity;
 import User.User;
 import User.UserType;
+import User.Menu;
 /**
  * @author zhuwentao
  * @version 1.0
  * @data 2022/12/9
  */
-public class Mentor extends User{
+public class Mentor {
     private String menid;//��ʦ����
     private String subid;//����ѧ��
     private String name;//��ʦ����
 
-    public Mentor(UserType type, String loadname, String passwd, String menid, String subid, String name) {
-        super(type, loadname, passwd);
+    public Mentor( String menid, String subid, String name) {
+
         this.menid = menid;
         this.subid = subid;
         this.name = name;
@@ -44,8 +45,8 @@ public class Mentor extends User{
         this.name = name;
     }
 
-    @Override
-    public void menu() {
-        System.out.println("Mentor");
-    }
+
+//    public static void menu() {
+//        System.out.println("Mentor");
+//    }
 }
