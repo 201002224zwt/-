@@ -31,9 +31,6 @@ public class MentorDAOimp extends DAOBase implements MentorDAO{
             psmt.executeUpdate();
             psmt.close();
 
-
-            //���øý�ʦ�ĵ�¼�˺�
-            UserManage.saveInfo(mentor);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -60,7 +57,7 @@ public class MentorDAOimp extends DAOBase implements MentorDAO{
             ResultSet rs = psmt.executeQuery();
             while (rs.next()){
 
-                mentor=new Mentor(UserType.Mentor, rs.getString("menid"),null,rs.getString("menid"),rs.getString("subid"),rs.getString("name"));
+                mentor=new Mentor(rs.getString("menid"),rs.getString("subid"),rs.getString("name"));
             }
             psmt.close();
 

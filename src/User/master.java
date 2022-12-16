@@ -1,13 +1,14 @@
 package User;
 
 import DAOS.DAOFactory;
-import Entity.Choose;
-import Entity.Course;
-import Entity.Master;
-import Entity.Subject;
+import Entity.*;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 public class master extends User implements Menu{
@@ -25,7 +26,7 @@ public class master extends User implements Menu{
 //    }
 
 
-    public static void  showCourseList(LinkedList<Course> courses, LinkedList<Choose> myChooses){
+    private static void  showCourseList(LinkedList<Course> courses, LinkedList<Choose> myChooses){
 
         Integer i=1;//行号
         Iterator<Course> itr = courses.iterator();
@@ -53,7 +54,7 @@ public class master extends User implements Menu{
     }
 
 
-    static void tutorMenu(){
+    private static void tutorMenu(){
         while(true)
         {
             System.out.println("---------助教课程子模块----------");
@@ -77,7 +78,7 @@ public class master extends User implements Menu{
 
     }
 
-    public static void deleteCourse(){
+    private static void deleteCourse(){
         System.out.println("----------------------退课-----------------------");
 
         LinkedList<Choose> allChooses = DAOFactory.getChooseDAO().getAllChooses();
@@ -118,7 +119,7 @@ public class master extends User implements Menu{
 
     }
 
-    public static void chooseCourse(){
+    private static void chooseCourse(){
 
         System.out.println("----------------------选课-----------------------");
         String subid= DAOFactory.getMentorDAO().getMentor(m.getMenid()).getSubid();
@@ -140,11 +141,8 @@ public class master extends User implements Menu{
         Integer volAvailabe=2;
         Integer volAlready=0;
 
-        Iterator<Choose> itr = allChooses.iterator();
+        for (Choose choose : allChooses) {
 
-        while (itr.hasNext()) {
-
-            Choose choose=itr.next();
             System.out.println("---");
 
 //            char array0[] =choose.getMid().toCharArray();//替换字符串中不可见字符
@@ -155,8 +153,7 @@ public class master extends User implements Menu{
 //            System.out.println(choose.getMid().trim());
 
 
-
-            if (choose.getMid().trim().equals(m.getSid().trim())){
+            if (choose.getMid().trim().equals(m.getSid().trim())) {
 
                 myChooses.add(choose);
                 volAvailabe--;
@@ -226,30 +223,140 @@ public class master extends User implements Menu{
             showCourseList(courses,myChooses);
         }
     }
+    private static Date scanDate(){
+        Scanner sc = new Scanner(System.in);
+        String date_string = sc.nextLine();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-DD");
+        //Date date = null;
+        try{
+            java.util.Date temp = format.parse(date_string);
+            long datems = temp.getTime();
+            Date sqlDate = new java.sql.Date(datems);
+            return sqlDate;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    private static void AcademicFirstStep() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("请输入活动名称:");
+        String name = sc.next();
+        System.out.println("请输入活动日期（年-月-日）");
+        Date d;
+        while (true) {
+            d = scanDate();
+            if (d != null) {
+                break;
+            } else {
+                System.out.println("输入格式错误，请重新输入");
+            }
+        }
+        java.util.Date date = new java.util.Date();
+        SimpleDateFormat dateFormate = new SimpleDateFormat("MM-dd:hh:mm:ss");
+        String aid = m.getSid() + dateFormate.format(date);
+        AcademicActivity a = new AcademicActivity();
+        a.setActivity_name(name);
+        a.setDate(d);
+        a.setMaster_id(m.getSid());
+        a.setActivity_id(aid);
+        DAOFactory.getAcademicActivityDAO().addAcademicActivity(a);
+        System.out.println("活动记录提交成功！");
+        //Date d = java.sql.Date.valueOf(sc.next(""));
+    }
+
+    private static void AcademicSecondStep(){
+
+    }
+
+    private static void ShowAcademicProcess(){
+        List<AcademicActivity> al = DAOFactory.getAcademicActivityDAO().getAcademicActivity(m.getSid());
+        Iterator<AcademicActivity> iterator = al.iterator();
+        while(iterator.hasNext()){
+            AcademicActivity temp = iterator.next();
+            System.out.println(temp.toString());
+        }
+    }
+
+    /**
+     *学术活动认证模块
+     **/
+    private static void Academicmodule(){
+        boolean if_continue = true;
+        while (if_continue) {
+            System.out.println("--------------学术活动认证子系统---------------");
+            System.out.println("1.初次申请学术活动");
+            System.out.println("2.提交学术活动证明");
+            System.out.println("3.查看办理进程");
+            System.out.println("4.退出系统");
+            System.out.println("请选择：");
+            String choose;
+            boolean flag = true;
+            while(flag){
+                Scanner sc = new Scanner(System.in);
+                choose = sc.next();
+                switch (choose) {
+                    case "1":
+                        AcademicFirstStep();
+                        flag = false;
+                        break;
+
+                    case "2":
+                        AcademicSecondStep();
+                        flag = false;
+                        break;
+
+                    case "3":
+                        ShowAcademicProcess();
+                        flag = false;
+                        break;
+                    case "4":
+                        flag = false;
+                        if_continue = false;
+                        break;
+                    default:
+                        System.out.println("输入错误，请重新输入:");
+                }
+            }
+
+        }
+    }
 
     public static void menu() {
-
-        while (true) {
+        boolean if_continue = true;
+        while (if_continue) {
             System.out.println("--------------研究生功能菜单---------------");
             System.out.println("1.助教课程子模块");
-
+            System.out.println("2.学术活动认证模块");
             //
-            System.out.println("2.退出系统");
+            System.out.println("3.退出系统");
             System.out.println("请选择：");
-            int choose;
-            Scanner sc = new Scanner(System.in);
-            choose = sc.nextInt();
-            switch (choose) {
-                case 1:
-                    //可以获得学科下的state=1的课程
-                    //通过导师号
-                    tutorMenu();
+            String choose;
+            boolean flag = true;
+            while(flag){
+                Scanner sc = new Scanner(System.in);
+                choose = sc.next();
+                switch (choose) {
+                    case "1":
+                        //可以获得学科下的state=1的课程
+                        //通过导师号
+                        tutorMenu();
+                        flag = false;
+                        break;
 
-                    break;
-
-                case 2:
-                    return;
+                    case "2":
+                        Academicmodule();
+                        flag = false;
+                        break;
+                    case "3":
+                        flag = false;
+                        if_continue = false;
+                        break;
+                    default:
+                        System.out.println("输入错误，请重新输入:");
+                }
             }
+
         }
     }
 

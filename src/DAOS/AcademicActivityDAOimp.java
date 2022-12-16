@@ -172,20 +172,24 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
                 //a.setCertificate(rs.getBinaryStream("Certificate"));
 
                 InputStream in = rs.getBinaryStream("Certificate");
-                String path = "d:\\image\\"+ a.getActivity_id().trim().replace(':','_') +".jpg";
-                DataOutputStream sos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(path)));
-                int len;
-                byte[] b = new byte[1024];
-                System.out.println(in);
-                while((len = in.read(b))!= -1){
-                    sos.write(b,0,len);
+                if(in != null){
+                    String path = "d:\\image\\"+ a.getActivity_id().trim().replace(':','_') +".jpg";
+                    DataOutputStream sos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(path)));
+                    int len;
+                    byte[] b = new byte[1024];
+                    System.out.println(in);
+                    while((len = in.read(b))!= -1){
+                        sos.write(b,0,len);
+                    }
+                    sos.close();
+                    in.close();
+                    a.setCertificate(path);
                 }
-                sos.close();
-                in.close();
+
 //                byte[] imageBytes = null;
 //                imageBytes = new byte[rs.getBinaryStream("Certificate").available()];
 //                a.setCertificate( imageBytes);
-                a.setCertificate(path);
+
 
                 l.add(a);
             }

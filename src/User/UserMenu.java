@@ -10,6 +10,7 @@ import java.util.Scanner;
  * 并判断用户类型
  * 进行相应的页面跳转
  **/
+
 public class UserMenu  extends User{
 
 
@@ -25,6 +26,16 @@ public class UserMenu  extends User{
                     break;
                 case Master:
                     master.menu();
+                    break;
+                case Teacher:
+                    teacher.menu();
+                    break;
+                case Mentor:
+                    mentor.menu();
+                    break;
+                case SubjectMaster:
+                    subjectmaster.menu();
+                    break;
             }
         }
         else{

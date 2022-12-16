@@ -20,7 +20,7 @@ public class TeacherDAOimp extends DAOBase implements TeacherDAO{
     @Override
     public void addTeacher(Teacher teacher) {
         //构造连接
-        Connection con = null;
+        Connection con;
         con = getConnection();
         try {
             //增加一条记录
@@ -32,8 +32,6 @@ public class TeacherDAOimp extends DAOBase implements TeacherDAO{
             psmt.close();
 
 
-            //设置该教师的登录账号
-            UserManage.saveInfo(teacher);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -59,7 +57,7 @@ public class TeacherDAOimp extends DAOBase implements TeacherDAO{
             psmt.setString(1, id);
             ResultSet rs = psmt.executeQuery();
             while (rs.next()){
-                teacher=new Teacher(UserType.Teacher, id,null,id,rs.getString("name"));
+                teacher=new Teacher(id,rs.getString("name"));
             }
             psmt.close();
 

@@ -1,4 +1,4 @@
-﻿package User;
+package User;
 
 import DAOS.DAOFactory;
 import Entity.Course;
@@ -13,7 +13,7 @@ public class subjectmaster extends User implements Menu{
     private static SubjectMaster s;
     public subjectmaster(UserType type, String loadname, String passwd) {
         super(type, loadname, passwd);
-        this.s = DAOFactory.getSubjectMasterDAO().getSubjectMaster(loadname);
+        s = DAOFactory.getSubjectMasterDAO().getSubjectMaster(loadname);
     }
 
     public static void menu() {
@@ -44,7 +44,7 @@ public class subjectmaster extends User implements Menu{
 
 
 
-    public static void  showCourseList(LinkedList<Course> courses){
+    private static void  showCourseList(LinkedList<Course> courses){
 
         Integer i=1;
         Iterator<Course> itr = courses.iterator();
@@ -69,7 +69,7 @@ public class subjectmaster extends User implements Menu{
         }
     }
 
-    public static void makeCourseList(){
+    private static void makeCourseList(){
         //查看自己学科的所有课程列表
         LinkedList<Course> courses= DAOFactory.getCourseDAO().getAllCourses(s.getSmid());
         Iterator<Course> itr = courses.iterator();

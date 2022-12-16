@@ -24,20 +24,20 @@ public class Main {
 //                System.out.println(SN);
 //            }
 //
-//            conn.close();//¹ØÁ÷
+//            conn.close();//å…³æµ
 //        } catch (SQLException e) {
 //            e.printStackTrace();
 //        }
 
-        System.out.println("--------------»¶Ó­Ê¹ÓÃÑĞ¾¿ÉúÅàÑø»·½ÚºÍ³É¹ûÈÏ¶¨×ÛºÏ¹ÜÀíÏµÍ³----------------");
-        System.out.println("\t1.µÇÂ¼");
-        System.out.println("\t2.×¢²á");
-        System.out.println("\t3.ÍË³ö");
-        System.out.println("ÇëÑ¡Ôñ£¨1~3£©£º");
+        System.out.println("--------------æ¬¢è¿ä½¿ç”¨ç ”ç©¶ç”ŸåŸ¹å…»ç¯èŠ‚å’Œæˆæœè®¤å®šç»¼åˆç®¡ç†ç³»ç»Ÿ----------------");
+        System.out.println("\t1.ç™»å½•");
+        System.out.println("\t2.æ³¨å†Œ");
+        System.out.println("\t3.é€€å‡º");
+        System.out.println("è¯·é€‰æ‹©ï¼ˆ1~3ï¼‰ï¼š");
 
         Scanner sc=new Scanner(System.in);
 
-        int choose=sc.nextInt();//ÊäÈëÒ»¸öÕûÊı
+        int choose=sc.nextInt();//è¾“å…¥ä¸€ä¸ªæ•´æ•°
         UserManage um=new UserManage();
         switch (choose){
             case 1:
