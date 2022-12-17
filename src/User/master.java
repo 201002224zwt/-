@@ -232,8 +232,7 @@ public class master extends User implements Menu{
         try{
             java.util.Date temp = format.parse(date_string);
             long datems = temp.getTime();
-            Date sqlDate = new java.sql.Date(datems);
-            return sqlDate;
+            return new Date(datems);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
@@ -255,7 +254,7 @@ public class master extends User implements Menu{
         }
         java.util.Date date = new java.util.Date();
         SimpleDateFormat dateFormate = new SimpleDateFormat("MM-dd:hh:mm:ss");
-        String aid = m.getSid() + dateFormate.format(date);
+        String aid = m.getSid().trim() + dateFormate.format(date);
         AcademicActivity a = new AcademicActivity();
         a.setActivity_name(name);
         a.setDate(d);
@@ -267,16 +266,74 @@ public class master extends User implements Menu{
     }
 
     private static void AcademicSecondStep(){
+        List<AcademicActivity> al = DAOFactory.getAcademicActivityDAO().getAcademicActivity(m.getSid());
+        Iterator<AcademicActivity> iterator = al.iterator();
+        System.out.println("编号\t学术活动名称\t学术活动时间");
+        String [] log = new String[al.size()];
+        int count = 0;
+        while(iterator.hasNext()){
+            AcademicActivity temp = iterator.next();
+
+            if(temp.isTutor_view() && !temp.isMaster_view()){
+                System.out.println(String.valueOf(count+1)+ "\t"+temp.getActivity_name()+"\t"+temp.getDate());
+                log[count] = temp.getActivity_id();
+                count++;
+            }
+            //System.out.println(temp.toString());
+        }
+        if(count > 0){
+            System.out.println("请选择要提交材料的记录：");
+            boolean flag = true;
+            while(flag){
+                Scanner sc = new Scanner(System.in);
+                int choice = sc.nextInt();
+                if(choice > 0 && choice <= count){
+                    AcademicActivity a = DAOFactory.getAcademicActivityDAO().getAcademicActivitybyId(log[count-1]);
+                    System.out.println("请输入会议报告名称：");
+                    String reportname = sc.next();
+                    a.setReport_name(reportname);
+                    System.out.println("-----参会证明提交-----");
+                    System.out.println("请输入图片路径：");
+                    String picturepath = sc.next();
+                    String postfix = picturepath.substring(0,picturepath.lastIndexOf('.'));
+                    if(postfix != null){
+                        System.out.println("图片路径格式错误");
+                    }
+                    System.out.println(postfix);
+                    a.setCertificate(picturepath);
+                    a.setImage_type(postfix);
+                    flag = false;
+                }
+                else{
+                    System.out.println("选项错误，请重新输入：");
+                }
+            }
+
+        }
+        else{
+            System.out.println("暂无可以操作的记录！");
+        }
 
     }
 
     private static void ShowAcademicProcess(){
         List<AcademicActivity> al = DAOFactory.getAcademicActivityDAO().getAcademicActivity(m.getSid());
         Iterator<AcademicActivity> iterator = al.iterator();
+        System.out.println("学术活动编号\t学术活动名称\t学术活动时间\t学术活动状态");
         while(iterator.hasNext()){
             AcademicActivity temp = iterator.next();
-            System.out.println(temp.toString());
+            if(!temp.isTutor_view()){
+                System.out.println(temp.getActivity_id()+ "\t"+temp.getActivity_name()+"\t"+temp.getDate()+"\t导师认证未通过");
+            }
+            else if(!temp.isMaster_view()){
+                System.out.println(temp.getActivity_id()+ "\t"+temp.getActivity_name()+"\t"+temp.getDate()+"\t学院认证未通过");
+            }
+            else{
+                System.out.println(temp.getActivity_id()+ "\t"+temp.getActivity_name()+"\t"+temp.getDate()+"\t认证通过");
+            }
+            //System.out.println(temp.toString());
         }
+
     }
 
     /**

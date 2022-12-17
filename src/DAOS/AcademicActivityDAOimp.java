@@ -1,6 +1,5 @@
 package DAOS;
 import Entity.AcademicActivity;
-import jdk.internal.util.xml.impl.Input;
 
 import java.io.*;
 import java.sql.Connection;
@@ -206,6 +205,56 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
         }
         return l;
     }
+
+    @Override
+    public AcademicActivity getAcademicActivitybyId(String ActivityId) {
+        Connection con = null;
+        try{
+            con = getConnection();
+            String sql="select * from AcademicActivity where mid = ?";
+            PreparedStatement psmt = con.prepareStatement(sql);
+            psmt.setString(1,ActivityId);
+            ResultSet rs = psmt.executeQuery();
+            AcademicActivity a = new AcademicActivity();
+            a.setActivity_id(rs.getString("ActivityId"));
+            a.setActivity_name(rs.getString("ActivityName"));
+            a.setDate(rs.getDate("Date"));
+            a.setTutor_view(rs.getBoolean("TutorView"));
+            a.setMaster_view(rs.getBoolean("MasterView"));
+            a.setImage_type(rs.getString("ImageType"));
+            //a.setCertificate(rs.getBinaryStream("Certificate"));
+            InputStream in = rs.getBinaryStream("Certificate");
+            if(in != null){
+                String path = "d:\\image\\"+ a.getActivity_id().trim().replace(':','_') +".jpg";
+                DataOutputStream sos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(path)));
+                int len;
+                byte[] b = new byte[1024];
+                System.out.println(in);
+                while((len = in.read(b))!= -1){
+                    sos.write(b,0,len);
+                }
+                sos.close();
+                in.close();
+                a.setCertificate(path);
+            }
+
+
+            psmt.close();
+            return a;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }finally {
+            try{
+                assert con != null;
+                con.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 
 
 

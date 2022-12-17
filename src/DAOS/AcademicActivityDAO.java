@@ -24,8 +24,9 @@ public interface AcademicActivityDAO {
 
     void conservePicture(AcademicActivity aa);
 
-    //按照研究生学号查找提交的学术活动记录
     List<AcademicActivity> getAcademicActivity(String MasterId);
+
+    AcademicActivity getAcademicActivitybyId(String ActivityId);
 
     //修改演讲题目
 
