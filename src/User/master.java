@@ -562,6 +562,22 @@ public class master extends User implements Menu{
                         break;
 
                     case "3":
+                        AddStandard();
+                        flag = false;
+                        break;
+                    case "4":
+                        AddReport();
+                        flag = false;
+                        break;
+                    case "5":
+                        AddPatent();
+                        flag = false;
+                        break;
+                    case "6":
+                        Addplateform();
+                        flag = false;
+                        break;
+                    case "7":
                         Addtextbook();
                         flag = false;
                         break;
@@ -576,12 +592,6 @@ public class master extends User implements Menu{
 
         }
     }
-
-
-
-
-
-
 
 
 
