@@ -2,12 +2,14 @@ package DAOS;
 
 import Entity.hs_platform;
 
+import java.io.*;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class hs_platformDAOImpl extends DAOBase implements hs_platformDAO{
-    private static final String INSERT_SQL = "INSERT INTO hs_platform(id_platform, name, unit, time, ranking, materials) VALUES(?,?,?,?,?,?)";
+    private static final String INSERT_SQL = "INSERT INTO hs_platform(mid, name, unit, time, ranking, materials) VALUES(?,?,?,?,?,?)";
 
     @Override
     public void submiths_platform (hs_platform platform) {
@@ -15,12 +17,13 @@ public class hs_platformDAOImpl extends DAOBase implements hs_platformDAO{
         try{
             con = getConnection();
             PreparedStatement psmt = con.prepareStatement(INSERT_SQL);
-            psmt.setString(1, platform.getId_platform());
-            psmt.setString(1, platform.getName());
-            psmt.setString(1,platform.getUnit());
-            psmt.setString(1,platform.getTime());
-            psmt.setInt(1, platform.getRanking());
-            psmt.setBlob(5,platform.getMaterials());
+            InputStream in = new FileInputStream(new File(platform.getMaterials()));
+            psmt.setString(1, platform.getMaster().getSid());
+            psmt.setString(2, platform.getName());
+            psmt.setString(3,platform.getUnit());
+            psmt.setString(4,platform.getTime());
+            psmt.setInt(5, platform.getRanking());
+            psmt.setBlob(6,in);
             psmt.executeUpdate();
             psmt.close();
         }catch (Exception e){
@@ -34,7 +37,7 @@ public class hs_platformDAOImpl extends DAOBase implements hs_platformDAO{
         }
     }
 
-    private static final String SELECT_SQL = "SELECT id_platform, name, unit, time, ranking, materials FROM hs_platform WHERE sid = ?";
+    private static final String SELECT_SQL = "SELECT  name, unit, time, ranking, materials FROM hs_platform WHERE mid = ?";
 
     public hs_platform geths_platform(String master_sid){
         Connection con = null;
@@ -45,12 +48,20 @@ public class hs_platformDAOImpl extends DAOBase implements hs_platformDAO{
             psmt.setString(1,master_sid);
             ResultSet rs = psmt.executeQuery();
             while(rs.next()){
-                hs_platform.setId_platform(rs.getString("id_platform"));
                 hs_platform.setName(rs.getString("name"));
                 hs_platform.setUnit(rs.getString("unit"));
                 hs_platform.setTime(rs.getString("time"));
                 hs_platform.setRanking(rs.getInt("ranking"));
-                hs_platform.setMaterials(rs.getBlob("materials"));
+                Blob photo = rs.getBlob("materials");
+                InputStream in = photo.getBinaryStream();
+                OutputStream out = new FileOutputStream(new File("src/platform_materials.jpg"));
+                byte[] buf = new byte[1024];
+                int len =0;
+                while((len = in.read(buf))!= -1) {
+                    out.write(buf, 0, len);
+                }
+                in.close();
+                out.close();
             }
             psmt.close();
         }catch (Exception e){
@@ -64,7 +75,4 @@ public class hs_platformDAOImpl extends DAOBase implements hs_platformDAO{
         }
         return hs_platform;
     }
-
-
-
 }

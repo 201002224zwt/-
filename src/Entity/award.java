@@ -1,30 +1,34 @@
 package Entity;
 
-import java.sql.Blob;
+
+import DAOS.awardDAO;
+import DAOS.awardDAOImpl;
 
 public class award {
 
     private Master master;
-
-    public award(Master master) {
-        this.master = master;
-    }
-
-    private String id_award;
     private String name;
     private int reward_grade;
     private int award_grade;
-    private String ranking;
+    private int ranking;
     private String time;
-    private Blob materials;
+    private String materials;
+    private String image_type;
+    private boolean tutor_view;
+    private boolean last_view;
 
     public award(){
 
     }
 
+    public award(Master master, String image_type, boolean tutor_view, boolean last_view) {
+        this.master = master;
+        this.image_type = image_type;
+        this.tutor_view = tutor_view;
+        this.last_view = last_view;
+    }
 
-    public award(String id_award, String name, int reward_grade, int award_grade, String ranking, String time, Blob materials) {
-        this.id_award = id_award;
+    public award( String name, int reward_grade, int award_grade, int ranking, String time, String materials) {
         this.name = name;
         this.reward_grade = reward_grade;
         this.award_grade = award_grade;
@@ -33,6 +37,29 @@ public class award {
         this.materials = materials;
     }
 
+    public String getImage_type() {
+        return image_type;
+    }
+
+    public void setImage_type(String image_type) {
+        this.image_type = image_type;
+    }
+
+    public boolean isTutor_view() {
+        return tutor_view;
+    }
+
+    public void setTutor_view(boolean tutor_view) {
+        this.tutor_view = tutor_view;
+    }
+
+    public boolean isLast_view() {
+        return last_view;
+    }
+
+    public void setLast_view(boolean last_view) {
+        this.last_view = last_view;
+    }
 
     public Master getMaster() {
         return master;
@@ -40,13 +67,6 @@ public class award {
 
     public void setMaster(Master master) {
         this.master = master;
-    }
-    public String getId_award() {
-        return id_award;
-    }
-
-    public void setId_award(String id_award) {
-        this.id_award = id_award;
     }
 
     public String getName() {
@@ -73,11 +93,11 @@ public class award {
         this.award_grade = award_grade;
     }
 
-    public String getRanking() {
+    public int getRanking() {
         return ranking;
     }
 
-    public void setRanking(String ranking) {
+    public void setRanking(int ranking) {
         this.ranking = ranking;
     }
 
@@ -89,11 +109,28 @@ public class award {
         this.time = time;
     }
 
-    public Blob getMaterials() {
+    public String getMaterials() {
         return materials;
     }
 
-    public void setMaterials(Blob materials) {
+    public void setMaterials(String materials) {
         this.materials = materials;
     }
+
+//   public static void main(String[] args) {
+//        Master master = new Master();
+//        master.setSid("0022352");
+//        award award = new award();
+//        award.setId_award("00221");
+//        award.setMaster(master);
+//        award.setName("奖项");
+//        award.setAward_grade(2);
+//        award.setRanking(34);
+//        award.setReward_grade(3);
+//        award.setTime("2022-3-4");
+//        award.setMaterials("D:\\school.jpg");
+//        awardDAOImpl test = new awardDAOImpl();
+//        test.submitaward(award);
+//    }
+
 }

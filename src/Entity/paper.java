@@ -9,17 +9,26 @@ public class paper {
         this.master = master;
     }
 
-    private String id_paper;
     private String name;
     private String periodical;
     private int state;
     private String time;
     private String index_type;
     private int Attribution;
-    private Blob materials;
+    private String materials;
+    private String image_type;
+    private boolean tutor_view;
+    private boolean last_view;
 
-    public paper(String id_paper, String name, String periodical, int state, String time, String index_type, int attribution, Blob materials) {
-        this.id_paper = id_paper;
+
+    public paper(Master master, String image_type, boolean tutor_view, boolean last_view) {
+        this.master = master;
+        this.image_type = image_type;
+        this.tutor_view = tutor_view;
+        this.last_view = last_view;
+    }
+
+    public paper(String name, String periodical, int state, String time, String index_type, int attribution, String materials) {
         this.name = name;
         this.periodical = periodical;
         this.state = state;
@@ -33,6 +42,31 @@ public class paper {
 
     }
 
+
+    public String getImage_type() {
+        return image_type;
+    }
+
+    public void setImage_type(String image_type) {
+        this.image_type = image_type;
+    }
+
+    public boolean isTutor_view() {
+        return tutor_view;
+    }
+
+    public void setTutor_view(boolean tutor_view) {
+        this.tutor_view = tutor_view;
+    }
+
+    public boolean isLast_view() {
+        return last_view;
+    }
+
+    public void setLast_view(boolean last_view) {
+        this.last_view = last_view;
+    }
+
     public Master getMaster() {
         return master;
     }
@@ -41,13 +75,6 @@ public class paper {
         this.master = master;
     }
 
-    public String getId_paper() {
-        return id_paper;
-    }
-
-    public void setId_paper(String id_paper) {
-        this.id_paper = id_paper;
-    }
 
     public String getName() {
         return name;
@@ -97,11 +124,11 @@ public class paper {
         Attribution = attribution;
     }
 
-    public Blob getMaterials() {
+    public String getMaterials() {
         return materials;
     }
 
-    public void setMaterials(Blob materials) {
+    public void setMaterials(String materials) {
         this.materials = materials;
     }
 }

@@ -21,15 +21,24 @@ public class textbook {
         this.master = master;
     }
 
-    private String id_text;
     private String name;
     private String press;
     private String time;
     private int ranking;
-    private Blob materials;
+    private String materials;
 
-    public textbook(String id_text, String name, String press, String time, int ranking, Blob materials) {
-        this.id_text = id_text;
+    private String image_type;
+    private boolean tutor_view;
+    private boolean last_view;
+
+    public textbook(Master master, String image_type, boolean tutor_view, boolean last_view) {
+        this.master = master;
+        this.image_type = image_type;
+        this.tutor_view = tutor_view;
+        this.last_view = last_view;
+    }
+
+    public textbook(String name, String press, String time, int ranking, String materials) {
         this.name = name;
         this.press = press;
         this.time = time;
@@ -37,13 +46,30 @@ public class textbook {
         this.materials = materials;
     }
 
-    public String getId_text() {
-        return id_text;
+    public String getImage_type() {
+        return image_type;
     }
 
-    public void setId_text(String id_text) {
-        this.id_text = id_text;
+    public void setImage_type(String image_type) {
+        this.image_type = image_type;
     }
+
+    public boolean isTutor_view() {
+        return tutor_view;
+    }
+
+    public void setTutor_view(boolean tutor_view) {
+        this.tutor_view = tutor_view;
+    }
+
+    public boolean isLast_view() {
+        return last_view;
+    }
+
+    public void setLast_view(boolean last_view) {
+        this.last_view = last_view;
+    }
+
 
     public String getName() {
         return name;
@@ -77,11 +103,11 @@ public class textbook {
         this.ranking = ranking;
     }
 
-    public Blob getMaterials() {
+    public String getMaterials() {
         return materials;
     }
 
-    public void setMaterials(Blob materials) {
+    public void setMaterials(String materials) {
         this.materials = materials;
     }
 }

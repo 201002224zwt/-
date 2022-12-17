@@ -31,6 +31,10 @@ public class Master implements Menu {
         this.stype = stype;
     }
 
+    public Master() {
+
+    }
+
 
     public String getSid() {
         return sid;

@@ -12,11 +12,23 @@ public class standard {
 
     private String id_standard;
     private String name;
-    private String standard_level;
+    private int standard_level;
     private String time;
-    private Blob materials;
+    private String materials;
 
-    public standard(String id_standard, String name, String standard_level, String time, Blob materials) {
+    private String image_type;
+    private boolean tutor_view;
+    private boolean last_view;
+
+
+    public standard(Master master, String image_type, boolean tutor_view, boolean last_view) {
+        this.master = master;
+        this.image_type = image_type;
+        this.tutor_view = tutor_view;
+        this.last_view = last_view;
+    }
+
+    public standard(String id_standard, String name, int standard_level, String time, String materials) {
         this.id_standard = id_standard;
         this.name = name;
         this.standard_level = standard_level;
@@ -28,6 +40,29 @@ public class standard {
 
     }
 
+    public String getImage_type() {
+        return image_type;
+    }
+
+    public void setImage_type(String image_type) {
+        this.image_type = image_type;
+    }
+
+    public boolean isTutor_view() {
+        return tutor_view;
+    }
+
+    public void setTutor_view(boolean tutor_view) {
+        this.tutor_view = tutor_view;
+    }
+
+    public boolean isLast_view() {
+        return last_view;
+    }
+
+    public void setLast_view(boolean last_view) {
+        this.last_view = last_view;
+    }
 
     public Master getMaster() {
         return master;
@@ -54,11 +89,11 @@ public class standard {
         this.name = name;
     }
 
-    public String getStandard_level() {
+    public int getStandard_level() {
         return standard_level;
     }
 
-    public void setStandard_level(String standard_level) {
+    public void setStandard_level(int standard_level) {
         this.standard_level = standard_level;
     }
 
@@ -70,11 +105,11 @@ public class standard {
         this.time = time;
     }
 
-    public Blob getMaterials() {
+    public String getMaterials() {
         return materials;
     }
 
-    public void setMaterials(Blob materials) {
+    public void setMaterials(String materials) {
         this.materials = materials;
     }
 }

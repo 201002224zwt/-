@@ -9,17 +9,26 @@ public class patent {
         this.master = master;
     }
 
-    private String id_patent;
     private String name;
     private int type;
     private String number;
     private String time;
     private String state;
     private int ranking;
-    private Blob materials;
+    private String materials;
 
-    public patent(String id_patent, String name, int type, String number, String time, String state, int ranking, Blob materials) {
-        this.id_patent = id_patent;
+    private String image_type;
+    private boolean tutor_view;
+    private boolean last_view;
+
+    public patent(Master master, String image_type, boolean tutor_view, boolean last_view) {
+        this.master = master;
+        this.image_type = image_type;
+        this.tutor_view = tutor_view;
+        this.last_view = last_view;
+    }
+
+    public patent(String name, int type, String number, String time, String state, int ranking, String materials) {
         this.name = name;
         this.type = type;
         this.number = number;
@@ -33,13 +42,30 @@ public class patent {
 
     }
 
-    public String getId_patent() {
-        return id_patent;
+    public String getImage_type() {
+        return image_type;
     }
 
-    public void setId_patent(String id_patent) {
-        this.id_patent = id_patent;
+    public void setImage_type(String image_type) {
+        this.image_type = image_type;
     }
+
+    public boolean isTutor_view() {
+        return tutor_view;
+    }
+
+    public void setTutor_view(boolean tutor_view) {
+        this.tutor_view = tutor_view;
+    }
+
+    public boolean isLast_view() {
+        return last_view;
+    }
+
+    public void setLast_view(boolean last_view) {
+        this.last_view = last_view;
+    }
+
 
     public Master getMaster() {
         return master;
@@ -98,11 +124,11 @@ public class patent {
         this.ranking = ranking;
     }
 
-    public Blob getMaterials() {
+    public String getMaterials() {
         return materials;
     }
 
-    public void setMaterials(Blob materials) {
+    public void setMaterials(String materials) {
         this.materials = materials;
     }
 }

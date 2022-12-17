@@ -3,12 +3,14 @@ package DAOS;
 import Entity.textbook;
 import Entity.textbook;
 
+import java.io.*;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class textbookDAOImpl extends DAOBase implements textbookDAO{
-    private static final String INSERT_SQL = "INSERT INTO textbook(id_text,name, press,time,ranking,materials) VALUES(?,?,?,?,?,?)";
+    private static final String INSERT_SQL = "INSERT INTO textbook(mid, name, press,time,ranking,materials) VALUES(?,?,?,?,?,?)";
 
     @Override
     public void submittextbook(textbook textbook) {
@@ -16,12 +18,13 @@ public class textbookDAOImpl extends DAOBase implements textbookDAO{
         try{
             con = getConnection();
             PreparedStatement psmt = con.prepareStatement(INSERT_SQL);
-            psmt.setString(1, textbook.getId_text());
+            InputStream in = new FileInputStream(new File(textbook.getMaterials()));
+            psmt.setString(1, textbook.getMaster().getSid());
             psmt.setString(2,textbook.getName());
             psmt.setString(3,textbook.getPress());
             psmt.setString(4,textbook.getTime());
-            psmt.setInt(4,textbook.getRanking());
-            psmt.setBlob(5,textbook.getMaterials());
+            psmt.setInt(5,textbook.getRanking());
+            psmt.setBlob(6,in);
             psmt.executeUpdate();
             psmt.close();
         }catch (Exception e){
@@ -36,7 +39,7 @@ public class textbookDAOImpl extends DAOBase implements textbookDAO{
     }
 
 
-    private static final String SELECT_SQL = "SELECT id_text,name, press,time,ranking,materials FROM textbook WHERE sid = ?";
+    private static final String SELECT_SQL = "SELECT name, press,time,ranking,materials FROM textbook WHERE mid = ?";
 
     public textbook gettextbook(String master_sid){
         Connection con = null;
@@ -47,12 +50,20 @@ public class textbookDAOImpl extends DAOBase implements textbookDAO{
             psmt.setString(1,master_sid);
             ResultSet rs = psmt.executeQuery();
             while(rs.next()){
-                textbook.setId_text(rs.getString("id_textbook"));
                 textbook.setName(rs.getString("name"));
                 textbook.setPress(rs.getString("unit"));
                 textbook.setTime(rs.getString("time"));
                 textbook.setRanking(rs.getInt("ranking"));
-                textbook.setMaterials(rs.getBlob("materials"));
+                Blob photo = rs.getBlob("materials");
+                InputStream in = photo.getBinaryStream();
+                OutputStream out = new FileOutputStream(new File("src/textbook_materials.jpg"));
+                byte[] buf = new byte[1024];
+                int len =0;
+                while((len = in.read(buf))!= -1) {
+                    out.write(buf, 0, len);
+                }
+                in.close();
+                out.close();
             }
             psmt.close();
         }catch (Exception e){
@@ -66,6 +77,4 @@ public class textbookDAOImpl extends DAOBase implements textbookDAO{
         }
         return textbook;
     }
-
-
 }

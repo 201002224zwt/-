@@ -3,6 +3,7 @@ package User;
 import DAOS.DAOFactory;
 import Entity.*;
 
+import javax.net.ssl.SSLContext;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -322,14 +323,277 @@ public class master extends User implements Menu{
         }
     }
 
+    private static void AddAward(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("请输入学号:");
+        String mid = sc.next();
+        System.out.println("请输入奖励名称:");
+        String name = sc.next();
+        System.out.println("请输入奖励等级（1:国家级、2:省部级、3:市级、4:其他):");
+        int level = Integer.parseInt(sc.next());
+        System.out.println("请输入获奖等级（1:特等奖、2:一等奖、3:二等奖、4:三等奖）:");
+        int grade = Integer.parseInt(sc.next());
+        System.out.println("请输入排名:");
+        int ranking = Integer.parseInt(sc.next());
+        System.out.println("请输入获奖时间:");
+        String time = sc.next();
+        System.out.println("请输入佐证材料图片所在路径:");
+        String materials = sc.next();
+        Master master = new Master();
+        master.setSid(mid);
+        award award = new award();
+        award.setMaster(master);
+        award.setName(name);
+        award.setReward_grade(level);
+        award.setAward_grade(grade);
+        award.setRanking(ranking);
+        award.setTime(time);
+        award.setMaterials(materials);
+        DAOFactory.getawardDAO().submitaward(award);
+        System.out.println("奖励成果提交成功！");
+    }
+
+
+    private static void AddPaper(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("请输入学号:");
+        String mid = sc.next();
+        System.out.println("请输入论文名称:");
+        String name = sc.next();
+        System.out.println("请输入论文发表刊物名称:");
+        String periodical = sc.next();
+        System.out.println("请输入论文状态（1:录用未发表、2:已发表）:");
+        int state = Integer.parseInt(sc.next());
+        System.out.println("请输入索引类型:");
+        String index = sc.next();
+        System.out.println("请输入发表时间:");
+        String time = sc.next();
+        System.out.println("请输入论文归属库情况（1:学院高质量论文库或2:学院核心论文库）:");
+        int Attribution = Integer.parseInt(sc.next());
+        System.out.println("请输入佐证材料图片所在路径:");
+        String materials = sc.next();
+        Master master = new Master();
+        master.setSid(mid);
+        paper paper = new paper();
+        paper.setMaster(master);
+        paper.setName(name);
+        paper.setPeriodical(periodical);
+        paper.setState(state);
+        paper.setIndex_type(index);
+        paper.setTime(time);
+        paper.setAttribution(Attribution);
+        paper.setMaterials(materials);
+        DAOFactory.getpaperDAO().submitpaper(paper);
+        System.out.println("论文成果提交成功！");
+    }
+
+    private static void AddPatent(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("请输入学号:");
+        String mid = sc.next();
+        System.out.println("请输入专利名称:");
+        String name = sc.next();
+        System.out.println("请输入专利类型（1:发明专利、2:实用新型专利）:");
+        int type = Integer.parseInt(sc.next());
+        System.out.println("请输入专利号:");
+        String number = sc.next();
+        System.out.println("请输入专利发布时间:");
+        String time = sc.next();
+        System.out.println("请输入专利状态:");
+        String state = sc.next();
+        System.out.println("请输入贡献度排名（整数）:");
+        int ranking = Integer.parseInt(sc.next());
+        System.out.println("请输入佐证材料图片所在路径:");
+        String materials = sc.next();
+        Master master = new Master();
+        master.setSid(mid);
+        patent patent = new patent();
+        patent.setMaster(master);
+        patent.setName(name);
+        patent.setType(type);
+        patent.setNumber(number);
+        patent.setTime(time);
+        patent.setState(state);
+        patent.setRanking(ranking);
+        patent.setMaterials(materials);
+
+        DAOFactory.getpatentDAO().submitpatent(patent);
+        System.out.println("专利成果提交成功！");
+    }
+
+    private static void AddStandard(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("请输入学号:");
+        String mid = sc.next();
+        System.out.println("请输入标准名称:");
+        String name = sc.next();
+        System.out.println("请输入标准级别（1:国家标准、2:省部级地方标准、3:行业标准、4:团队标准）:");
+        int level = Integer.parseInt(sc.next());
+        System.out.println("请输入标准发布时间:");
+        String time = sc.next();
+        System.out.println("请输入佐证材料图片所在路径:");
+        String materials = sc.next();
+        Master master = new Master();
+        master.setSid(mid);
+        standard standard = new standard();
+        standard.setMaster(master);
+        standard.setName(name);
+        standard.setStandard_level(level);
+        standard.setTime(time);
+        standard.setMaterials(materials);
+        DAOFactory.getstandardDAO().submitstandard(standard);
+        System.out.println("标准成果提交成功！");
+    }
+
+    private static void AddReport(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("请输入学号:");
+        String mid = sc.next();
+        System.out.println("请输入报告名称:");
+        String name = sc.next();
+        System.out.println("请输入报告类型（1:规划类、2:设计类、3:服务类、4:其他）:");
+        int type = Integer.parseInt(sc.next());
+        System.out.println("请输入报告服务单位:");
+        String unit = sc.next();
+        System.out.println("请输入报告时间:");
+        String time = sc.next();
+        System.out.println("请输入贡献度排名（整数）:");
+        int ranking = Integer.parseInt(sc.next());
+        System.out.println("请输入佐证材料图片所在路径:");
+        String materials = sc.next();
+        Master master = new Master();
+        master.setSid(mid);
+        report report = new report();
+        report.setMaster(master);
+        report.setName(name);
+        report.setType(type);
+        report.setUnit(unit);
+        report.setTime(time);
+        report.setRanking(ranking);
+        report.setMaterials(materials);
+        DAOFactory.getreportDAO().submitreport(report);
+        System.out.println("标准成果提交成功！");
+    }
+
+    private static void Addplateform(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("请输入学号:");
+        String mid = sc.next();
+        System.out.println("请输入名称:");
+        String name = sc.next();
+        System.out.println("请输入平台服务单位:");
+        String unit = sc.next();
+        System.out.println("请输入平台上线时间:");
+        String time = sc.next();
+        System.out.println("请输入贡献度（整数）:");
+        int ranking = Integer.parseInt(sc.next());
+        System.out.println("请输入佐证材料图片所在路径:");
+        String materials = sc.next();
+        Master master = new Master();
+        master.setSid(mid);
+        hs_platform platform = new hs_platform();
+        platform.setMaster(master);
+        platform.setName(name);
+        platform.setUnit(unit);
+        platform.setTime(time);
+        platform.setRanking(ranking);
+        platform.setMaterials(materials);
+        DAOFactory.getplatformDAO().submiths_platform(platform);
+        System.out.println("软硬件平台成果提交成功！");
+    }
+
+
+    private static void Addtextbook(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("请输入学号:");
+        String mid = sc.next();
+        System.out.println("请输入教材名称:");
+        String name = sc.next();
+        System.out.println("请输入教材出版社:");
+        String press = sc.next();
+        System.out.println("请输入教材出版时间:");
+        String time = sc.next();
+        System.out.println("请输入贡献度（整数）:");
+        int ranking = Integer.parseInt(sc.next());
+        System.out.println("请输入佐证材料图片所在路径:");
+        String materials = sc.next();
+        Master master = new Master();
+        master.setSid(mid);
+        textbook textbook = new textbook();
+        textbook.setMaster(master);
+        textbook.setName(name);
+        textbook.setPress(press);
+        textbook.setTime(time);
+        textbook.setRanking(ranking);
+        textbook.setMaterials(materials);
+        DAOFactory.gettextbookDAO().submittextbook(textbook);
+        System.out.println("教材成果提交成功！");
+    }
+
+
+    //学生成果提交子系统
+    private static void Achievemodule(){
+        boolean if_continue = true;
+        while (if_continue) {
+            System.out.println("--------------学生成果提交子系统---------------");
+            System.out.println("1.提交论文成果");
+            System.out.println("2.提交奖励成果");
+            System.out.println("3.提交标准成果");
+            System.out.println("4.提交报告成果");
+            System.out.println("5.提交专利成果");
+            System.out.println("6.提交软硬件平台成果");
+            System.out.println("7.提交教材成果");
+            System.out.println("8.退出系统");
+            System.out.println("请选择：");
+            String choose;
+            boolean flag = true;
+            while(flag){
+                Scanner sc = new Scanner(System.in);
+                choose = sc.next();
+                switch (choose) {
+                    case "1":
+                        AddPaper();
+                        flag = false;
+                        break;
+
+                    case "2":
+                        AddAward();
+                        flag = false;
+                        break;
+
+                    case "3":
+                        Addtextbook();
+                        flag = false;
+                        break;
+                    case "8":
+                        flag = false;
+                        if_continue = false;
+                        break;
+                    default:
+                        System.out.println("输入错误，请重新输入:");
+                }
+            }
+
+        }
+    }
+
+
+
+
+
+
+
+
+
     public static void menu() {
         boolean if_continue = true;
         while (if_continue) {
             System.out.println("--------------研究生功能菜单---------------");
             System.out.println("1.助教课程子模块");
             System.out.println("2.学术活动认证模块");
+            System.out.println("3.成果提交模块");
             //
-            System.out.println("3.退出系统");
+            System.out.println("4.退出系统");
             System.out.println("请选择：");
             String choose;
             boolean flag = true;
@@ -349,6 +613,10 @@ public class master extends User implements Menu{
                         flag = false;
                         break;
                     case "3":
+                        Achievemodule();
+                        flag = false;
+                        break;
+                    case "4":
                         flag = false;
                         if_continue = false;
                         break;

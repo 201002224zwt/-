@@ -9,15 +9,24 @@ public class hs_platform {
         this.master = master;
     }
 
-    private String id_platform;
+
     private String name;
     private String unit;
     private String time;
     private int ranking;
-    private Blob materials;
+    private String materials;
 
-    public hs_platform(String id_platform, String name, String unit, String time, int ranking, Blob materials) {
-        this.id_platform = id_platform;
+    private String image_type;
+    private boolean tutor_view;
+    private boolean last_view;
+    public hs_platform(Master master, String image_type, boolean tutor_view, boolean last_view) {
+        this.master = master;
+        this.image_type = image_type;
+        this.tutor_view = tutor_view;
+        this.last_view = last_view;
+    }
+
+    public hs_platform( String name, String unit, String time, int ranking, String materials) {
         this.name = name;
         this.unit = unit;
         this.time = time;
@@ -29,6 +38,31 @@ public class hs_platform {
 
     }
 
+
+    public String getImage_type() {
+        return image_type;
+    }
+
+    public void setImage_type(String image_type) {
+        this.image_type = image_type;
+    }
+
+    public boolean isTutor_view() {
+        return tutor_view;
+    }
+
+    public void setTutor_view(boolean tutor_view) {
+        this.tutor_view = tutor_view;
+    }
+
+    public boolean isLast_view() {
+        return last_view;
+    }
+
+    public void setLast_view(boolean last_view) {
+        this.last_view = last_view;
+    }
+
     public Master getMaster() {
         return master;
     }
@@ -37,13 +71,6 @@ public class hs_platform {
         this.master = master;
     }
 
-    public String getId_platform() {
-        return id_platform;
-    }
-
-    public void setId_platform(String id_platform) {
-        this.id_platform = id_platform;
-    }
 
     public String getName() {
         return name;
@@ -77,11 +104,11 @@ public class hs_platform {
         this.ranking = ranking;
     }
 
-    public Blob getMaterials() {
+    public String getMaterials() {
         return materials;
     }
 
-    public void setMaterials(Blob materials) {
+    public void setMaterials(String materials) {
         this.materials = materials;
     }
 }

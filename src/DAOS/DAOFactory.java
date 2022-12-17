@@ -61,4 +61,18 @@ public class DAOFactory {
         return new AcademicActivityDAOimp();
     }
 
+    public static awardDAO getawardDAO(){return new awardDAOImpl();}
+
+    public static paperDAO getpaperDAO(){return new paperDAOImpl();}
+
+    public static patentDAO getpatentDAO(){return new patentDAOImpl();}
+
+    public static standardDAO getstandardDAO(){return new standardDAOImpl();}
+
+    public static reportDAO getreportDAO(){return new reportDAOImpl();}
+
+    public static hs_platformDAO getplatformDAO(){return new hs_platformDAOImpl();}
+
+    public static textbookDAO gettextbookDAO(){return new textbookDAOImpl();}
+
 }
