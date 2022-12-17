@@ -35,7 +35,7 @@ public class UserManage {
     }
 
 
-    public UserType login() throws IOException, ClassNotFoundException {
+    public void login() throws IOException, ClassNotFoundException {
         UserType usertype = null;
         String name;
         String passwd;
@@ -56,7 +56,6 @@ public class UserManage {
 //        }
         LinkedList<User> objs = DAOFactory.getUserDAO().getAllUsers();
 
-
         System.out.println(objs.size());
         Iterator<User> itr = objs.iterator();
 
@@ -68,8 +67,9 @@ public class UserManage {
                 if (u.passwd.trim().equals(passwd)){
                     System.out.println("登录成功");
                     System.out.println(u.type);
+                    System.out.println(u.loadname+','+u.getLoadname());
                     u.menu();
-                    usertype = u.type;
+
                 }
                 else
                 {
@@ -82,7 +82,7 @@ public class UserManage {
             System.out.println("用户名不存在");
         }
 
-        return usertype;
+       // return u;
 
 
     }

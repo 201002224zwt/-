@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class master extends User implements Menu{
 
-    private static Master m ;
+    private Master m ;
 
     public master(UserType type, String name, String passwd) {
         super(type,name,passwd);
@@ -27,7 +27,7 @@ public class master extends User implements Menu{
 //    }
 
 
-    private static void  showCourseList(LinkedList<Course> courses, LinkedList<Choose> myChooses){
+    private void  showCourseList(LinkedList<Course> courses, LinkedList<Choose> myChooses){
 
         Integer i=1;//行号
         Iterator<Course> itr = courses.iterator();
@@ -55,7 +55,7 @@ public class master extends User implements Menu{
     }
 
 
-    private static void tutorMenu(){
+    private void tutorMenu(){
         while(true)
         {
             System.out.println("---------助教课程子模块----------");
@@ -79,7 +79,7 @@ public class master extends User implements Menu{
 
     }
 
-    private static void deleteCourse(){
+    private void deleteCourse(){
         System.out.println("----------------------退课-----------------------");
 
         LinkedList<Choose> allChooses = DAOFactory.getChooseDAO().getAllChooses();
@@ -120,7 +120,7 @@ public class master extends User implements Menu{
 
     }
 
-    private static void chooseCourse(){
+    private void chooseCourse(){
 
         System.out.println("----------------------选课-----------------------");
         String subid= DAOFactory.getMentorDAO().getMentor(m.getMenid()).getSubid();
@@ -224,7 +224,7 @@ public class master extends User implements Menu{
             showCourseList(courses,myChooses);
         }
     }
-    private static Date scanDate(){
+    private Date scanDate(){
         Scanner sc = new Scanner(System.in);
         String date_string = sc.nextLine();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-DD");
@@ -238,7 +238,7 @@ public class master extends User implements Menu{
             return null;
         }
     }
-    private static void AcademicFirstStep() {
+    private void AcademicFirstStep() {
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入活动名称:");
         String name = sc.next();
@@ -265,7 +265,7 @@ public class master extends User implements Menu{
         //Date d = java.sql.Date.valueOf(sc.next(""));
     }
 
-    private static void AcademicSecondStep(){
+    private void AcademicSecondStep(){
         List<AcademicActivity> al = DAOFactory.getAcademicActivityDAO().getAcademicActivity(m.getSid());
         Iterator<AcademicActivity> iterator = al.iterator();
         System.out.println("编号\t学术活动名称\t学术活动时间");
@@ -316,7 +316,7 @@ public class master extends User implements Menu{
 
     }
 
-    private static void ShowAcademicProcess(){
+    private void ShowAcademicProcess(){
         List<AcademicActivity> al = DAOFactory.getAcademicActivityDAO().getAcademicActivity(m.getSid());
         Iterator<AcademicActivity> iterator = al.iterator();
         System.out.println("学术活动编号\t学术活动名称\t学术活动时间\t学术活动状态");
@@ -339,7 +339,7 @@ public class master extends User implements Menu{
     /**
      *学术活动认证模块
      **/
-    private static void Academicmodule(){
+    private void Academicmodule(){
         boolean if_continue = true;
         while (if_continue) {
             System.out.println("--------------学术活动认证子系统---------------");
@@ -380,7 +380,7 @@ public class master extends User implements Menu{
         }
     }
 
-    private static void AddAward(){
+    private void AddAward(){
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入学号:");
         String mid = sc.next();
@@ -411,7 +411,7 @@ public class master extends User implements Menu{
     }
 
 
-    private static void AddPaper(){
+    private void AddPaper(){
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入学号:");
         String mid = sc.next();
@@ -444,7 +444,7 @@ public class master extends User implements Menu{
         System.out.println("论文成果提交成功！");
     }
 
-    private static void AddPatent(){
+    private void AddPatent(){
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入学号:");
         String mid = sc.next();
@@ -478,7 +478,7 @@ public class master extends User implements Menu{
         System.out.println("专利成果提交成功！");
     }
 
-    private static void AddStandard(){
+    private void AddStandard(){
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入学号:");
         String mid = sc.next();
@@ -502,7 +502,7 @@ public class master extends User implements Menu{
         System.out.println("标准成果提交成功！");
     }
 
-    private static void AddReport(){
+    private void AddReport(){
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入学号:");
         String mid = sc.next();
@@ -532,7 +532,7 @@ public class master extends User implements Menu{
         System.out.println("标准成果提交成功！");
     }
 
-    private static void Addplateform(){
+    private void Addplateform(){
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入学号:");
         String mid = sc.next();
@@ -560,7 +560,7 @@ public class master extends User implements Menu{
     }
 
 
-    private static void Addtextbook(){
+    private void Addtextbook(){
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入学号:");
         String mid = sc.next();
@@ -589,7 +589,7 @@ public class master extends User implements Menu{
 
 
     //学生成果提交子系统
-    private static void Achievemodule(){
+    private void Achievemodule(){
         boolean if_continue = true;
         while (if_continue) {
             System.out.println("--------------学生成果提交子系统---------------");
@@ -652,7 +652,7 @@ public class master extends User implements Menu{
 
 
 
-    public static void menu() {
+    public void menu() {
         boolean if_continue = true;
         while (if_continue) {
             System.out.println("--------------研究生功能菜单---------------");

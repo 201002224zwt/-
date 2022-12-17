@@ -2,6 +2,8 @@ package DAOS;
 
 import Entity.Master;
 
+import java.util.List;
+
 /**
  * @author zhuwentao
  * @version 1.0
@@ -16,4 +18,6 @@ public interface MasterDAO {
     public void updateMaster(Master master);
     //查找
     public Master getMaster(String id);
+
+    List<Master> getMasterByMentor(String MentorId);
 }

@@ -11,37 +11,7 @@ import java.util.Scanner;
  * 进行相应的页面跳转
  **/
 
-public class UserMenu  extends User{
-
-
-    public UserMenu(UserType type, String loadname, String passwd) {
-        super(type, loadname, passwd);
-    }
-
-    public static void calling(UserType usertype){
-        if (usertype != null){
-            switch(usertype){
-                case Administrator:
-                    Administrator.menu();
-                    break;
-                case Master:
-                    master.menu();
-                    break;
-                case Teacher:
-                    teacher.menu();
-                    break;
-                case Mentor:
-                    mentor.menu();
-                    break;
-                case SubjectMaster:
-                    subjectmaster.menu();
-                    break;
-            }
-        }
-        else{
-            System.out.println("该用户不存在！");
-        }
-    }
+public class UserMenu{
 
 
     public static void menu() {
@@ -61,11 +31,9 @@ public class UserMenu  extends User{
                 case "1":
                     System.out.println("login");
                     try {
-                        UserType ut = um.login();
-                        calling(ut);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
+                        um.login();
+                        //calling(ut);
+                    } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
                     }
                     flag = false;

@@ -19,7 +19,7 @@ import java.util.Scanner;
 //研究生培养管理员
 public class Administrator extends User implements Menu{
 
-    public static void menu() {
+    public void menu() {
 
 
         while(true)
@@ -73,7 +73,7 @@ public class Administrator extends User implements Menu{
 
     }
 
-    public static void addMentor(){
+    public void addMentor(){
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建导师信息-------------");
         System.out.println("导师名称：");
@@ -95,7 +95,7 @@ public class Administrator extends User implements Menu{
         System.out.println("录入导师信息成功!");
 
     }
-    public static void addSubject(){
+    public void addSubject(){
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建学科信息-------------");
         System.out.println("学科名称：");
@@ -110,7 +110,7 @@ public class Administrator extends User implements Menu{
         System.out.println("录入学科信息成功!");
 
     }
-    public static void addSubjectMaster(){
+    public void addSubjectMaster(){
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建学科负责人信息-------------");
         System.out.println("姓名：");
@@ -130,7 +130,7 @@ public class Administrator extends User implements Menu{
         UserManage.saveInfo(s);
 
     }
-    public static void addTeacher(){
+    public void addTeacher(){
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建授课教师信息-------------");
         System.out.println("教师名称：");
@@ -150,7 +150,7 @@ public class Administrator extends User implements Menu{
 
     }
 
-    public static void addCourse(){
+    public void addCourse(){
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建课程基本信息-------------");
         System.out.println("课程号：");
@@ -181,7 +181,7 @@ public class Administrator extends User implements Menu{
 
     }
 
-    public static void addMaster() throws ParseException {
+    public void addMaster() throws ParseException {
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建研究生信息-------------");
         System.out.println("研究生学号：");

@@ -1,16 +1,15 @@
 
 package DAOS;
 
-import Entity.Course;
 import Entity.Master;
-import User.UserManage;
-import User.UserType;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author zhuwentao
  * @version 1.0
@@ -80,6 +79,31 @@ public class MasterDAOimp extends DAOBase implements MasterDAO {
         }
         return master;
 
+    }
+
+    @Override
+    public List<Master> getMasterByMentor(String MentorId){
+        Connection con = null;
+        List<Master> masterlist = new ArrayList<Master>();
+        try{
+            con = getConnection();
+            String sql="select * from Master where menid = ?";
+            PreparedStatement psmt = con.prepareStatement(sql);
+            psmt.setString(1,MentorId);
+            ResultSet rs = psmt.executeQuery();
+            while(rs.next()){
+                Master temp = new Master();
+                temp.setSid(rs.getString("mid"));
+                temp.setName(rs.getString("name"));
+                temp.setMenid(rs.getString("menid"));
+                temp.setAddmissiontime(rs.getDate("admissiontime"));
+                temp.setStype(rs.getInt("type"));
+                masterlist.add(temp);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return masterlist;
     }
 
 

@@ -14,7 +14,7 @@ import java.sql.SQLException;
 /**
  * @author zhuwentao
  * @version 1.0
- * @data 2022/12/9 19:35
+ * @date 2022/12/9 19:35
  */
 public class TeacherDAOimp extends DAOBase implements TeacherDAO{
     @Override
@@ -65,6 +65,7 @@ public class TeacherDAOimp extends DAOBase implements TeacherDAO{
             e.printStackTrace();
         }finally {
             try{
+                assert con != null;
                 con.close();
             }catch (Exception e){
                 e.printStackTrace();

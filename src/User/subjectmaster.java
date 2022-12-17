@@ -10,13 +10,13 @@ import java.util.Scanner;
 
 public class subjectmaster extends User implements Menu{
 
-    private static SubjectMaster s;
+    private SubjectMaster s;
     public subjectmaster(UserType type, String loadname, String passwd) {
         super(type, loadname, passwd);
         s = DAOFactory.getSubjectMasterDAO().getSubjectMaster(loadname);
     }
 
-    public static void menu() {
+    public void menu() {
 
 
 
@@ -44,7 +44,7 @@ public class subjectmaster extends User implements Menu{
 
 
 
-    private static void  showCourseList(LinkedList<Course> courses){
+    private void  showCourseList(LinkedList<Course> courses){
 
         Integer i=1;
         Iterator<Course> itr = courses.iterator();
@@ -69,7 +69,7 @@ public class subjectmaster extends User implements Menu{
         }
     }
 
-    private static void makeCourseList(){
+    private void makeCourseList(){
         //查看自己学科的所有课程列表
         LinkedList<Course> courses= DAOFactory.getCourseDAO().getAllCourses(s.getSmid());
         Iterator<Course> itr = courses.iterator();
@@ -111,7 +111,7 @@ public class subjectmaster extends User implements Menu{
             System.out.println("3.修改记录");
             System.out.println("4.返回上级菜单");
             int choose=0;
-            System.out.println("");
+            //System.out.println("");
             Scanner sc=new Scanner(System.in);
             choose=sc.nextInt();
 
