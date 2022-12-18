@@ -1,13 +1,12 @@
 package DAOS;
 
+import Entity.paper;
 import Entity.report;
-import Entity.report;
+import Entity.standard;
 
 import java.io.*;
-import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class reportDAOImpl extends DAOBase implements reportDAO{
     private static final String INSERT_SQL = "INSERT INTO report(mid, name, type, unit, time, ranking, materials) VALUES(?,?,?,?,?,?,?)";
@@ -41,23 +40,30 @@ public class reportDAOImpl extends DAOBase implements reportDAO{
 
     private static final String SELECT_SQL = "SELECT  name, type, unit, time, ranking, materials FROM report WHERE mid = ?";
 
-    public report getreport(String master_sid){
+    public ArrayList<report> getreport(String mid){
         Connection con = null;
-        report report = new report();
         try{
             con = getConnection();
             PreparedStatement psmt = con.prepareStatement(SELECT_SQL);
-            psmt.setString(1,master_sid);
+            psmt.setString(1,mid);
             ResultSet rs = psmt.executeQuery();
+            ResultSetMetaData rsm = rs.getMetaData();
+            //通过ResultSetMetaData获取结果集中的列数
+            int count = rsm.getColumnCount();
+            ArrayList<report> list = new ArrayList<report>();
+            int num = 1;
             while(rs.next()){
+                report report = new report();
+                String path = "src/report_materials" + num +  "--" + mid +".jpg" ;
                 report.setName(rs.getString("name"));
                 report.setType(rs.getInt("type"));
                 report.setUnit(rs.getString("unit"));
                 report.setTime(rs.getString("time"));
                 report.setRanking(rs.getInt("ranking"));
+                report.setMaterials(path);
                 Blob photo = rs.getBlob("materials");
                 InputStream in = photo.getBinaryStream();
-                OutputStream out = new FileOutputStream(new File("src/report_materials.jpg"));
+                OutputStream out = new FileOutputStream(new File("src/report_materials" + num +  "--" + mid +".jpg"));
                 byte[] buf = new byte[1024];
                 int len =0;
                 while((len = in.read(buf))!= -1) {
@@ -65,7 +71,33 @@ public class reportDAOImpl extends DAOBase implements reportDAO{
                 }
                 in.close();
                 out.close();
+                list.add(report);
+                num++;
             }
+            psmt.close();
+            return list;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                con.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    private static final String TUTOR_INSERT_SQL = "UPDATE report set tutor_view = ? where name = ?";
+
+    public void firstsubmit(report report) {
+        Connection con = null;
+        try{
+            con = getConnection();
+            PreparedStatement psmt = con.prepareStatement(TUTOR_INSERT_SQL);
+            psmt.setString(1,report.getTutor_view());
+            psmt.setString(2,report.getName());
+            psmt.executeUpdate();
             psmt.close();
         }catch (Exception e){
             e.printStackTrace();
@@ -76,7 +108,6 @@ public class reportDAOImpl extends DAOBase implements reportDAO{
                 e.printStackTrace();
             }
         }
-        return report;
     }
 
 }

@@ -37,13 +37,13 @@ public class awardDAOImpl extends DAOBase implements awardDAO{
     }
 
 
-    private static final String FIRST_SELECT_SQL = "SELECT name,level,grade,ranking,time,materials FROM award WHERE mid = ?";
+    private static final String SELECT_SQL = "SELECT name,level,grade,ranking,time,materials FROM award WHERE mid = ?";
 
     public ArrayList<award> getAward(String mid){
         Connection con = null;
         try {
             con = getConnection();
-            PreparedStatement psmt = con.prepareStatement(FIRST_SELECT_SQL);
+            PreparedStatement psmt = con.prepareStatement(SELECT_SQL);
             psmt.setString(1, mid);
             ResultSet rs = psmt.executeQuery();
             ResultSetMetaData rsm = rs.getMetaData();
@@ -53,7 +53,7 @@ public class awardDAOImpl extends DAOBase implements awardDAO{
             int num = 1;
             while (rs.next()) {
                 award award = new award();
-                String path = "src/award_materials.jpg" + num;
+                String path ="src/award_materials" + num + "--" + mid + ".jpg" ;
                 award.setName(rs.getString("name"));
                 award.setAward_grade(rs.getInt("grade"));
                 award.setRanking(rs.getInt("ranking"));
@@ -62,7 +62,7 @@ public class awardDAOImpl extends DAOBase implements awardDAO{
                 award.setMaterials(path);
                 Blob photo = rs.getBlob("materials");
                 InputStream in = photo.getBinaryStream();
-                OutputStream out = new FileOutputStream(new File("src/award_materials"+ num + ".jpg" ));
+                OutputStream out = new FileOutputStream(new File("src/award_materials" + num + "--" + mid + ".jpg"  ));
                 byte[] buf = new byte[1024];
                 int len = 0;
                 while ((len = in.read(buf)) != -1) {

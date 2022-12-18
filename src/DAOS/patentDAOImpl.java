@@ -2,12 +2,11 @@ package DAOS;
 
 import Entity.patent;
 import Entity.patent;
+import Entity.report;
 
 import java.io.*;
-import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class patentDAOImpl extends DAOBase implements patentDAO {
     private static final String INSERT_SQL = "INSERT INTO patent(mid , name,  type,  time, state, ranking, materials, number) VALUES(?,?,?,?,?,?,?,?)";
@@ -43,25 +42,32 @@ public class patentDAOImpl extends DAOBase implements patentDAO {
     }
 
 
-    private static final String SELECT_SQL = "SELECT name,  type,  number,  time,  state, ranking, materials FROM patent WHERE sid = ?";
+    private static final String SELECT_SQL = "SELECT name,  type,  number,  time,  state, ranking, materials FROM patent WHERE mid = ?";
 
-    public patent getpatent(String master_sid){
+    public ArrayList<patent> getpatent(String mid){
         Connection con = null;
-        patent patent = new patent();
         try{
             con = getConnection();
             PreparedStatement psmt = con.prepareStatement(SELECT_SQL);
-            psmt.setString(1,master_sid);
+            psmt.setString(1,mid);
             ResultSet rs = psmt.executeQuery();
+            ResultSetMetaData rsm = rs.getMetaData();
+            //通过ResultSetMetaData获取结果集中的列数
+            int count = rsm.getColumnCount();
+            ArrayList<patent> list = new ArrayList<patent>();
+            int num = 1;
             while(rs.next()){
+                patent patent = new patent();
+                String path = "src/patent_materials" + num +  "--" + mid +".jpg" ;
                 patent.setName(rs.getString("name"));
                 patent.setType(rs.getInt("type"));
                 patent.setNumber(rs.getString("number"));
                 patent.setTime(rs.getString("time"));
                 patent.setRanking(rs.getInt("ranking"));
+                patent.setMaterials(path);
                 Blob photo = rs.getBlob("materials");
                 InputStream in = photo.getBinaryStream();
-                OutputStream out = new FileOutputStream(new File("src/patent_materials.jpg"));
+                OutputStream out = new FileOutputStream(new File("src/patent_materials" + num +  "--" + mid +".jpg"));
                 byte[] buf = new byte[1024];
                 int len =0;
                 while((len = in.read(buf))!= -1) {
@@ -69,7 +75,34 @@ public class patentDAOImpl extends DAOBase implements patentDAO {
                 }
                 in.close();
                 out.close();
+                list.add(patent);
+                num++;
             }
+            psmt.close();
+            return list;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                con.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+
+    private static final String TUTOR_INSERT_SQL = "UPDATE patent set tutor_view = ? where name = ?";
+
+    public void firstsubmit(patent patent) {
+        Connection con = null;
+        try{
+            con = getConnection();
+            PreparedStatement psmt = con.prepareStatement(TUTOR_INSERT_SQL);
+            psmt.setString(1,patent.getTutor_view());
+            psmt.setString(2,patent.getName());
+            psmt.executeUpdate();
             psmt.close();
         }catch (Exception e){
             e.printStackTrace();
@@ -80,10 +113,5 @@ public class patentDAOImpl extends DAOBase implements patentDAO {
                 e.printStackTrace();
             }
         }
-        return patent;
     }
-
-
-
-
 }

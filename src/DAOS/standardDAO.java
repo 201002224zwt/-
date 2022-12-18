@@ -2,8 +2,12 @@ package DAOS;
 
 import Entity.standard;
 
+import java.util.ArrayList;
+
 public interface standardDAO {
     void submitstandard(standard standard);
 
-    standard getstandard(String master_sid);
+    ArrayList<standard> getstandard(String master_sid);
+
+    public void firstsubmit(standard standard);
 }

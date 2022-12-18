@@ -1,9 +1,7 @@
 package User;
 
 import DAOS.DAOFactory;
-import Entity.Master;
-import Entity.Mentor;
-import Entity.award;
+import Entity.*;
 
 import java.util.*;
 
@@ -66,19 +64,35 @@ public class mentor extends User implements Menu{
                 choose = sc.next();
                 switch (choose) {
                     case "1":
-                        ViewAward();
+                        ViewPaper();
                         flag = false;
                         break;
 
                     case "2":
-                        Academicmodule();
+                        ViewAward();
                         flag = false;
                         break;
                     case "3":
-                        Achievemodule();
+                        ViewStandard();
                         flag = false;
                         break;
                     case "4":
+                        ViewReport();
+                        flag = false;
+                        break;
+                    case "5":
+                        ViewPatent();
+                        flag = false;
+                        break;
+                    case "6":
+                        ViewPlatform();
+                        flag = false;
+                        break;
+                    case "7":
+                        ViewTextbook();
+                        flag = false;
+                        break;
+                    case "8":
                         flag = false;
                         if_continue = false;
                         break;
@@ -91,6 +105,7 @@ public class mentor extends User implements Menu{
 
 
     }
+
 
     public void menu() {
         boolean if_continue = true;
@@ -167,8 +182,237 @@ public class mentor extends User implements Menu{
             award.setTutor_view(res);
             DAOFactory.getawardDAO().firstsubmit(award);
         }
-
-        System.out.println();
+        System.out.println("审核完成，辛苦老师！");
     }
+
+    private static void ViewPaper() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("------------初审论文成果-------------");
+        System.out.println("请输入要审核论文的学生学号");
+        String mid = sc.next();
+        Master master = new Master();
+        master.setSid(mid);
+        ArrayList<paper> paperlist;
+
+        paperlist = DAOFactory.getpaperDAO().getPaper(master.getSid());
+
+        System.out.println("学生" + mid + "所有论文如下");
+
+
+        System.out.printf("%-10s  %-10s  %-10s  %-10s  %-10s %-10s %-10s \n","name","periodical","state","time","index_type","Attribution","materials");
+
+        for (int i = 0; i < paperlist.size(); i++){
+            paper paper= new paper();
+            paper = paperlist.get(i);
+            System.out.printf("%-10s  %-10s  %-10d  %-10s  %-10s  %-10d %-10s \n", paper.getName(),paper.getPeriodical(),paper.getState(),paper.getTime()
+            ,paper.getIndex_type(),paper.getAttribution(),paper.getMaterials());
+        }
+
+        System.out.println("请对该学生的奖励成果进行初审 :");
+
+        for (int i = 0; i < paperlist.size(); i++){
+            paper paper = new paper();
+            paper = paperlist.get(i);
+            int num = i+1;
+            System.out.println("请输入第" + num +"个论文初审结果:(通过或不通过)");
+            String res = sc.next();
+            paper.setTutor_view(res);
+            DAOFactory.getpaperDAO().firstsubmit(paper);
+        }
+        System.out.println("审核完成，辛苦老师！");
+    }
+
+    private static void ViewStandard() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("------------初审标准成果-------------");
+        System.out.println("请输入要审核标准的学生学号");
+        String mid = sc.next();
+        Master master = new Master();
+        master.setSid(mid);
+        ArrayList<standard> standardlist;
+
+
+        standardlist = DAOFactory.getstandardDAO().getstandard(master.getSid());
+
+        System.out.println("学生" + mid + "所有标准如下");
+
+
+        System.out.printf("%-10s  %-10s  %-10s  %-10s \n","name","level","time","materials");
+
+        for (int i = 0; i < standardlist.size(); i++){
+            standard standard= new standard();
+            standard = standardlist.get(i);
+            System.out.printf("%-10s  %-10d  %-10s  %-10s \n", standard.getName(),standard.getStandard_level(),
+                    standard.getTime(),standard.getMaterials());
+        }
+
+        System.out.println("请对该学生的标准成果进行初审 :");
+
+        for (int i = 0; i < standardlist.size(); i++){
+            standard standard = new standard();
+            standard = standardlist.get(i);
+            int num = i+1;
+            System.out.println("请输入第" + num +"个标准初审结果:(通过或不通过)");
+            String res = sc.next();
+            standard.setTutor_view(res);
+            DAOFactory.getstandardDAO().firstsubmit(standard);
+        }
+
+        System.out.println("审核完成，辛苦老师！");
+
+    }
+
+    private static void ViewReport() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("------------初审报告成果-------------");
+        System.out.println("请输入要审核报告的学生学号");
+        String mid = sc.next();
+        Master master = new Master();
+        master.setSid(mid);
+        ArrayList<report> reportlist;
+
+        reportlist = DAOFactory.getreportDAO().getreport(master.getSid());
+
+        System.out.println("学生" + mid + "所有报告如下");
+
+        System.out.printf("%-10s  %-10s  %-10s  %-10s  %-10s %-10s \n","name","type","unit","time","ranking","materials");
+
+        for (int i = 0; i < reportlist.size(); i++){
+            report report= new report();
+            report = reportlist.get(i);
+            System.out.printf("%-10s  %-10s %-10s  %-10s  %-10d %-10s \n", report.getName(),report.getType(),report.getUnit(),
+                    report.getTime(),report.getRanking(),report.getMaterials());
+        }
+
+        System.out.println("请对该学生的报告成果进行初审 :");
+
+        for (int i = 0; i < reportlist.size(); i++){
+            report report = new report();
+            report = reportlist.get(i);
+            int num = i+1;
+            System.out.println("请输入第" + num +"个报告初审结果:(通过或不通过)");
+            String res = sc.next();
+            report.setTutor_view(res);
+            DAOFactory.getreportDAO().firstsubmit(report);
+        }
+        System.out.println("审核完成，辛苦老师！");
+    }
+
+
+    private static void ViewPatent() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("------------初审专利成果-------------");
+        System.out.println("请输入要审核专利的学生学号");
+        String mid = sc.next();
+        Master master = new Master();
+        master.setSid(mid);
+        ArrayList<patent> patentlist;
+
+        patentlist = DAOFactory.getpatentDAO().getpatent(master.getSid());
+
+        System.out.println("学生" + mid + "所有专利如下");
+
+
+        System.out.printf("%-10s  %-10s  %-10s %-10s %-10s  %-10s %-10s \n","name","type","number","time","state","ranking","materials");
+
+        for (int i = 0; i < patentlist.size(); i++){
+            patent patent= new patent();
+            patent = patentlist.get(i);
+            System.out.printf("%-10s  %-10d %-10s  %-10s  %-10s  %-10d %-10s \n", patent.getName(),patent.getType(),patent.getNumber(),
+                    patent.getTime(),patent.getState(),patent.getRanking(),patent.getMaterials());
+        }
+
+        System.out.println("请对该学生的专利成果进行初审 :");
+
+        for (int i = 0; i < patentlist.size(); i++){
+            patent patent = new patent();
+            patent = patentlist.get(i);
+            int num = i+1;
+            System.out.println("请输入第" + num +"个专利初审结果:(通过或不通过)");
+            String res = sc.next();
+            patent.setTutor_view(res);
+            DAOFactory.getpatentDAO().firstsubmit(patent);
+        }
+        System.out.println("审核完成，辛苦老师！");
+    }
+
+
+    private static void ViewPlatform() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("------------初审专利成果-------------");
+        System.out.println("请输入要审核软硬件平台的学生学号");
+        String mid = sc.next();
+        Master master = new Master();
+        master.setSid(mid);
+        ArrayList<hs_platform> platformlist;
+
+        platformlist = DAOFactory.getplatformDAO().geths_platform(master.getSid());
+
+        System.out.println("学生" + mid + "所有软硬件平台如下");
+
+
+        System.out.printf("%-10s  %-10s  %-10s %-10s %-10s  \n","name","unit","time","ranking","materials");
+
+        for (int i = 0; i < platformlist.size(); i++){
+            hs_platform platform= new hs_platform();
+            platform = platformlist.get(i);
+            System.out.printf("%-10s %-10s  %-10s  %-10d %-10s \n", platform.getName(),platform.getUnit(),
+                    platform.getTime(),platform.getRanking(),platform.getMaterials());
+        }
+
+        System.out.println("请对该学生的软硬件平台成果进行初审 :");
+
+        for (int i = 0; i < platformlist.size(); i++){
+            hs_platform platform = new hs_platform();
+            platform = platformlist.get(i);
+            int num = i+1;
+            System.out.println("请输入第" + num +"个软硬件平台初审结果:(通过或不通过)");
+            String res = sc.next();
+            platform.setTutor_view(res);
+            DAOFactory.getplatformDAO().firstsubmit(platform);
+        }
+        System.out.println("审核完成，辛苦老师！");
+    }
+
+
+    private static void ViewTextbook() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("------------初审教材成果-------------");
+        System.out.println("请输入要审核教材的学生学号");
+        String mid = sc.next();
+        Master master = new Master();
+        master.setSid(mid);
+        ArrayList<textbook> textbooklist;
+
+        textbooklist = DAOFactory.gettextbookDAO().gettextbook(master.getSid());
+
+        System.out.println("学生" + mid + "所有教材如下");
+
+
+        System.out.printf("%-10s  %-10s  %-10s %-10s %-10s  \n","name","press","time","ranking","materials");
+
+        for (int i = 0; i < textbooklist.size(); i++){
+            textbook textbook= new textbook();
+            textbook = textbooklist.get(i);
+            System.out.printf("%-10s  %-10d %-10s  %-10d %-10s \n", textbook.getName(),textbook.getPress(),
+                    textbook.getTime(),textbook.getRanking(),textbook.getMaterials());
+        }
+
+        System.out.println("请对该学生的教材成果进行初审 :");
+
+        for (int i = 0; i < textbooklist.size(); i++){
+            textbook textbook = new textbook();
+            textbook = textbooklist.get(i);
+            int num = i+1;
+            System.out.println("请输入第" + num +"个教材初审结果:(通过或不通过)");
+            String res = sc.next();
+            textbook.setTutor_view(res);
+            DAOFactory.gettextbookDAO().firstsubmit(textbook);
+        }
+        System.out.println("审核完成，辛苦老师！");
+
+
+    }
+
 
 }

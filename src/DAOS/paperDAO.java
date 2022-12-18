@@ -2,8 +2,12 @@ package DAOS;
 
 import Entity.paper;
 
+import java.util.ArrayList;
+
 public interface paperDAO {
     void submitpaper(paper paper);
 
-    paper getPaper(String master_sid);
+    ArrayList<paper> getPaper(String master_sid);
+
+    public void firstsubmit(paper paper);
 }

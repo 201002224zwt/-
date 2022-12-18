@@ -1,12 +1,11 @@
 package DAOS;
 
+import Entity.award;
 import Entity.paper;
 
 import java.io.*;
-import java.sql.Blob;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
+import java.util.ArrayList;
 
 
 public class paperDAOImpl extends DAOBase implements paperDAO{
@@ -44,53 +43,64 @@ public class paperDAOImpl extends DAOBase implements paperDAO{
 
     private static final String SELECT_SQL = "SELECT name,periodical,state,time,index_type,Attribution,materials FROM thesis WHERE mid = ?";
 
-    public paper getPaper(String master_sid){
+    public ArrayList<paper> getPaper(String mid) {
         Connection con = null;
-        paper paper = new paper();
-        try{
+        try {
             con = getConnection();
             PreparedStatement psmt = con.prepareStatement(SELECT_SQL);
-            psmt.setString(1,master_sid);
+            psmt.setString(1, mid);
             ResultSet rs = psmt.executeQuery();
-            while(rs.next()){
+            ResultSetMetaData rsm = rs.getMetaData();
+            //通过ResultSetMetaData获取结果集中的列数
+            int count = rsm.getColumnCount();
+            ArrayList<paper> list = new ArrayList<paper>();
+            int num = 1;
+            while (rs.next()) {
+                paper paper = new paper();
+                String path = "src/paper_materials" + num +  "--" + mid +".jpg" ;
                 paper.setName(rs.getString("name"));
                 paper.setPeriodical(rs.getString("periodical"));
                 paper.setState(rs.getInt("state"));
                 paper.setTime(rs.getString("time"));
                 paper.setIndex_type(rs.getString("index_type"));
                 paper.setAttribution(rs.getInt("state"));
+                paper.setMaterials(path);
                 Blob photo = rs.getBlob("materials");
                 InputStream in = photo.getBinaryStream();
-                OutputStream out = new FileOutputStream(new File("src/paper_materials.jpg"));
+                OutputStream out = new FileOutputStream(new File( "src/paper_materials" + num +  "--" + mid +".jpg" ));
                 byte[] buf = new byte[1024];
-                int len =0;
-                while((len = in.read(buf))!= -1) {
+                int len = 0;
+                while ((len = in.read(buf)) != -1) {
                     out.write(buf, 0, len);
                 }
                 in.close();
                 out.close();
+                list.add(paper);
+                num++;
             }
             psmt.close();
-        }catch (Exception e){
+            return list;
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            try{
+        } finally {
+            try {
                 con.close();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return paper;
+        return null;
     }
 
-    private static final String TUTOR_INSERT_SQL = "INSERT INTO thesis(tutor_view) VALUES(?)";
+    private static final String TUTOR_INSERT_SQL = "UPDATE thesis set tutor_view = ? where name = ?";
 
     public void firstsubmit(paper paper) {
         Connection con = null;
         try{
             con = getConnection();
             PreparedStatement psmt = con.prepareStatement(TUTOR_INSERT_SQL);
-            psmt.setBoolean(9,paper.isTutor_view());
+            psmt.setString(1,paper.getTutor_view());
+            psmt.setString(2,paper.getName());
             psmt.executeUpdate();
             psmt.close();
         }catch (Exception e){
@@ -111,7 +121,7 @@ public class paperDAOImpl extends DAOBase implements paperDAO{
         try{
             con = getConnection();
             PreparedStatement psmt = con.prepareStatement(LAST_INSERT_SQL);
-            psmt.setBoolean(10,paper.isLast_view());
+            psmt.setString(1,paper.getLast_view());
             psmt.executeUpdate();
             psmt.close();
         }catch (Exception e){

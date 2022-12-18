@@ -2,7 +2,11 @@ package DAOS;
 
 import Entity.report;
 
+import java.util.ArrayList;
+
 public interface reportDAO {
     void submitreport(report report);
-    report getreport(String master_sid);
+    ArrayList<report> getreport(String master_sid);
+
+    public void firstsubmit(report report);
 }

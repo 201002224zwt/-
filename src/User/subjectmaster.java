@@ -38,8 +38,6 @@ public class subjectmaster extends User implements Menu{
 
         }
 
-
-
     }
 
 
@@ -100,8 +98,6 @@ public class subjectmaster extends User implements Menu{
         {
             showCourseList(needTutorCourses);
         }
-
-
         while (true){
             System.out.println("待加入助教课程列表的课程信息如下：");
             showCourseList(noChooseCourse);
@@ -137,8 +133,5 @@ public class subjectmaster extends User implements Menu{
                     return;
             }
         }
-
-
     }
-
 }
