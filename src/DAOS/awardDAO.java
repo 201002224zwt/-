@@ -1,10 +1,13 @@
 package DAOS;
 
 import Entity.award;
-import Entity.paper;
+
+import java.util.ArrayList;
 
 public interface awardDAO {
     void submitaward(award award);
 
-    award getAward(String master_sid);
+    ArrayList<award> getAward(String mid);
+
+    public void firstsubmit( award award);
 }

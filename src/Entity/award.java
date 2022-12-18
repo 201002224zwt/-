@@ -14,14 +14,14 @@ public class award {
     private String time;
     private String materials;
     private String image_type;
-    private boolean tutor_view;
-    private boolean last_view;
+    private String tutor_view;
+    private String last_view;
 
     public award(){
 
     }
 
-    public award(Master master, String image_type, boolean tutor_view, boolean last_view) {
+    public award(Master master, String image_type, String tutor_view, String last_view) {
         this.master = master;
         this.image_type = image_type;
         this.tutor_view = tutor_view;
@@ -45,19 +45,19 @@ public class award {
         this.image_type = image_type;
     }
 
-    public boolean isTutor_view() {
+    public String getTutor_view() {
         return tutor_view;
     }
 
-    public void setTutor_view(boolean tutor_view) {
+    public void setTutor_view(String tutor_view) {
         this.tutor_view = tutor_view;
     }
 
-    public boolean isLast_view() {
+    public String getLast_view() {
         return last_view;
     }
 
-    public void setLast_view(boolean last_view) {
+    public void setLast_view(String last_view) {
         this.last_view = last_view;
     }
 
