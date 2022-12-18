@@ -21,6 +21,7 @@ public class master extends User implements Menu{
         m = DAOFactory.getMasterDAO().getMaster(name);
     }
 
+
     //
 //    public master(UserType type, String loadname, String passwd) {
 //        super(type, loadname, passwd);
@@ -659,7 +660,6 @@ public class master extends User implements Menu{
             System.out.println("1.助教课程子模块");
             System.out.println("2.学术活动认证模块");
             System.out.println("3.成果提交模块");
-            //
             System.out.println("4.退出系统");
             System.out.println("请选择：");
             String choose;
@@ -694,8 +694,6 @@ public class master extends User implements Menu{
 
         }
     }
-
-
 
 
 }
