@@ -12,9 +12,8 @@ public class DAOBase implements DAO{
     @Override
     public Connection getConnection() {
         Connection conn = null;
-        //?????? ??????Connection????
         try {
-            String url = "jdbc:sqlserver://82.157.243.176:1433; DatabaseName=MasterGraduate;user=cqk;password=123456;TrustServerCertificate=true;";
+            String url = "jdbc:sqlserver://101.42.0.126:1433; DatabaseName=MasterGraduate;user=cqk;password=123456;TrustServerCertificate=true;";
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             try {
                 conn = DriverManager.getConnection(url);

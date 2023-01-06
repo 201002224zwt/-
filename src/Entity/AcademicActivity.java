@@ -144,4 +144,12 @@ public class AcademicActivity {
                 ", master_view=" + master_view +
                 '}';
     }
+
+    public String tutorToString(){
+        return  "activity_id='" + activity_id + '\'' +
+                ", activity_name='" + activity_name + '\'' +
+                ", date=" + date +
+                ", report_name='" + report_name ;
+    }
+
 }

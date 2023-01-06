@@ -77,11 +77,11 @@ public class Master implements Menu {
     }
 
 
-    public void AcademicActivityMenu(){
-        System.out.println("---------研究生学术活动成果认定---------");
-        System.out.println("1. 提交活动初审材料");
-        System.out.println("2. ");
-    }
+//    public void AcademicActivityMenu(){
+//        System.out.println("---------研究生学术活动成果认定---------");
+//        System.out.println("1. 提交活动初审材料");
+//        System.out.println("2. ");
+//    }
 
     @Override
     public String toString() {

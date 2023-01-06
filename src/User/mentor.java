@@ -1,5 +1,6 @@
 package User;
 
+import DAOS.AcademicActivityDAOimp;
 import DAOS.DAOFactory;
 import Entity.*;
 
@@ -8,17 +9,20 @@ import java.util.*;
 import java.util.Scanner;
 
 public class mentor extends User implements Menu{
+    final int MAX = 32767;
     private Mentor m;
+    private List<Master> masterlist;
     public mentor(UserType type, String loadname, String passwd) {
         super(type, loadname, passwd);
         System.out.println(loadname);
         m = DAOFactory.getMentorDAO().getMentor(loadname);
+        masterlist = DAOFactory.getMasterDAO().getMasterByMentor(m.getMenid());
     }
 
 
     private void ShowStudent(){
         System.out.println(m.getMenid());
-        List<Master> masterlist = DAOFactory.getMasterDAO().getMasterByMentor(m.getMenid());
+        //List<Master> masterlist = DAOFactory.getMasterDAO().getMasterByMentor(m.getMenid());
         if(masterlist.size() == 0){
             System.out.println("未查找到研究生！");
         }
@@ -40,7 +44,50 @@ public class mentor extends User implements Menu{
 
     }
 
-    private static void Academicmodule(){
+    private void Academicmodule(){
+        System.out.println("--------学生学术成果初审认定--------");
+        //将该导师下面所有研究生的所有成果进行展示。
+        Iterator<Master> iterator = masterlist.iterator();
+        int count = 0;
+        String [] logActivityId = new String[MAX];
+        while(iterator.hasNext()){
+            Master temp = iterator.next();
+            System.out.println(temp.toString());
+            List<AcademicActivity> a = DAOFactory.getAcademicActivityDAO().getAcademicActivity(temp.getSid());
+            Iterator<AcademicActivity> iter = a.listIterator();
+            while(iter.hasNext()){
+                AcademicActivity atemp = iter.next();
+                if(!atemp.isTutor_view()){
+                    //System.out.println(atemp.isMaster_view());
+                    System.out.print("\t编号："+(count+1));
+                    System.out.println('\t'+atemp.tutorToString());
+                    logActivityId[count] = atemp.getActivity_id();
+                    count++;
+                    //System.out.println(count);
+                }
+            }
+        }
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("请输入要审核的学术活动编号：");
+        int choice = sc.nextInt();
+        if(choice>0 && choice <= count){
+            System.out.println("请选择：\nY.通过 \nF.不通过 \n其它任意键退出审核");
+            String c = sc.next();
+            if(c.trim().equals("Y")){
+                DAOFactory.getAcademicActivityDAO().updateTutorView(true,logActivityId[choice-1]);
+                System.out.println("记录（ActivityId:"+logActivityId[choice-1]+")已通过初审！");
+            }
+            else if(c.trim().equals("F")){
+                DAOFactory.getAcademicActivityDAO().deleteAcademicActivity(logActivityId[choice-1]);
+                System.out.println("记录（ActivityId:"+logActivityId[choice-1]+")已判定为不合格！");
+            }
+        }else{
+            System.out.println("您输入的编号有误！");
+        }
+
+
+
 
     }
 
