@@ -74,11 +74,11 @@ public class mentor extends User implements Menu{
         if(choice>0 && choice <= count){
             System.out.println("请选择：\nY.通过 \nF.不通过 \n其它任意键退出审核");
             String c = sc.next();
-            if(c.trim().equals("Y")){
+            if(c.trim().equals("Y") || c.trim().equals("y")){
                 DAOFactory.getAcademicActivityDAO().updateTutorView(true,logActivityId[choice-1]);
                 System.out.println("记录（ActivityId:"+logActivityId[choice-1]+")已通过初审！");
             }
-            else if(c.trim().equals("F")){
+            else if(c.trim().equals("F") || c.trim().equals("f")){
                 DAOFactory.getAcademicActivityDAO().deleteAcademicActivity(logActivityId[choice-1]);
                 System.out.println("记录（ActivityId:"+logActivityId[choice-1]+")已判定为不合格！");
             }

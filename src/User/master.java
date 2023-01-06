@@ -276,10 +276,14 @@ public class master extends User implements Menu{
 
             if(temp.isTutor_view() && !temp.isMaster_view()){
                 System.out.println(String.valueOf(count+1)+ "\t"+temp.getActivity_name()+"\t"+temp.getDate());
-                log[count] = temp.getActivity_id();
+                //System.out.println(temp.getActivity_id());
+                log[count] = temp.getActivity_id().trim();
                 count++;
             }
             //System.out.println(temp.toString());
+        }
+        for(int i = 0; i < log.length;i++){
+            System.out.println(log[i]);
         }
         if(count > 0){
             System.out.println("请选择要提交材料的记录：");
@@ -288,20 +292,21 @@ public class master extends User implements Menu{
                 Scanner sc = new Scanner(System.in);
                 int choice = sc.nextInt();
                 if(choice > 0 && choice <= count){
-                    AcademicActivity a = DAOFactory.getAcademicActivityDAO().getAcademicActivitybyId(log[count-1]);
+                    AcademicActivity a = DAOFactory.getAcademicActivityDAO().getAcademicActivitybyId(log[choice-1]);
                     System.out.println("请输入会议报告名称：");
                     String reportname = sc.next();
                     a.setReport_name(reportname);
                     System.out.println("-----参会证明提交-----");
                     System.out.println("请输入图片路径：");
                     String picturepath = sc.next();
-                    String postfix = picturepath.substring(0,picturepath.lastIndexOf('.'));
-                    if(postfix != null){
+                    String postfix = picturepath.substring(picturepath.lastIndexOf('.')+1,picturepath.length());
+                    if(postfix == null){
                         System.out.println("图片路径格式错误");
                     }
                     System.out.println(postfix);
                     a.setCertificate(picturepath);
                     a.setImage_type(postfix);
+                    DAOFactory.getAcademicActivityDAO().updateAcademicActivity(a);
                     flag = false;
                 }
                 else{

@@ -48,6 +48,13 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
             psmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                assert con != null;
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -58,7 +65,24 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
      **/
     @Override
     public void deleteAcademicActivity(String ActivityId) {
-
+        Connection con;
+        con = getConnection();
+        String DeleteString = "DELETE FROM AcademicActivity WHERE ActivityId = ?";
+        try{
+            PreparedStatement psmt = con.prepareStatement(DeleteString);
+            psmt.setString(1, ActivityId);
+            psmt.executeUpdate();
+            psmt.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            try {
+                assert con != null;
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -67,7 +91,28 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
      **/
     @Override
     public void updateAcademicActivity(AcademicActivity activity) {
+        Connection con;
+        con = getConnection();
+        try {
+            String sql="Update AcademicActivity set ReportName = ?, ImageType = ?, Certificate = ? where ActivityId = ? ";
+            PreparedStatement psmt = con.prepareStatement(sql);
+            psmt.setString(1,activity.getReport_name());
+            psmt.setString(2,activity.getImage_type());
+            psmt.setBinaryStream(3,activity.getCertificateStream());
+            psmt.setString(4,activity.getActivity_id());
+            psmt.executeUpdate();
+            psmt.close();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                assert con != null;
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -86,6 +131,13 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                assert con != null;
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -104,6 +156,13 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                assert con != null;
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -128,6 +187,13 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
             psmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                assert con != null;
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -146,6 +212,13 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
             psmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                assert con != null;
+                con.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -211,33 +284,36 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
         Connection con = null;
         try{
             con = getConnection();
-            String sql="select * from AcademicActivity where mid = ?";
+            String sql="select * from AcademicActivity where ActivityId = ?";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1,ActivityId);
+            System.out.println(ActivityId);
             ResultSet rs = psmt.executeQuery();
             AcademicActivity a = new AcademicActivity();
-            a.setActivity_id(rs.getString("ActivityId"));
-            a.setActivity_name(rs.getString("ActivityName"));
-            a.setDate(rs.getDate("Date"));
-            a.setTutor_view(rs.getBoolean("TutorView"));
-            a.setMaster_view(rs.getBoolean("MasterView"));
-            a.setImage_type(rs.getString("ImageType"));
-            //a.setCertificate(rs.getBinaryStream("Certificate"));
-            InputStream in = rs.getBinaryStream("Certificate");
-            if(in != null){
-                String path = "d:\\image\\"+ a.getActivity_id().trim().replace(':','_') +".jpg";
-                DataOutputStream sos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(path)));
-                int len;
-                byte[] b = new byte[1024];
-                System.out.println(in);
-                while((len = in.read(b))!= -1){
-                    sos.write(b,0,len);
-                }
-                sos.close();
-                in.close();
-                a.setCertificate(path);
-            }
+            while(rs.next()){
 
+                a.setActivity_id(rs.getString("ActivityId"));
+                a.setActivity_name(rs.getString("ActivityName"));
+                a.setDate(rs.getDate("Date"));
+                a.setTutor_view(rs.getBoolean("TutorView"));
+                a.setMaster_view(rs.getBoolean("MasterView"));
+                a.setImage_type(rs.getString("ImageType"));
+                //a.setCertificate(rs.getBinaryStream("Certificate"));
+                InputStream in = rs.getBinaryStream("Certificate");
+                if(in != null){
+                    String path = "d:\\image\\"+ a.getActivity_id().trim().replace(':','_') +".jpg";
+                    DataOutputStream sos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(path)));
+                    int len;
+                    byte[] b = new byte[1024];
+                    System.out.println(in);
+                    while((len = in.read(b))!= -1){
+                        sos.write(b,0,len);
+                    }
+                    sos.close();
+                    in.close();
+                    a.setCertificate(path);
+                }
+            }
 
             psmt.close();
             return a;
