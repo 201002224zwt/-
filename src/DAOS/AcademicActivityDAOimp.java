@@ -1,6 +1,8 @@
 package DAOS;
 import Entity.AcademicActivity;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -301,12 +303,19 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
                 //a.setCertificate(rs.getBinaryStream("Certificate"));
                 InputStream in = rs.getBinaryStream("Certificate");
                 if(in != null){
-                    String path = "d:\\image\\"+ a.getActivity_id().trim().replace(':','_') +".jpg";
+                    String path = "d:\\image\\"+ a.getActivity_id().trim().replace(':','_') +'.'+a.getImage_type();
                     DataOutputStream sos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(path)));
                     int len;
                     byte[] b = new byte[1024];
                     System.out.println(in);
                     while((len = in.read(b))!= -1){
+//                        ByteArrayInputStream bin = new ByteArrayInputStream(b);
+//                        BufferedImage image = null;
+//                        try {
+//                            image = ImageIO.read(bin);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
                         sos.write(b,0,len);
                     }
                     sos.close();

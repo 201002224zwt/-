@@ -1,42 +1,57 @@
 package User;
 
 import DAOS.DAOFactory;
-import Entity.Course;
-import Entity.SubjectMaster;
+import Entity.*;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 public class subjectmaster extends User implements Menu{
 
     private SubjectMaster s;
+    private List<Mentor> SubMentor;
     public subjectmaster(UserType type, String loadname, String passwd) {
         super(type, loadname, passwd);
         s = DAOFactory.getSubjectMasterDAO().getSubjectMaster(loadname);
+        SubMentor = DAOFactory.getSubjectMasterDAO().getAllMentor(s);
     }
+    final int MAX = 131072;
 
     public void menu() {
-
-
-
-        while (true){
+        boolean if_continue = true;
+        while (if_continue) {
             System.out.println("--------------学科负责人功能菜单---------------");
             System.out.println("1.确定待选课程列表");
-            System.out.println("2.退出系统");
+            System.out.println("2.研究生学术活动审核");
+            System.out.println("3.退出系统");
             System.out.println("请选择：");
-            int choose;
-            Scanner sc=new Scanner(System.in);
-            choose=sc.nextInt();
-            switch (choose){
-                case 1: makeCourseList();
-                    break;
-
-                case 2:
-                    return;
+            String choose;
+            boolean flag = true;
+            while(flag){
+                Scanner sc = new Scanner(System.in);
+                choose = sc.next();
+                switch (choose) {
+                    case "1":
+                        makeCourseList();
+                        flag = false;
+                        break;
+                    case "2":
+                        AcademicActivityJudge();
+                        flag = false;
+                        break;
+                    case "3":
+                        flag = false;
+                        if_continue = false;
+                        break;
+                    default:
+                        System.out.println("输入错误，请重新输入:");
+                }
             }
 
         }
+
 
     }
 
@@ -120,7 +135,6 @@ public class subjectmaster extends User implements Menu{
                     noChooseCourse.remove(tmp);
                     tmp.setState(1);
                     needTutorCourses.add(tmp);
-                    //Course��״̬��Ϊ1
 
                     DAOFactory.getCourseDAO().changeCourseState(tmp.getCouseid(), 1);
                     System.out.println("更新后的助教列表如下");
@@ -134,4 +148,59 @@ public class subjectmaster extends User implements Menu{
             }
         }
     }
+
+    private void AcademicActivityJudge(){
+        System.out.println("------研究生学术成果二次审核------");
+        Iterator<Mentor> mentorIterator = SubMentor.listIterator();
+        int count = 0;
+        String [] logActivityId = new String[MAX];
+        while(mentorIterator.hasNext()){
+            Mentor mentortemp = mentorIterator.next();
+            List<Master> masterlist = DAOFactory.getMasterDAO().getMasterByMentor(mentortemp.getMenid());
+            Iterator<Master> iterator = masterlist.iterator();
+            while(iterator.hasNext()){
+                Master temp = iterator.next();
+                System.out.println(temp.toString());
+                List<AcademicActivity> a = DAOFactory.getAcademicActivityDAO().getAcademicActivity(temp.getSid());
+                Iterator<AcademicActivity> iter = a.listIterator();
+                while(iter.hasNext()){
+                    AcademicActivity atemp = iter.next();
+                    if(atemp.isTutor_view() && atemp.getImage_type()!=null){
+                        //System.out.println(atemp.isMaster_view());
+                        System.out.print("\t编号："+(count+1));
+                        System.out.println('\t'+atemp.tutorToString());
+                        //new ShowPicture(atemp.getCertificate());
+                        logActivityId[count] = atemp.getActivity_id();
+                        count++;
+                        //System.out.println(count);
+                    }
+                }
+            }
+        }
+
+
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("请输入要审核的学术活动编号：");
+        int choice = sc.nextInt();
+        if(choice>0 && choice <= count){
+            AcademicActivity atemp = DAOFactory.getAcademicActivityDAO().getAcademicActivitybyId(logActivityId[choice-1]);
+            new ShowPicture(atemp.getCertificate());
+            System.out.println("请选择：\nY.通过 \nF.不通过 \n其它任意键退出审核");
+            String c = sc.next();
+            if(c.trim().equals("Y") || c.trim().equals("y")){
+                DAOFactory.getAcademicActivityDAO().updateSubjectMasterView(true,logActivityId[choice-1]);
+                System.out.println("记录（ActivityId:"+logActivityId[choice-1]+")已通过初审！");
+            }
+            else if(c.trim().equals("F") || c.trim().equals("f")){
+                DAOFactory.getAcademicActivityDAO().deleteAcademicActivity(logActivityId[choice-1]);
+                System.out.println("记录（ActivityId:"+logActivityId[choice-1]+")已判定为不合格！");
+            }
+        }else{
+            System.out.println("您输入的编号有误！");
+        }
+    }
+
+
+
 }

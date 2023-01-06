@@ -1,15 +1,19 @@
 package DAOS;
 
+import Entity.AcademicActivity;
 import Entity.Master;
+import Entity.Mentor;
 import Entity.SubjectMaster;
 import User.UserManage;
 import User.UserType;
 
-import java.io.IOException;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author caoqike
@@ -23,7 +27,7 @@ public class SubjectMasterimp extends DAOBase implements SubjectMasterDAO {
         Connection con = null;
         con = getConnection();
         try {
-            //???????д???????
+            //
             PreparedStatement psmt = con.prepareStatement(SUBJECTMASTER_INSERT_SQL);
             psmt.setString(1, subjectMaster.getSmid());
             psmt.setString(2, subjectMaster.getSubid());
@@ -74,4 +78,37 @@ public class SubjectMasterimp extends DAOBase implements SubjectMasterDAO {
         }
         return subjectMaster;
     }
+
+    @Override
+    public List<Mentor> getAllMentor(SubjectMaster subjectMaster) {
+        Connection con = null;
+        List<Mentor> l = new ArrayList<>();
+        try{
+            con = getConnection();
+            String sql="select * from Mentor where subid = ?";
+            PreparedStatement psmt = con.prepareStatement(sql);
+            psmt.setString(1,subjectMaster.getSubid());
+            ResultSet rs = psmt.executeQuery();
+            while(rs.next()){
+                Mentor m = new Mentor();
+                m.setMenid(rs.getString("menid"));
+                m.setName(rs.getString("name"));
+                m.setSubid(rs.getString("subid"));
+                l.add(m);
+            }
+            psmt.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                assert con != null;
+                con.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return l;
+    }
+
+
 }

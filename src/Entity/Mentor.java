@@ -19,7 +19,9 @@ public class Mentor {
         this.name = name;
     }
 
+    public Mentor() {
 
+    }
 
     public String getMenid() {
         return menid;

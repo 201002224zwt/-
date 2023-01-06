@@ -85,10 +85,6 @@ public class mentor extends User implements Menu{
         }else{
             System.out.println("您输入的编号有误！");
         }
-
-
-
-
     }
 
     private static void Achievemodule(){

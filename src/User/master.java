@@ -313,7 +313,6 @@ public class master extends User implements Menu{
                     System.out.println("选项错误，请重新输入：");
                 }
             }
-
         }
         else{
             System.out.println("暂无可以操作的记录！");
@@ -699,8 +698,6 @@ public class master extends User implements Menu{
 
         }
     }
-
-
 
 
 }

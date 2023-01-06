@@ -1,6 +1,9 @@
 package DAOS;
 
+import Entity.Mentor;
 import Entity.SubjectMaster;
+
+import java.util.List;
 
 /**
  * @author caoqike
@@ -11,4 +14,5 @@ public interface SubjectMasterDAO {
     void updateSubjectMaster(SubjectMaster subjectMaster);
     void deleteSubjectMaster(SubjectMaster subjectMaster);
     SubjectMaster getSubjectMaster(String id);
+    List<Mentor> getAllMentor(SubjectMaster subjectMaster);
 }
