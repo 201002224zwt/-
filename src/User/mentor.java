@@ -157,7 +157,6 @@ public class mentor extends User implements Menu{
             System.out.println("1.查看学生基本信息");
             System.out.println("2.学术交流活动认证模块");
             System.out.println("3.成果初审模块");
-            //
             System.out.println("4.退出系统");
             System.out.println("请选择：");
             String choose;
@@ -285,8 +284,8 @@ public class mentor extends User implements Menu{
         for (int i = 0; i < standardlist.size(); i++){
             standard standard= new standard();
             standard = standardlist.get(i);
-            System.out.printf("%-10s  %-10d  %-10s  %-10s %-10s\n", standard.getName(),standard.getStandard_level(),
-                    standard.getTime(),standard.getMaterials(),standard.getTutor_view());
+            System.out.printf("%-10s  %-10d  %-10s  %-10s\n", standard.getName(),standard.getStandard_level(),
+                    standard.getTime(),standard.getMaterials());
         }
 
         System.out.println("请对该学生的标准成果进行初审 :");
