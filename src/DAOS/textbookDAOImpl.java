@@ -37,7 +37,7 @@ public class textbookDAOImpl extends DAOBase implements textbookDAO{
     }
 
 
-    private static final String SELECT_SQL = "SELECT name, press,time,ranking,materials FROM textbook WHERE mid = ?";
+    private static final String SELECT_SQL = "SELECT name, press,time,ranking,materials,tutor_view FROM textbook WHERE mid = ?";
 
     public ArrayList<textbook> gettextbook(String mid){
         Connection con = null;
@@ -55,9 +55,10 @@ public class textbookDAOImpl extends DAOBase implements textbookDAO{
                 textbook textbook = new textbook();
                 String path = "src/textbook_materials" + num +  "--" + mid +".jpg" ;
                 textbook.setName(rs.getString("name"));
-                textbook.setPress(rs.getString("unit"));
+                textbook.setPress(rs.getString("press"));
                 textbook.setTime(rs.getString("time"));
                 textbook.setRanking(rs.getInt("ranking"));
+                textbook.setTutor_view(rs.getString("tutor_view"));
                 textbook.setMaterials(path);
                 Blob photo = rs.getBlob("materials");
                 InputStream in = photo.getBinaryStream();
@@ -94,6 +95,28 @@ public class textbookDAOImpl extends DAOBase implements textbookDAO{
             con = getConnection();
             PreparedStatement psmt = con.prepareStatement(TUTOR_INSERT_SQL);
             psmt.setString(1,textbook.getTutor_view());
+            psmt.setString(2,textbook.getName());
+            psmt.executeUpdate();
+            psmt.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                con.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static final String LAST_INSERT_SQL = "UPDATE textbook set last_view = ? where name = ?";
+
+    public void lastsubmit(textbook textbook) {
+        Connection con = null;
+        try{
+            con = getConnection();
+            PreparedStatement psmt = con.prepareStatement(LAST_INSERT_SQL);
+            psmt.setString(1,textbook.getLast_view());
             psmt.setString(2,textbook.getName());
             psmt.executeUpdate();
             psmt.close();

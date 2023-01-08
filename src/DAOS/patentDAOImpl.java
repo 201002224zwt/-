@@ -42,7 +42,7 @@ public class patentDAOImpl extends DAOBase implements patentDAO {
     }
 
 
-    private static final String SELECT_SQL = "SELECT name,  type,  number,  time,  state, ranking, materials FROM patent WHERE mid = ?";
+    private static final String SELECT_SQL = "SELECT name,  type,  number,  time,  state, ranking, materials, tutor_view FROM patent WHERE mid = ?";
 
     public ArrayList<patent> getpatent(String mid){
         Connection con = null;
@@ -64,6 +64,8 @@ public class patentDAOImpl extends DAOBase implements patentDAO {
                 patent.setNumber(rs.getString("number"));
                 patent.setTime(rs.getString("time"));
                 patent.setRanking(rs.getInt("ranking"));
+                patent.setState(rs.getString("state"));
+                patent.setTutor_view(rs.getString("tutor_view"));
                 patent.setMaterials(path);
                 Blob photo = rs.getBlob("materials");
                 InputStream in = photo.getBinaryStream();
@@ -101,6 +103,28 @@ public class patentDAOImpl extends DAOBase implements patentDAO {
             con = getConnection();
             PreparedStatement psmt = con.prepareStatement(TUTOR_INSERT_SQL);
             psmt.setString(1,patent.getTutor_view());
+            psmt.setString(2,patent.getName());
+            psmt.executeUpdate();
+            psmt.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                con.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static final String LAST_INSERT_SQL = "UPDATE patent set last_view = ? where name = ?";
+
+    public void lastsubmit(patent patent) {
+        Connection con = null;
+        try{
+            con = getConnection();
+            PreparedStatement psmt = con.prepareStatement(LAST_INSERT_SQL);
+            psmt.setString(1,patent.getLast_view());
             psmt.setString(2,patent.getName());
             psmt.executeUpdate();
             psmt.close();

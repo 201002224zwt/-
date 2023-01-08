@@ -36,7 +36,7 @@ public class hs_platformDAOImpl extends DAOBase implements hs_platformDAO{
         }
     }
 
-    private static final String SELECT_SQL = "SELECT  name, unit, time, ranking, materials FROM hs_platform WHERE mid = ?";
+    private static final String SELECT_SQL = "SELECT  name, unit, time, ranking, materials , tutor_view FROM hs_platform WHERE mid = ?";
 
     public ArrayList<hs_platform> geths_platform(String mid){
         Connection con = null;
@@ -57,6 +57,8 @@ public class hs_platformDAOImpl extends DAOBase implements hs_platformDAO{
                 hs_platform.setUnit(rs.getString("unit"));
                 hs_platform.setTime(rs.getString("time"));
                 hs_platform.setRanking(rs.getInt("ranking"));
+                hs_platform.setTutor_view(rs.getString("tutor_view"));
+                hs_platform.setMaterials(path);
                 Blob photo = rs.getBlob("materials");
                 InputStream in = photo.getBinaryStream();
                 OutputStream out = new FileOutputStream(new File("src/platform_materials" + num +  "--" + mid +".jpg"));
@@ -92,6 +94,29 @@ public class hs_platformDAOImpl extends DAOBase implements hs_platformDAO{
             con = getConnection();
             PreparedStatement psmt = con.prepareStatement(TUTOR_INSERT_SQL);
             psmt.setString(1,hs_platform.getTutor_view());
+            psmt.setString(2,hs_platform.getName());
+            psmt.executeUpdate();
+            psmt.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                con.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private static final String LAST_INSERT_SQL = "UPDATE hs_platform set last_view = ? where name = ?";
+
+    public void lastsubmit(hs_platform hs_platform) {
+        Connection con = null;
+        try{
+            con = getConnection();
+            PreparedStatement psmt = con.prepareStatement(LAST_INSERT_SQL);
+            psmt.setString(1,hs_platform.getLast_view());
             psmt.setString(2,hs_platform.getName());
             psmt.executeUpdate();
             psmt.close();
