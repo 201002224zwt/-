@@ -9,4 +9,6 @@ public interface reportDAO {
     ArrayList<report> getreport(String master_sid);
 
     public void firstsubmit(report report);
+
+    public void lastsubmit(report report);
 }

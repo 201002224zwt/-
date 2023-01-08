@@ -10,4 +10,6 @@ public interface standardDAO {
     ArrayList<standard> getstandard(String master_sid);
 
     public void firstsubmit(standard standard);
+
+    public void lastsubmit(standard standard);
 }

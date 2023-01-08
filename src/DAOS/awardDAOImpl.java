@@ -110,14 +110,68 @@ public class awardDAOImpl extends DAOBase implements awardDAO{
         }
     }
 
-    private static final String LAST_INSERT_SQL = "INSERT INTO award(last_view) VALUES(?) where mid = ?";
 
-    public void lastsubmit(award award) {
+    private static final String LAST_SELECT_SQL = "SELECT name,level,grade,ranking,time,materials,tutor_view FROM award WHERE mid = ?";
+
+    public ArrayList<award> last_getAward(String mid){
+        Connection con = null;
+        try {
+            con = getConnection();
+            PreparedStatement psmt = con.prepareStatement(LAST_SELECT_SQL);
+            psmt.setString(1, mid);
+            ResultSet rs = psmt.executeQuery();
+            ResultSetMetaData rsm = rs.getMetaData();
+            //通过ResultSetMetaData获取结果集中的列数
+            int count = rsm.getColumnCount();
+            ArrayList<award> list = new ArrayList<award>();
+            int num = 1;
+            while (rs.next()) {
+                award award = new award();
+                String path ="src/award_materials" + num + "--" + mid + ".jpg" ;
+                award.setName(rs.getString("name"));
+                award.setAward_grade(rs.getInt("grade"));
+                award.setRanking(rs.getInt("ranking"));
+                award.setTime(rs.getString("time"));
+                award.setReward_grade(rs.getInt("level"));
+                award.setMaterials(path);
+                award.setTutor_view(rs.getString("tutor_view"));
+                Blob photo = rs.getBlob("materials");
+                InputStream in = photo.getBinaryStream();
+                OutputStream out = new FileOutputStream(new File("src/award_materials" + num + "--" + mid + ".jpg"  ));
+                byte[] buf = new byte[1024];
+                int len = 0;
+                while ((len = in.read(buf)) != -1) {
+                    out.write(buf, 0, len);
+                }
+                in.close();
+                out.close();
+                list.add(award);
+                num ++;
+            }
+            psmt.close();
+            return list;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                con.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+
+    private static final String LAST_INSERT_SQL = "UPDATE award set last_view = ? where name = ?";
+
+    public void lastsubmit( award award) {
         Connection con = null;
         try{
             con = getConnection();
             PreparedStatement psmt = con.prepareStatement(LAST_INSERT_SQL);
-            psmt.setString(9,award.getLast_view());
+            psmt.setString(1,award.getLast_view());
+            psmt.setString(2,award.getName());
             psmt.executeUpdate();
             psmt.close();
         }catch (Exception e){
@@ -130,5 +184,7 @@ public class awardDAOImpl extends DAOBase implements awardDAO{
             }
         }
     }
+
+
 
 }
