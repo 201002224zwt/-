@@ -41,7 +41,7 @@ public class paperDAOImpl extends DAOBase implements paperDAO{
     }
 
 
-    private static final String SELECT_SQL = "SELECT name,periodical,state,time,index_type,Attribution,materials FROM thesis WHERE mid = ?";
+    private static final String SELECT_SQL = "SELECT name,periodical,state,time,index_type,Attribution,materials,tutor_view FROM thesis WHERE mid = ?";
 
     public ArrayList<paper> getPaper(String mid) {
         Connection con = null;
@@ -65,6 +65,7 @@ public class paperDAOImpl extends DAOBase implements paperDAO{
                 paper.setIndex_type(rs.getString("index_type"));
                 paper.setAttribution(rs.getInt("state"));
                 paper.setMaterials(path);
+                paper.setTutor_view(rs.getString("tutor_view"));
                 Blob photo = rs.getBlob("materials");
                 InputStream in = photo.getBinaryStream();
                 OutputStream out = new FileOutputStream(new File( "src/paper_materials" + num +  "--" + mid +".jpg" ));
@@ -92,6 +93,8 @@ public class paperDAOImpl extends DAOBase implements paperDAO{
         return null;
     }
 
+
+
     private static final String TUTOR_INSERT_SQL = "UPDATE thesis set tutor_view = ? where name = ?";
 
     public void firstsubmit(paper paper) {
@@ -114,7 +117,7 @@ public class paperDAOImpl extends DAOBase implements paperDAO{
         }
     }
 
-    private static final String LAST_INSERT_SQL = "INSERT INTO thesis(last_view) VALUES(?)";
+    private static final String LAST_INSERT_SQL = "UPDATE thesis set last_view = ? where name = ?";
 
     public void lastsubmit(paper paper) {
         Connection con = null;
@@ -122,6 +125,7 @@ public class paperDAOImpl extends DAOBase implements paperDAO{
             con = getConnection();
             PreparedStatement psmt = con.prepareStatement(LAST_INSERT_SQL);
             psmt.setString(1,paper.getLast_view());
+            psmt.setString(2,paper.getName());
             psmt.executeUpdate();
             psmt.close();
         }catch (Exception e){
@@ -134,5 +138,6 @@ public class paperDAOImpl extends DAOBase implements paperDAO{
             }
         }
     }
+
 
 }

@@ -10,4 +10,6 @@ public interface paperDAO {
     ArrayList<paper> getPaper(String master_sid);
 
     public void firstsubmit(paper paper);
+
+    public void lastsubmit(paper paper);
 }

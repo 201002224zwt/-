@@ -10,4 +10,6 @@ public interface hs_platformDAO {
     ArrayList<hs_platform> geths_platform(String mid);
 
     public void firstsubmit(hs_platform hs_platform);
+
+    public void lastsubmit(hs_platform hs_platform);
 }

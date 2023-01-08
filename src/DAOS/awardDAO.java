@@ -10,4 +10,9 @@ public interface awardDAO {
     ArrayList<award> getAward(String mid);
 
     public void firstsubmit( award award);
+
+    public ArrayList<award> last_getAward(String mid);
+
+
+    public void lastsubmit( award award);
 }

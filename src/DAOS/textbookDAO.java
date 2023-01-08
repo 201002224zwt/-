@@ -10,4 +10,6 @@ public interface textbookDAO {
     ArrayList<textbook> gettextbook(String master_sid);
 
     public void firstsubmit(textbook textbook);
+
+    public void lastsubmit(textbook textbook);
 }

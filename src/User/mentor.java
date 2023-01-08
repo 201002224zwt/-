@@ -157,7 +157,6 @@ public class mentor extends User implements Menu{
             System.out.println("1.查看学生基本信息");
             System.out.println("2.学术交流活动认证模块");
             System.out.println("3.成果初审模块");
-            //
             System.out.println("4.退出系统");
             System.out.println("请选择：");
             String choose;
@@ -220,7 +219,7 @@ public class mentor extends User implements Menu{
             award award = new award();
             award = awardlist.get(i);
             int num = i+1;
-            System.out.println("请输入第" + num +"个奖励初审结果:(通过或不通过)");
+            System.out.println("请输入第" + num +"个奖励初审结果:(pass或no_pass)");
             String res = sc.next();
             award.setTutor_view(res);
             DAOFactory.getawardDAO().firstsubmit(award);
@@ -257,7 +256,7 @@ public class mentor extends User implements Menu{
             paper paper = new paper();
             paper = paperlist.get(i);
             int num = i+1;
-            System.out.println("请输入第" + num +"个论文初审结果:(通过或不通过)");
+            System.out.println("请输入第" + num +"个论文初审结果:(pass或no_pass)");
             String res = sc.next();
             paper.setTutor_view(res);
             DAOFactory.getpaperDAO().firstsubmit(paper);
@@ -285,7 +284,7 @@ public class mentor extends User implements Menu{
         for (int i = 0; i < standardlist.size(); i++){
             standard standard= new standard();
             standard = standardlist.get(i);
-            System.out.printf("%-10s  %-10d  %-10s  %-10s \n", standard.getName(),standard.getStandard_level(),
+            System.out.printf("%-10s  %-10d  %-10s  %-10s\n", standard.getName(),standard.getStandard_level(),
                     standard.getTime(),standard.getMaterials());
         }
 
@@ -295,7 +294,7 @@ public class mentor extends User implements Menu{
             standard standard = new standard();
             standard = standardlist.get(i);
             int num = i+1;
-            System.out.println("请输入第" + num +"个标准初审结果:(通过或不通过)");
+            System.out.println("请输入第" + num +"个标准初审结果:(pass或no_pass)");
             String res = sc.next();
             standard.setTutor_view(res);
             DAOFactory.getstandardDAO().firstsubmit(standard);
@@ -333,7 +332,7 @@ public class mentor extends User implements Menu{
             report report = new report();
             report = reportlist.get(i);
             int num = i+1;
-            System.out.println("请输入第" + num +"个报告初审结果:(通过或不通过)");
+            System.out.println("请输入第" + num +"个报告初审结果:(pass或no_pass)");
             String res = sc.next();
             report.setTutor_view(res);
             DAOFactory.getreportDAO().firstsubmit(report);
@@ -371,7 +370,7 @@ public class mentor extends User implements Menu{
             patent patent = new patent();
             patent = patentlist.get(i);
             int num = i+1;
-            System.out.println("请输入第" + num +"个专利初审结果:(通过或不通过)");
+            System.out.println("请输入第" + num +"个专利初审结果:(pass或no_pass)");
             String res = sc.next();
             patent.setTutor_view(res);
             DAOFactory.getpatentDAO().firstsubmit(patent);
@@ -382,7 +381,7 @@ public class mentor extends User implements Menu{
 
     private static void ViewPlatform() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("------------初审专利成果-------------");
+        System.out.println("------------初审软硬件平台成果-------------");
         System.out.println("请输入要审核软硬件平台的学生学号");
         String mid = sc.next();
         Master master = new Master();
@@ -409,7 +408,7 @@ public class mentor extends User implements Menu{
             hs_platform platform = new hs_platform();
             platform = platformlist.get(i);
             int num = i+1;
-            System.out.println("请输入第" + num +"个软硬件平台初审结果:(通过或不通过)");
+            System.out.println("请输入第" + num +"个软硬件平台初审结果:(pass或no_pass)");
             String res = sc.next();
             platform.setTutor_view(res);
             DAOFactory.getplatformDAO().firstsubmit(platform);
@@ -437,7 +436,7 @@ public class mentor extends User implements Menu{
         for (int i = 0; i < textbooklist.size(); i++){
             textbook textbook= new textbook();
             textbook = textbooklist.get(i);
-            System.out.printf("%-10s  %-10d %-10s  %-10d %-10s \n", textbook.getName(),textbook.getPress(),
+            System.out.printf("%-10s  %-10s %-10s  %-10d %-10s \n", textbook.getName(),textbook.getPress(),
                     textbook.getTime(),textbook.getRanking(),textbook.getMaterials());
         }
 
@@ -447,15 +446,13 @@ public class mentor extends User implements Menu{
             textbook textbook = new textbook();
             textbook = textbooklist.get(i);
             int num = i+1;
-            System.out.println("请输入第" + num +"个教材初审结果:(通过或不通过)");
+            System.out.println("请输入第" + num +"个教材初审结果:(pass或no_pass)");
             String res = sc.next();
             textbook.setTutor_view(res);
             DAOFactory.gettextbookDAO().firstsubmit(textbook);
         }
         System.out.println("审核完成，辛苦老师！");
 
-
     }
-
 
 }

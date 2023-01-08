@@ -35,7 +35,7 @@ public class standardDAOImpl extends DAOBase implements standardDAO {
         }
     }
 
-    private static final String SELECT_SQL = "SELECT name, level, time, materials FROM standard WHERE mid = ?";
+    private static final String SELECT_SQL = "SELECT name, level, time, materials , tutor_view FROM standard WHERE mid = ?";
 
     public ArrayList<standard> getstandard(String mid){
         Connection con = null;
@@ -57,6 +57,7 @@ public class standardDAOImpl extends DAOBase implements standardDAO {
                 standard.setStandard_level(rs.getInt("level"));
                 standard.setTime(rs.getString("time"));
                 standard.setMaterials(path);
+                standard.setTutor_view(rs.getString("tutor_view"));
                 Blob photo = rs.getBlob("materials");
                 InputStream in = photo.getBinaryStream();
                 OutputStream out = new FileOutputStream(new File("src/standard_materials" + num +  "--" + mid +".jpg" ));
@@ -93,6 +94,28 @@ public class standardDAOImpl extends DAOBase implements standardDAO {
             con = getConnection();
             PreparedStatement psmt = con.prepareStatement(TUTOR_INSERT_SQL);
             psmt.setString(1,standard.getTutor_view());
+            psmt.setString(2,standard.getName());
+            psmt.executeUpdate();
+            psmt.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                con.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static final String LAST_INSERT_SQL = "UPDATE standard set last_view = ? where name = ?";
+
+    public void lastsubmit(standard standard) {
+        Connection con = null;
+        try{
+            con = getConnection();
+            PreparedStatement psmt = con.prepareStatement(LAST_INSERT_SQL);
+            psmt.setString(1,standard.getLast_view());
             psmt.setString(2,standard.getName());
             psmt.executeUpdate();
             psmt.close();
