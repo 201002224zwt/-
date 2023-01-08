@@ -31,8 +31,9 @@ public class subjectmaster extends User implements Menu{
             boolean flag = true;
             while(flag){
                 Scanner sc = new Scanner(System.in);
-                choose = sc.next();
-                switch (choose) {
+                //choose = sc.next();
+                choose = sc.nextLine();
+                switch (choose.trim()) {
                     case "1":
                         makeCourseList();
                         flag = false;
@@ -165,7 +166,7 @@ public class subjectmaster extends User implements Menu{
                 Iterator<AcademicActivity> iter = a.listIterator();
                 while(iter.hasNext()){
                     AcademicActivity atemp = iter.next();
-                    if(atemp.isTutor_view() && atemp.getImage_type()!=null){
+                    if(atemp.isTutor_view() && atemp.getImage_type()!=null && !atemp.isMaster_view()){
                         //System.out.println(atemp.isMaster_view());
                         System.out.print("\t编号："+(count+1));
                         System.out.println('\t'+atemp.tutorToString());
@@ -175,6 +176,7 @@ public class subjectmaster extends User implements Menu{
                         //System.out.println(count);
                     }
                 }
+                System.out.println();
             }
         }
 
@@ -190,7 +192,7 @@ public class subjectmaster extends User implements Menu{
             String c = sc.next();
             if(c.trim().equals("Y") || c.trim().equals("y")){
                 DAOFactory.getAcademicActivityDAO().updateSubjectMasterView(true,logActivityId[choice-1]);
-                System.out.println("记录（ActivityId:"+logActivityId[choice-1]+")已通过初审！");
+                System.out.println("记录（ActivityId:"+logActivityId[choice-1]+")已通过终审！");
             }
             else if(c.trim().equals("F") || c.trim().equals("f")){
                 DAOFactory.getAcademicActivityDAO().deleteAcademicActivity(logActivityId[choice-1]);

@@ -52,7 +52,7 @@ public class patentDAOImpl extends DAOBase implements patentDAO {
             psmt.setString(1,mid);
             ResultSet rs = psmt.executeQuery();
             ResultSetMetaData rsm = rs.getMetaData();
-            //Í¨¹ýResultSetMetaData»ñÈ¡½á¹û¼¯ÖÐµÄÁÐÊý
+            //Í¨ï¿½ï¿½ResultSetMetaDataï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½
             int count = rsm.getColumnCount();
             ArrayList<patent> list = new ArrayList<patent>();
             int num = 1;
