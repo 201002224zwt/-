@@ -247,7 +247,7 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
 
                 InputStream in = rs.getBinaryStream("Certificate");
                 if(in != null){
-                    String path = "d:\\image\\"+ a.getActivity_id().trim().replace(':','_') +".jpg";
+                    String path = a.getActivity_id().trim().replace(':','_') +'.'+a.getImage_type();
                     DataOutputStream sos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(path)));
                     int len;
                     byte[] b = new byte[1024];
@@ -303,7 +303,7 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
                 //a.setCertificate(rs.getBinaryStream("Certificate"));
                 InputStream in = rs.getBinaryStream("Certificate");
                 if(in != null){
-                    String path = "d:\\image\\"+ a.getActivity_id().trim().replace(':','_') +'.'+a.getImage_type();
+                    String path = a.getActivity_id().trim().replace(':','_') +'.'+a.getImage_type();
                     DataOutputStream sos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(path)));
                     int len;
                     byte[] b = new byte[1024];
