@@ -75,4 +75,14 @@ public class DAOFactory {
 
     public static textbookDAO gettextbookDAO(){return new textbookDAOImpl();}
 
+    //ProjectDAO zxy
+    public static ProjectDAO getProjectDAO(){
+        return new ProjectDAOimp();
+    }
+
+    //ProjectCertificationDAO zxy
+    public static ProjectCertificationDAO getProjectCertificationDAO() {
+        return new ProjectCertificationDAOimp();
+    }
+
 }

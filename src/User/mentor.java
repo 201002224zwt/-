@@ -455,4 +455,217 @@ public class mentor extends User implements Menu{
 
     }
 
+    //zxy
+    public void projectMenu(){
+        while (true){
+            System.out.println("---------研究生项目认定表相关功能菜单---------");
+
+            System.out.println("1.填写研究生项目认定表经费");
+            System.out.println("2.研究生项目认定表导师认定");
+            System.out.println("3.研究生项目认定表项目负责人认定");
+            System.out.println("4.返回上级菜单");
+
+            System.out.println("请选择：");
+            Scanner sc=new Scanner(System.in);
+            int choose=sc.nextInt();
+            switch (choose){
+                case 1:
+                    fillExpenditure();
+                    break;
+
+                case 2:
+                    fillMentorSign();
+                    break;
+
+                case 3:
+                    fillManagerSign();
+                    break;
+
+                case 4:
+                    System.out.println("感谢使用！");
+                    return;
+            }
+
+        }
+    }
+
+
+    //zxy
+    public void fillExpenditure(){
+        //先查询自己名下所有项目
+        LinkedList<Project>list = null;
+        list = DAOFactory.getProjectDAO().getMentorProject(m.getMenid());
+
+
+        if(list.size() == 0){
+            System.out.println("您没有指导的项目");
+        }else {
+            System.out.println("您指导的项目编号：");
+            for(int i = 0; i<list.size(); i++){
+                System.out.println(list.get(i).getProid());
+            }
+            System.out.println("请选择要填报折合经费的项目编号：");
+            Scanner sc=new Scanner(System.in);
+            String projid=sc.next();
+            //查询该项目的所有证明
+            LinkedList<ProjectCerification> list1 = null;
+            list1 = DAOFactory.getProjectCertificationDAO().getGivenProjectCertification(projid);
+            if(list1.size() == 0){
+                System.out.println("该项目没有需要填写的认定表");
+            }else {
+                System.out.println("认定表编号：");
+                for(int j = 0; j<list1.size(); j++){
+                    System.out.println(list1.get(j).getCertid());
+                }
+                System.out.println("请选择要填报折合经费的认定表编号：");
+                String certid = sc.next();
+                ProjectCerification projectcertification = DAOFactory.getProjectCertificationDAO().getProjectCertification(certid);
+                System.out.println(projectcertification.toString());
+                if(projectcertification.getMentorsign()==1||projectcertification.getManagersign() == 1){
+                    System.out.println("该认定表已经被认定，无法修改折合经费！");
+                    return;
+                }
+
+                //填写折合经费
+                System.out.println("请填写承担工作折合经费（单位：万元）：");
+                float expenditure = sc.nextFloat();
+                while (expenditure<6){
+                    System.out.println("承担工作折合经费需要大于6万元，请重新填写：");
+                    expenditure = sc.nextFloat();
+                }
+                projectcertification.setExpenditure(expenditure);
+                DAOFactory.getProjectCertificationDAO().updateProjectCertification(projectcertification);
+                System.out.println("承担工作折合经费填写成功！");
+
+            }
+        }
+    }
+
+    //zxy
+    public void fillMentorSign(){//导师签字项目认定表
+        //先查询自己名下所有项目
+        LinkedList<Project>list = null;
+        list = DAOFactory.getProjectDAO().getMentorProject(m.getMenid());
+
+        if(list.size() == 0){
+            System.out.println("您没有指导的项目");
+        }else {
+            System.out.println("您指导的项目编号：");
+            for(int i = 0; i<list.size(); i++){
+                System.out.println(list.get(i).getProid());
+            }
+            System.out.println("请选择要认定折合经费的项目编号：");
+            Scanner sc=new Scanner(System.in);
+            String projid=sc.next();
+            //查询该项目的所有证明
+            LinkedList<ProjectCerification> list1 = null;
+            list1 = DAOFactory.getProjectCertificationDAO().getGivenProjectCertification(projid);
+            if(list1.size() == 0){
+                System.out.println("该项目没有需要填写的认定表");
+            }else {
+                System.out.println("认定表编号：");
+                for(int j = 0; j<list1.size(); j++){
+                    System.out.println(list1.get(j).getCertid());
+                }
+                System.out.println("请选择要认定折合经费的认定表编号：");
+                String certid = sc.next();
+
+                //查看该项目是否已认定
+                ProjectCerification projectcertification = DAOFactory.getProjectCertificationDAO().getProjectCertification(certid);
+                int sign = projectcertification.getMentorsign();
+                float expenditure = projectcertification.getExpenditure();
+                if(expenditure <= 0){
+                    System.out.println("该认定表未填写折合经费，不允许认定！");
+                    return;
+                }
+                if(sign == 1){
+                    System.out.println("该认定表已经认定，不允许重复认定！");
+                    return;
+                }
+                System.out.println(projectcertification.toString());
+
+                while (true){
+                    System.out.println("请问是否认定项目折合经费？1.认定 2.不认定");
+                    int s = sc.nextInt();
+                    switch (s){
+                        case 1:
+                            //填写认定
+                            projectcertification.setMentorsign(1);
+                            DAOFactory.getProjectCertificationDAO().updateProjectCertification(projectcertification);
+                            System.out.println("承担工作折合经费认定成功！");
+                            return;
+                        case 2:
+                            System.out.println("承担工作折合经费认定取消！");
+                            return;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    //zxy
+    public void fillManagerSign(){//项目负责人签字
+        //先查询自己名下所有项目
+        LinkedList<Project>list = null;
+        list = DAOFactory.getProjectDAO().getManagerProject(m.getMenid());
+
+        if(list.size() == 0){
+            System.out.println("您没有指导的项目");
+        }else {
+            System.out.println("您指导的项目编号：");
+            for(int i = 0; i<list.size(); i++){
+                System.out.println(list.get(i).getProid());
+            }
+            System.out.println("请选择要认定折合经费的项目编号：");
+            Scanner sc=new Scanner(System.in);
+            String projid=sc.next();
+            //查询该项目的所有证明
+            LinkedList<ProjectCerification> list1 = null;
+            list1 = DAOFactory.getProjectCertificationDAO().getGivenProjectCertification(projid);
+            if(list1.size() == 0){
+                System.out.println("该项目没有需要填写的认定表");
+            }else {
+                System.out.println("认定表编号：");
+                for(int j = 0; j<list1.size(); j++){
+                    System.out.println(list1.get(j).getCertid());
+                }
+                System.out.println("请选择要认定折合经费的认定表编号：");
+                String certid = sc.next();
+
+                //查看该项目是否已认定
+                ProjectCerification projectcertification = DAOFactory.getProjectCertificationDAO().getProjectCertification(certid);
+                int sign = projectcertification.getManagersign();
+                float expenditure = projectcertification.getExpenditure();
+                if(expenditure <= 0){
+                    System.out.println("该认定表未填写折合经费，不允许认定！");
+                    return;
+                }
+                if(sign == 1){
+                    System.out.println("该认定表已经认定，不允许重复认定！");
+                    return;
+                }
+                System.out.println(projectcertification.toString());
+
+                while (true){
+                    System.out.println("请问是否认定承担工作折合经费？1.认定 2.不认定");
+                    int s = sc.nextInt();
+                    switch (s){
+                        case 1:
+                            //填写认定
+                            projectcertification.setManagersign(1);
+                            DAOFactory.getProjectCertificationDAO().updateProjectCertification(projectcertification);
+                            System.out.println("承担工作折合经费认定成功！");
+                            return;
+                        case 2:
+                            System.out.println("承担工作折合经费认定取消！");
+                            return;
+                    }
+                }
+            }
+        }
+    }
+
+
 }

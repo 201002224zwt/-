@@ -88,7 +88,9 @@ public class Administrator extends User implements Menu{
             System.out.println("5.终审专利成果");
             System.out.println("6.终审软硬件平台成果");
             System.out.println("7.终审教材成果");
-            System.out.println("8.退出系统");
+            System.out.println("8.录入导师项目信息");
+            System.out.println("9.录入项目证明");
+            System.out.println("10.退出系统");
             System.out.println("请选择：");
             String choose;
             boolean flag = true;
@@ -126,6 +128,18 @@ public class Administrator extends User implements Menu{
                         flag = false;
                         break;
                     case "8":
+                        addProject();
+                        flag = false;
+                        break;
+                    case "9":
+                        try {
+                            addProjectCertification();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        flag = false;
+                        break;
+                    case "10":
                         flag = false;
                         if_continue = false;
                         break;
@@ -586,6 +600,72 @@ public class Administrator extends User implements Menu{
     public Administrator(UserType type, String name, String passwd) {
 
         super(type, name, passwd);
+
+    }
+
+    //zxy
+    public void addProject(){
+        Scanner sc=new Scanner(System.in);
+        System.out.println("------------新建导师项目信息-------------");
+        System.out.println("项目编号：");
+        String projid=sc.next();
+
+        System.out.println("项目导师编号：");
+        String menid=sc.next();
+
+        System.out.println("项目名称：");
+        String name=sc.next();
+
+        System.out.println("项目类型：");
+        String type=sc.next();
+
+
+        System.out.println("项目负责人编号：");
+        String managerid=sc.next();
+
+        Project project = new Project(projid, menid, name, type, managerid);
+        DAOFactory.getProjectDAO().addProject(project);
+        System.out.println("录入导师项目信息成功！");
+    }
+
+    //zxy
+    public void addProjectCertification() throws ParseException {
+        Scanner sc=new Scanner(System.in);
+        System.out.println("------------新建项目证明信息-------------");
+        /*certid 不重复证书编号（序号）
+            mid 学生学号 sid
+            projid 项目编号
+            starttime 开始时间
+            endtime 结束时间
+            assignment 承担工作
+         */
+        System.out.println("证书编号：");
+        String certid = sc.next();
+
+        System.out.println("学生学号：");
+        String mid=sc.next();
+
+        System.out.println("项目编号：");
+        String projid=sc.next();
+
+        System.out.println("开始时间：");
+        String starttime=sc.next();
+        Date sdate = new SimpleDateFormat("yyyy-MM-dd").parse(starttime);
+        //将java.util.Date转换为java.sql.Date的方法是调用构造器
+        java.sql.Date sDate = new java.sql.Date(sdate.getTime());
+
+        System.out.println("结束时间：");
+        String endtime=sc.next();
+        Date edate = new SimpleDateFormat("yyyy-MM-dd").parse(endtime);
+        //将java.util.Date转换为java.sql.Date的方法是调用构造器
+        java.sql.Date eDate = new java.sql.Date(edate.getTime());
+
+        System.out.println("承担工作：");
+        String assignment=sc.next();
+
+        ProjectCerification projectcerification = new ProjectCerification(certid, mid, projid, sDate, eDate, assignment);
+        DAOFactory.getProjectCertificationDAO().addProjectCertification(projectcerification);
+        System.out.println("录入项目证明信息成功！");
 
     }
 
