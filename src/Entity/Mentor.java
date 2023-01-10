@@ -8,9 +8,9 @@ import User.Menu;
  * @data 2022/12/9
  */
 public class Mentor {
-    private String menid;//��ʦ����
-    private String subid;//����ѧ��
-    private String name;//��ʦ����
+    private String menid;//导师号
+    private String subid;//学科号
+    private String name;//学生姓名
 
     public Mentor( String menid, String subid, String name) {
 
