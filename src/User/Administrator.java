@@ -19,7 +19,9 @@ import java.util.Scanner;
 
 //研究生培养管理员
 public class Administrator extends User implements Menu{
-
+    //计时管理系统，即系统管理员对于助教子模块的时间设计，只对教师或者同学开放一定时间内的系统。
+    //**
+    private static final int TIME=5;
     public void menu() {
 
         while(true)
@@ -33,7 +35,8 @@ public class Administrator extends User implements Menu{
             System.out.println("5.录入学科基本信息");
             System.out.println("6.录入课程基本信息");
             System.out.println("7.终审学生成果的真实情况");
-            System.out.println("8.退出系统");
+            System.out.println("8.控制选课子模块进度");
+            System.out.println("9.退出系统");
             System.out.println("请选择：");
             Scanner sc=new Scanner(System.in);
             int choose=sc.nextInt();
@@ -70,6 +73,9 @@ public class Administrator extends User implements Menu{
                     Achievemodule();
                     break;
                 case 8:
+                    changeChooseState();
+                    break;
+                case 9:
                     System.out.println("感谢使用！");
                     return;
             }
@@ -151,9 +157,6 @@ public class Administrator extends User implements Menu{
         }
 
     }
-
-
-
 
     private void ViewAward() {
         Scanner sc=new Scanner(System.in);
@@ -452,7 +455,7 @@ public class Administrator extends User implements Menu{
 
 
 
-    public void addMentor(){
+    private void addMentor(){
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建导师信息-------------");
         System.out.println("导师名称：");
@@ -474,7 +477,7 @@ public class Administrator extends User implements Menu{
         System.out.println("录入导师信息成功!");
 
     }
-    public void addSubject(){
+    private void addSubject(){
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建学科信息-------------");
         System.out.println("学科名称：");
@@ -489,7 +492,7 @@ public class Administrator extends User implements Menu{
         System.out.println("录入学科信息成功!");
 
     }
-    public void addSubjectMaster(){
+    private void addSubjectMaster(){
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建学科负责人信息-------------");
         System.out.println("姓名：");
@@ -509,7 +512,7 @@ public class Administrator extends User implements Menu{
         UserManage.saveInfo(s);
 
     }
-    public void addTeacher(){
+    private void addTeacher(){
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建授课教师信息-------------");
         System.out.println("教师名称：");
@@ -529,7 +532,7 @@ public class Administrator extends User implements Menu{
 
     }
 
-    public void addCourse(){
+    private void addCourse(){
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建课程基本信息-------------");
         System.out.println("课程号：");
@@ -551,16 +554,34 @@ public class Administrator extends User implements Menu{
         System.out.println("选课人数：");
         int applications=Integer.parseInt(sc.next());
 
+
+        System.out.println("课程面向对象");
+        System.out.println("1.选修 2.必修");
+        int type1= sc.nextInt()-1;
+
+
+        System.out.println("课程面向对象");
+        System.out.println("1.本科生 2.研究生");
+        int audience= sc.nextInt()-1;
+
+
+        System.out.println("开课时间：");
+        String time=sc.next();
+
+
+
         System.out.println("课程状态：");
         int state = 0;
 
-        Course course=new Course(id,subid,tid,name,hours,applications,state);
+
+
+        Course course=new Course(id,subid,tid,name,hours,applications,state,type1,audience,time);
         DAOFactory.getCourseDAO().addCourse(course);
         System.out.println("录入课程基本信息成功!");
 
     }
 
-    public void addMaster() throws ParseException {
+    private void addMaster() throws ParseException {
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建研究生信息-------------");
         System.out.println("研究生学号：");
@@ -604,7 +625,7 @@ public class Administrator extends User implements Menu{
     }
 
     //zxy
-    public void addProject(){
+    private void addProject(){
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建导师项目信息-------------");
         System.out.println("项目编号：");
@@ -629,7 +650,7 @@ public class Administrator extends User implements Menu{
     }
 
     //zxy
-    public void addProjectCertification() throws ParseException {
+    private void addProjectCertification() throws ParseException {
         Scanner sc=new Scanner(System.in);
         System.out.println("------------新建项目证明信息-------------");
         /*certid 不重复证书编号（序号）
@@ -666,6 +687,24 @@ public class Administrator extends User implements Menu{
         ProjectCerification projectcerification = new ProjectCerification(certid, mid, projid, sDate, eDate, assignment);
         DAOFactory.getProjectCertificationDAO().addProjectCertification(projectcerification);
         System.out.println("录入项目证明信息成功！");
+
+    }
+
+    private void changeChooseState(){
+        System.out.println("更改选课进度为：");
+        System.out.println("1.学生第一次选课阶段");
+        System.out.println("2.教师第一次选助教阶段");
+        System.out.println("3.学生第二次选课阶段");
+        System.out.println("4.教师第二次选助教阶段");
+        System.out.println("请选择:(1-4)");
+
+        Scanner sc=new Scanner(System.in);
+        int choose =sc.nextInt();
+
+        DAOFactory.getChooseStateDAO().updateChooseState(choose);
+
+        System.out.println("修改成功");
+
 
     }
 

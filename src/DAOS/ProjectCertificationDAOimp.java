@@ -1,4 +1,4 @@
-﻿package DAOS;
+package DAOS;
 
 import Entity.Project;
 import Entity.ProjectCerification;
@@ -197,6 +197,7 @@ public class ProjectCertificationDAOimp extends DAOBase implements ProjectCertif
             e.printStackTrace();
         }finally {
             try{
+                assert con != null;
                 con.close();
             }catch (Exception e){
                 e.printStackTrace();
