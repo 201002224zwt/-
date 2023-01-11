@@ -28,6 +28,5 @@ public interface AcademicActivityDAO {
 
     AcademicActivity getAcademicActivitybyId(String ActivityId);
 
-    //修改演讲题目
 
 }

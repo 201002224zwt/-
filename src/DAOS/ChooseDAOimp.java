@@ -16,11 +16,11 @@ import java.util.LinkedList;
 public class ChooseDAOimp extends DAOBase implements ChooseDAO{
     @Override
     public void addChoose(Choose choose) {
-        //��������
+        //构造连接
         Connection con = null;
         con = getConnection();
         try {
-            //����һ����¼
+            //增加一条记录
             String sql="insert into choose values(?,?)";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, choose.getCouseid());
@@ -31,7 +31,7 @@ public class ChooseDAOimp extends DAOBase implements ChooseDAO{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        System.out.println("���ѡ�μ�¼�ɹ���");
+        System.out.println("添加选课记录成功！");
 
     }
 
@@ -54,6 +54,7 @@ public class ChooseDAOimp extends DAOBase implements ChooseDAO{
             e.printStackTrace();
         }finally {
             try{
+                assert con != null;
                 con.close();
             }catch (Exception e){
                 e.printStackTrace();
@@ -65,7 +66,99 @@ public class ChooseDAOimp extends DAOBase implements ChooseDAO{
 
     @Override
     public Choose getChoose(String couid, String mid) {
-        return null;
+        String sql="select * from choose where couseid=? and mid=?";
+        Connection conn=null;
+        Choose choose=null;
+        try{
+            conn = getConnection();
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setString(1,couid);
+            psmt.setString(2,mid);
+            ResultSet rs = psmt.executeQuery();
+            while (rs.next()){
+                choose = new Choose(rs.getString("couseid"),
+                        rs.getString("mid")
+                );
+            }
+            psmt.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                assert conn != null;
+                conn.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return choose;
+
+    }
+
+
+    //课程助教确定后，返回助教学生
+    @Override
+    public Choose getassistant(String couid) {
+        String sql="select * from choose where couseid=?";
+        Connection conn=null;
+        Choose choose=null;
+        try{
+            conn = getConnection();
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setString(1,couid);
+            ResultSet rs = psmt.executeQuery();
+            while (rs.next()){
+                choose = new Choose(rs.getString("couseid"),
+                        rs.getString("mid")
+                );
+            }
+            psmt.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                assert conn != null;
+                conn.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return choose;
+    }
+
+    @Override
+    //为授课教师返回对应课程的所有学生选课记录
+    public LinkedList<Choose> getassistantlist(String couid) {
+        String sql="select * from choose where couseid=?";
+        Connection conn=null;
+
+        LinkedList<Choose> chooses=new LinkedList<>();
+        try{
+            conn = getConnection();
+            PreparedStatement psmt = conn.prepareStatement(sql);
+            psmt.setString(1,couid);
+            ResultSet rs = psmt.executeQuery();
+            while (rs.next()){
+                Choose choose = new Choose(rs.getString("couseid"),
+                        rs.getString("mid")
+                );
+                chooses.add(choose);
+            }
+            psmt.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                assert conn != null;
+                conn.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return chooses;
     }
 
     @Override
@@ -91,6 +184,7 @@ public class ChooseDAOimp extends DAOBase implements ChooseDAO{
             e.printStackTrace();
         }finally {
             try{
+                assert con != null;
                 con.close();
             }catch (Exception e){
                 e.printStackTrace();
@@ -100,4 +194,51 @@ public class ChooseDAOimp extends DAOBase implements ChooseDAO{
     }
 
 
+    //当授课教师确定了某个课程的助教后，则choose记录中需要删除其他选择该课的学生记录
+    @Override
+    public void deleteothermaster(Choose choose) {
+
+//        String sql="delete from choose where couseid=? and mid <>?";
+//        Connection conn=null;
+//
+//
+//        try{
+//            conn=getConnection();
+//            PreparedStatement psmt=conn.prepareStatement(sql);
+//            psmt.setString(1,choose.getCouseid());
+//            psmt.setString(2,choose.getMid());
+//            int row=psmt.executeUpdate();
+//            System.out.println("成功删除"+row+"行记录！");
+//        }catch(Exception e){
+//            e.printStackTrace();
+//        }finally {
+//            try{
+//                conn.close();
+//            }catch (Exception e){
+//                e.printStackTrace();
+//            }
+//        }
+    }
+
+    @Override
+    public void deleteAllChooses() {
+        String sql="delete from choose";
+
+        Connection con = null;
+        con = getConnection();
+        PreparedStatement psmt = null;
+        try {
+            psmt = con.prepareStatement(sql);
+            psmt.executeUpdate();
+            psmt.close();
+            System.out.println("choose all del");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 }
+

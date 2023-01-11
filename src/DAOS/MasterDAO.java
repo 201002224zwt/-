@@ -2,6 +2,7 @@ package DAOS;
 
 import Entity.Master;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -19,5 +20,8 @@ public interface MasterDAO {
     //查找
     public Master getMaster(String id);
 
+    //查找某一学科下学生
+    public LinkedList<String> Masterlist(String subid);
+    //查找某一导师下的学生
     List<Master> getMasterByMentor(String MentorId);
 }

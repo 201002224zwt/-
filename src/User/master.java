@@ -4,6 +4,10 @@ import DAOS.DAOFactory;
 import Entity.*;
 
 import javax.net.ssl.SSLContext;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -79,7 +83,7 @@ public class master extends User implements Menu{
 
     }
 
-    private void deleteCourse(){
+    public void deleteCourse(){
         System.out.println("----------------------退课-----------------------");
 
         LinkedList<Choose> allChooses = DAOFactory.getChooseDAO().getAllChooses();
@@ -117,10 +121,21 @@ public class master extends User implements Menu{
         DAOFactory.getChooseDAO().deleteChoose(choose);
         System.out.println("删除选课记录成功！");
 
-
     }
 
-    private void chooseCourse(){
+    public void chooseCourse(){
+        //判断是否可以选课 1或3才可以
+        if(DAOFactory.getChooseStateDAO().getChooseState()==2||DAOFactory.getChooseStateDAO().getChooseState()==4){
+            System.out.println("当前阶段是教师选助教阶段，学生无法选课程！");
+            return;
+        }
+        //是第二次选课 判断这个学生能不能第二次选课
+        if(DAOFactory.getChooseStateDAO().getChooseState()==3){
+            if(DAOFactory.getResultDAO().cntMasterResult(m.getSid())!=0){
+                System.out.println("您在第一次选课中没有落选，无需进行第二轮选课！");
+                return;
+            }
+        }
 
         System.out.println("----------------------选课-----------------------");
         String subid= DAOFactory.getMentorDAO().getMentor(m.getMenid()).getSubid();
@@ -133,28 +148,18 @@ public class master extends User implements Menu{
 
         LinkedList<Choose> allChooses = DAOFactory.getChooseDAO().getAllChooses();
 
-
         // System.out.println(allChooses.size());
-
 
         //查看所有选课记录当中有几个是当前硕士选的
         //默认设成2
         Integer volAvailabe=2;
         Integer volAlready=0;
-
-        for (Choose choose : allChooses) {
-
+        Iterator<Choose> itr = allChooses.iterator();
+        while (itr.hasNext()) {
+            Choose choose=itr.next();
             System.out.println("---");
 
-//            char array0[] =choose.getMid().toCharArray();//替换字符串中不可见字符
-//
-//            char array[]= this.sid.toCharArray();//替换字符串中不可见字符
-//
-//            System.out.println(this.sid);
-//            System.out.println(choose.getMid().trim());
-
-
-            if (choose.getMid().trim().equals(m.getSid().trim())) {
+            if (choose.getMid().trim().equals(m.getSid().trim())){
 
                 myChooses.add(choose);
                 volAvailabe--;
@@ -162,10 +167,8 @@ public class master extends User implements Menu{
             }
         }
 
-
         System.out.println("助教课程列表如下：");
         showCourseList(courses,myChooses);
-
 
         //展现本人的已选课程列表 1 或 2 个
         System.out.println("本人已选课程如下：");
@@ -202,10 +205,8 @@ public class master extends User implements Menu{
                 System.out.println(course.getCouseid()+course.getName());
             }
 
-
-
             int res=0;
-            while (res!=1&&res!=2&&volAvailabe>0){
+            while (volAvailabe > 0){
                 System.out.println("是否继续添加选课记录？ 1.是 2.否");
                 res=sc.nextInt();
                 if(res==1){
@@ -224,6 +225,107 @@ public class master extends User implements Menu{
             showCourseList(courses,myChooses);
         }
     }
+
+    public  void submitMenu(){
+        System.out.println("--------------提交认证成果--------------");
+        System.out.println("1.提交助教工作评定表");
+        System.out.println("请选择：");
+        int choose;
+        Scanner sc=new Scanner(System.in);
+        choose=sc.nextInt();
+        switch (choose){
+            case 1:
+                submitTutorTable();
+                break;
+
+        }
+
+    }
+
+    public void submitTutorTable(){
+        //选择自己所担任的一个助教课程。并填写其自评一栏的信息，其他自动生成
+
+
+        LinkedList<Result> list=DAOFactory.getResultDAO().getmResultList(m.getSid().trim());
+
+
+        System.out.println("学号\t所任助教的课程号");
+        for (int  i=0;i<list.size();i++){
+            System.out.println(list.get(i).getMid()+list.get(i).getCouseid());
+        }
+
+        System.out.println("请输入要填写课程号");
+        Scanner sc=new Scanner(System.in);
+        String couid=sc.nextLine();
+
+        System.out.println("请输入一段助教工作自述并签名：");
+
+        String selfdes=sc.nextLine();
+        System.out.println("请输入年-月-日");
+        String date=sc.nextLine();
+        selfdes=selfdes+"\n"+date;
+
+
+        Course course=DAOFactory.getCourseDAO().getCourse(couid);
+        Subject subject=DAOFactory.getSubjectDAO().getSubject(course.getSubid());
+        Teacher teacher=DAOFactory.getTeacherDAO().getTeacher(course.getTid());
+        TutorTableAllInfo tableAllInfo=new TutorTableAllInfo(m.getSid(),
+                m.getName(),course.getName(),course.getType(),course.getAudience(),teacher.getName(),course.getTime(),selfdes,
+                0,course.getApplications(),
+                subject.name
+        );
+
+        try {
+            saveAllInfoTable(tableAllInfo);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        TutorTable tutorTable=new TutorTable(m.getSid(),teacher.getId(),couid, (byte) 0,selfdes);
+        DAOFactory.getTutorTableDAO().addTutorTable(tutorTable);
+
+        System.out.println("助教信息表已保存到本地");
+    }
+
+    public void saveAllInfoTable(TutorTableAllInfo tutorTableAllInfo) throws IOException {
+        File file=new File(tutorTableAllInfo.getMid()+"_"+ tutorTableAllInfo.getCouname() +".txt");
+        try {
+            FileOutputStream outputStream=new FileOutputStream(file);
+            outputStream.write(("研究生姓名:"+ tutorTableAllInfo.getMname() +"\n").getBytes());
+            outputStream.write(("研究生学号:"+ tutorTableAllInfo.getMid() +"\n").getBytes());
+            outputStream.write(("课程名称:"+ tutorTableAllInfo.getCouname() +"\n").getBytes());
+
+            outputStream.write(("授课人数:"+tutorTableAllInfo.getSize()+"\n").getBytes());
+
+            outputStream.write(("研究生所占学科:"+ tutorTableAllInfo.getSubname() +"\n").getBytes());
+
+            String type=(tutorTableAllInfo.getType() ==0)?"选修":"必修";
+
+            outputStream.write(("课程性质:"+type+"\n").getBytes());
+
+            String audience=(tutorTableAllInfo.getAudience() ==0)?"本科生":"研究生";
+            outputStream.write(("授课对象:"+audience+"\n").getBytes());
+
+            outputStream.write(("授课教师:"+tutorTableAllInfo.getTname()+"\n").getBytes());
+
+            outputStream.write(("授课时间:"+tutorTableAllInfo.getTime()+"\n").getBytes());
+
+
+            outputStream.write(("助教工作自述:"+tutorTableAllInfo.getSelfdesc()+"\n").getBytes());
+
+            outputStream.write(("授课教师评价:"+tutorTableAllInfo.getResult()+"\n").getBytes());
+
+
+            outputStream.close();
+            System.out.println("<助教工作评定表>已保存到本地！");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
     private Date scanDate(){
         Scanner sc = new Scanner(System.in);
         String date_string = sc.nextLine();
@@ -275,7 +377,7 @@ public class master extends User implements Menu{
             AcademicActivity temp = iterator.next();
 
             if(temp.isTutor_view() && !temp.isMaster_view()){
-                System.out.println(String.valueOf(count+1)+ "\t"+temp.getActivity_name()+"\t"+temp.getDate());
+                System.out.println(count + 1 + "\t"+temp.getActivity_name()+"\t"+temp.getDate());
                 //System.out.println(temp.getActivity_id());
                 log[count] = temp.getActivity_id().trim();
                 count++;
@@ -297,13 +399,13 @@ public class master extends User implements Menu{
                     String reportname = sc.next();
                     a.setReport_name(reportname);
                     System.out.println("-----参会证明提交-----");
-                    System.out.println("请输入图片路径：");
+                    System.out.println("请输入图片路径(图片应为“jpg”或“png”格式)：");
                     String picturepath = sc.next();
-                    String postfix = picturepath.substring(picturepath.lastIndexOf('.')+1,picturepath.length());
-                    if(postfix == null){
+                    String postfix = picturepath.substring(picturepath.lastIndexOf('.')+1);
+                    if(!(postfix.equals("jpg") || postfix.equals("png")) ){
                         System.out.println("图片路径格式错误");
                     }
-                    System.out.println(postfix);
+                    //System.out.println(postfix);
                     a.setCertificate(picturepath);
                     a.setImage_type(postfix);
                     DAOFactory.getAcademicActivityDAO().updateAcademicActivity(a);
@@ -663,8 +765,8 @@ public class master extends User implements Menu{
             System.out.println("1.助教课程子模块");
             System.out.println("2.学术活动认证模块");
             System.out.println("3.成果提交模块");
-            //
-            System.out.println("4.退出系统");
+            System.out.println("4.提交毕业认证成果");
+            System.out.println("5.退出系统");
             System.out.println("请选择：");
             String choose;
             boolean flag = true;
@@ -688,6 +790,10 @@ public class master extends User implements Menu{
                         flag = false;
                         break;
                     case "4":
+                        submitMenu();
+                        flag = false;
+                        break;
+                    case "5":
                         flag = false;
                         if_continue = false;
                         break;

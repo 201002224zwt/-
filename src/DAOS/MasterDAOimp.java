@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -72,6 +73,7 @@ public class MasterDAOimp extends DAOBase implements MasterDAO {
             e.printStackTrace();
         }finally {
             try{
+                assert con != null;
                 con.close();
             }catch (Exception e){
                 e.printStackTrace();
@@ -82,9 +84,39 @@ public class MasterDAOimp extends DAOBase implements MasterDAO {
     }
 
     @Override
+    public LinkedList<String> Masterlist(String subid) {
+        String sql="select distinct choose.mid from Master,choose,Mentor where Master.mid=choose.mid and Master.menid=Mentor.menid and subid=?";
+
+        Connection con = null;
+        LinkedList<String> masters= new LinkedList<>();
+        try{
+            con = getConnection();
+            PreparedStatement psmt = con.prepareStatement(sql);
+            psmt.setString(1, subid);
+            ResultSet rs = psmt.executeQuery();
+            while (rs.next()){
+                String master = rs.getString("mid");
+                masters.add(master);
+            }
+            psmt.close();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                assert con != null;
+                con.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return masters;
+    }
+
+    @Override
     public List<Master> getMasterByMentor(String MentorId){
         Connection con = null;
-        List<Master> masterlist = new ArrayList<Master>();
+        List<Master> masterlist = new ArrayList<>();
         try{
             con = getConnection();
             String sql="select * from Master where menid = ?";

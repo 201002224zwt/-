@@ -30,4 +30,7 @@ public interface CourseDAO {
 
         //返回特定状态的课程信息
         public LinkedList<Course> getStateCourses(String subid,int state);
+
+        //返回老师教授需要助教的课程信息
+        public LinkedList<Course> getteachCourses(String tid);
 }

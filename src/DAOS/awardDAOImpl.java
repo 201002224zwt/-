@@ -29,6 +29,7 @@ public class awardDAOImpl extends DAOBase implements awardDAO{
             e.printStackTrace();
         }finally {
             try{
+                assert con != null;
                 con.close();
             }catch (Exception e){
                 e.printStackTrace();
@@ -47,9 +48,9 @@ public class awardDAOImpl extends DAOBase implements awardDAO{
             psmt.setString(1, mid);
             ResultSet rs = psmt.executeQuery();
             ResultSetMetaData rsm = rs.getMetaData();
-            //通过ResultSetMetaData获取结果集中的列数
+            //???ResultSetMetaData?????????械?????
             int count = rsm.getColumnCount();
-            ArrayList<award> list = new ArrayList<award>();
+            ArrayList<award> list = new ArrayList<>();
             int num = 1;
             while (rs.next()) {
                 award award = new award();
@@ -79,6 +80,7 @@ public class awardDAOImpl extends DAOBase implements awardDAO{
             e.printStackTrace();
         }finally {
             try{
+                assert con != null;
                 con.close();
             }catch (Exception e){
                 e.printStackTrace();
@@ -103,6 +105,7 @@ public class awardDAOImpl extends DAOBase implements awardDAO{
             e.printStackTrace();
         }finally {
             try{
+                assert con != null;
                 con.close();
             }catch (Exception e){
                 e.printStackTrace();
@@ -121,9 +124,9 @@ public class awardDAOImpl extends DAOBase implements awardDAO{
             psmt.setString(1, mid);
             ResultSet rs = psmt.executeQuery();
             ResultSetMetaData rsm = rs.getMetaData();
-            //通过ResultSetMetaData获取结果集中的列数
+            //???ResultSetMetaData?????????械?????
             int count = rsm.getColumnCount();
-            ArrayList<award> list = new ArrayList<award>();
+            ArrayList<award> list = new ArrayList<>();
             int num = 1;
             while (rs.next()) {
                 award award = new award();
@@ -154,6 +157,7 @@ public class awardDAOImpl extends DAOBase implements awardDAO{
             e.printStackTrace();
         }finally {
             try{
+                assert con != null;
                 con.close();
             }catch (Exception e){
                 e.printStackTrace();
@@ -178,6 +182,7 @@ public class awardDAOImpl extends DAOBase implements awardDAO{
             e.printStackTrace();
         }finally {
             try{
+                assert con != null;
                 con.close();
             }catch (Exception e){
                 e.printStackTrace();

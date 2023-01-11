@@ -94,6 +94,7 @@ public class CourseDAOimp extends DAOBase implements CourseDAO{
             e.printStackTrace();
         }finally {
             try{
+                assert con != null;
                 con.close();
             }catch (Exception e){
                 e.printStackTrace();
@@ -135,6 +136,7 @@ public class CourseDAOimp extends DAOBase implements CourseDAO{
             e.printStackTrace();
         }finally {
             try{
+                assert con != null;
                 con.close();
             }catch (Exception e){
                 e.printStackTrace();
@@ -175,11 +177,52 @@ public class CourseDAOimp extends DAOBase implements CourseDAO{
             e.printStackTrace();
         }finally {
             try{
+                assert con != null;
                 con.close();
             }catch (Exception e){
                 e.printStackTrace();
             }
         }
         return list;
+    }
+
+    //每个教师获取自己教授的需要助教的课程
+    @Override
+    public LinkedList<Course> getteachCourses(String tid) {
+        String sql="select * from Course where tid=?";
+        LinkedList<Course> courses=new LinkedList<>();
+        Connection conn=null;
+
+        try{
+            conn=getConnection();
+            PreparedStatement psmt=conn.prepareStatement(sql);
+            psmt.setString(1,tid);
+
+            ResultSet rs= psmt.executeQuery();
+            while(rs.next()){
+                Course course = new Course(rs.getString("couseid"),
+                        rs.getString("subid"),
+                        rs.getString("tid"),
+                        rs.getString("name"),
+                        rs.getInt("hours"),
+                        rs.getInt("applications"),
+                        rs.getInt("state"),
+                        rs.getInt("type"),
+                        rs.getInt("audience"),
+                        rs.getString("time")
+                );
+                courses.add(course);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally {
+            try{
+                assert conn != null;
+                conn.close();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return courses;
     }
 }

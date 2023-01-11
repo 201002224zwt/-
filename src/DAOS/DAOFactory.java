@@ -1,5 +1,7 @@
 package DAOS;
 
+import javax.xml.bind.UnmarshallerHandler;
+
 /**
  * @author caoqike,zhuwentao
  * @date 2022-12-08 21:31:54
@@ -12,6 +14,11 @@ public class DAOFactory {
     }
     private DAOFactory(){
 
+    }
+
+    //DAO
+    public static DAO getDAO(){
+        return new DAOBase();
     }
 
     public static DAOFactory getInstance(){
@@ -85,4 +92,11 @@ public class DAOFactory {
         return new ProjectCertificationDAOimp();
     }
 
+    public static ChooseStateDAO getChooseStateDAO(){
+        return new ChooseStateDAOimp();
+    }
+
+    public static ResultDAO getResultDAO() { return new ResultDAOimp();    }
+
+    public static TutorTableDAO getTutorTableDAO(){return new TutorTableDAOimp();}
 }

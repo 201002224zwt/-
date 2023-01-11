@@ -456,7 +456,7 @@ public class mentor extends User implements Menu{
     }
 
     //zxy
-    public void projectMenu(){
+    private void projectMenu(){
         while (true){
             System.out.println("---------研究生项目认定表相关功能菜单---------");
 
@@ -491,7 +491,7 @@ public class mentor extends User implements Menu{
 
 
     //zxy
-    public void fillExpenditure(){
+    private void fillExpenditure(){
         //先查询自己名下所有项目
         LinkedList<Project>list = null;
         list = DAOFactory.getProjectDAO().getMentorProject(m.getMenid());
@@ -542,7 +542,8 @@ public class mentor extends User implements Menu{
     }
 
     //zxy
-    public void fillMentorSign(){//导师签字项目认定表
+    // 导师签字项目认定表
+    private void fillMentorSign(){
         //先查询自己名下所有项目
         LinkedList<Project>list = null;
         list = DAOFactory.getProjectDAO().getMentorProject(m.getMenid());
@@ -603,10 +604,9 @@ public class mentor extends User implements Menu{
         }
     }
 
-
-
     //zxy
-    public void fillManagerSign(){//项目负责人签字
+    // 项目负责人签字
+    private void fillManagerSign(){
         //先查询自己名下所有项目
         LinkedList<Project>list = null;
         list = DAOFactory.getProjectDAO().getManagerProject(m.getMenid());
@@ -666,6 +666,7 @@ public class mentor extends User implements Menu{
             }
         }
     }
+
 
 
 }

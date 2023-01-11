@@ -24,8 +24,9 @@ public class subjectmaster extends User implements Menu{
         while (if_continue) {
             System.out.println("--------------学科负责人功能菜单---------------");
             System.out.println("1.确定待选课程列表");
-            System.out.println("2.研究生学术活动审核");
-            System.out.println("3.退出系统");
+            System.out.println("2.两轮选择后课程助教随机分配");
+            System.out.println("3.研究生学术活动审核");
+            System.out.println("4.退出系统");
             System.out.println("请选择：");
             String choose;
             boolean flag = true;
@@ -39,10 +40,13 @@ public class subjectmaster extends User implements Menu{
                         flag = false;
                         break;
                     case "2":
+                        random_master();
+                        break;
+                    case "3":
                         AcademicActivityJudge();
                         flag = false;
                         break;
-                    case "3":
+                    case "4":
                         flag = false;
                         if_continue = false;
                         break;
@@ -146,6 +150,98 @@ public class subjectmaster extends User implements Menu{
                     break;
                 case 4:
                     return;
+            }
+        }
+    }
+
+    private void random_master(){
+        while(true){
+            //查找该学科下需要助教且还没有助教的课程信息
+            LinkedList<Course> courses=DAOFactory.getCourseDAO().getStateCourses(s.getSubid(),1);
+
+            System.out.println("该学科下需要助教且还没有助教的课程信息如下");
+            System.out.println("---------------");
+            showCourseList(courses);
+
+            //查找该学科下第二轮选择的同学学号
+            LinkedList<String> mids=DAOFactory.getMasterDAO().Masterlist(s.getSubid());
+
+            //筛选落选同学学号
+            for(String mid:mids){
+                if(DAOFactory.getResultDAO().cntMasterResult(mid)!=0){
+                    mids.remove(mid);
+                }
+            }
+            //获取学生信息
+            LinkedList<Master> masters= new LinkedList<>();
+            for(String mid:mids){
+                masters.add(DAOFactory.getMasterDAO().getMaster(mid));
+            }
+            System.out.println();
+            System.out.println("该学科下第二轮仍落选学生信息如下");
+            System.out.println("---------------");
+            System.out.println("学号\t姓名");
+            for(Master master:masters){
+                System.out.println(master.getSid().trim()+"\t"+
+                        master.getName().trim());
+            }
+
+            System.out.println("请选择要分配助教的课程号");
+            Scanner scanner=new Scanner(System.in);
+            String cid=scanner.next();
+
+            while(true){
+                int flag=0;
+                for(Course c:courses){
+                    if(c.getCouseid().trim().equals(cid.trim())){
+                        flag=1;
+                        break;
+                    }
+                }
+                if(flag!=1){
+                    System.out.println("课程号输入错误，请重新输入!");
+                }
+                else{
+                    break;
+                }
+            }
+
+            System.out.println("请输入分配的助教学生学号：");
+            String mid=scanner.next();
+            while(true){
+                int flag=0;
+                for(Master m:masters){
+                    if(m.getSid().trim().equals(mid.trim())){
+                        flag=1;
+                        break;
+                    }
+                }
+                if(flag!=1){
+                    System.out.println("学号输入错误，请重新输入!");
+                }
+                else{
+                    break;
+                }
+            }
+            System.out.println("分配助教成功！");
+            DAOFactory.getCourseDAO().changeCourseState(cid,2);
+            System.out.println("更新课程状态成功！");
+            Result result=new Result(cid,mid);
+            DAOFactory.getResultDAO().addResult(result);
+            System.out.println("更新result表成功！");
+            System.out.println("请选择是否要继续进行随机分配? 1.是 2.否");
+            int n=scanner.nextInt();
+            while(true){
+                if(n==2){
+                    return;
+                }
+                else if(n==1){
+                    break;
+                }
+                else {
+                    System.out.println("选择输入错误，请重新输入!");
+                }
+                n=scanner.nextInt();
             }
         }
     }

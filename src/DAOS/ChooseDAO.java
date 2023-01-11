@@ -13,5 +13,11 @@ public interface ChooseDAO {
     void updateChoose(Choose choose);
     void deleteChoose(Choose choose);
     Choose getChoose(String couid,String mid);
+    Choose getassistant(String couid);
+    LinkedList<Choose> getassistantlist(String couid);
     LinkedList<Choose> getAllChooses();
+    void deleteothermaster(Choose choose);
+
+    void deleteAllChooses();
 }
+

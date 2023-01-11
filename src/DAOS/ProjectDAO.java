@@ -1,4 +1,4 @@
-﻿package DAOS;
+package DAOS;
 
 import Entity.Project;
 import Entity.ProjectCerification;
