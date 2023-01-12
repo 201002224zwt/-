@@ -10,7 +10,6 @@ public  abstract  class  User implements Serializable,Menu{
 
 
     public abstract void menu () ;
-    //public static void menu(){}
 
     public User(UserType type, String loadname, String passwd) {
             this.type = type;

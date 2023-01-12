@@ -29,7 +29,7 @@ public class UserDAOimp  extends DAOBase implements UserDAO{
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, user.getLoadname());
             psmt.setString(2, user.getPasswd());
-            System.out.println(user.getType().toString());
+            //System.out.println(user.getType().toString());
             psmt.setString(3, user.getType().toString());
             psmt.executeUpdate();
             psmt.close();

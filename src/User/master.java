@@ -325,7 +325,7 @@ public class master extends User implements Menu{
     }
 
 
-
+    //判断输入的日期格式是否符合要求
     private Date scanDate(){
         Scanner sc = new Scanner(System.in);
         String date_string = sc.nextLine();
@@ -340,6 +340,8 @@ public class master extends User implements Menu{
             return null;
         }
     }
+
+    //提交学术交流活动申请
     private void AcademicFirstStep() {
         Scanner sc = new Scanner(System.in);
         System.out.println("请输入活动名称:");
@@ -354,6 +356,7 @@ public class master extends User implements Menu{
                 System.out.println("输入格式错误，请重新输入");
             }
         }
+        //主码的自动生成
         java.util.Date date = new java.util.Date();
         SimpleDateFormat dateFormate = new SimpleDateFormat("MM-dd:hh:mm:ss");
         String aid = m.getSid().trim() + dateFormate.format(date);
@@ -362,31 +365,30 @@ public class master extends User implements Menu{
         a.setDate(d);
         a.setMaster_id(m.getSid());
         a.setActivity_id(aid);
+        //调用接口向数据库中插入记录
         DAOFactory.getAcademicActivityDAO().addAcademicActivity(a);
         System.out.println("活动记录提交成功！");
         //Date d = java.sql.Date.valueOf(sc.next(""));
     }
 
+    //学术交流活动认证第二步：提交证明材料
     private void AcademicSecondStep(){
+        //搜索返回该学号下所有的学术活动记录
         List<AcademicActivity> al = DAOFactory.getAcademicActivityDAO().getAcademicActivity(m.getSid());
         Iterator<AcademicActivity> iterator = al.iterator();
-        System.out.println("编号\t学术活动名称\t学术活动时间");
+        System.out.println("编号\t学术交流活动名称\t学术交流活动时间");
+        //该数组记录查询到的所有学术交流活动主码
         String [] log = new String[al.size()];
         int count = 0;
         while(iterator.hasNext()){
             AcademicActivity temp = iterator.next();
-
             if(temp.isTutor_view() && !temp.isMaster_view()){
                 System.out.println(count + 1 + "\t"+temp.getActivity_name()+"\t"+temp.getDate());
-                //System.out.println(temp.getActivity_id());
                 log[count] = temp.getActivity_id().trim();
                 count++;
             }
-            //System.out.println(temp.toString());
         }
-        for(int i = 0; i < log.length;i++){
-            System.out.println(log[i]);
-        }
+        //选择要提交的记录并上传材料
         if(count > 0){
             System.out.println("请选择要提交材料的记录：");
             boolean flag = true;
@@ -394,6 +396,7 @@ public class master extends User implements Menu{
                 Scanner sc = new Scanner(System.in);
                 int choice = sc.nextInt();
                 if(choice > 0 && choice <= count){
+                    //利用主码获取记录
                     AcademicActivity a = DAOFactory.getAcademicActivityDAO().getAcademicActivitybyId(log[choice-1]);
                     System.out.println("请输入会议报告名称：");
                     String reportname = sc.next();
@@ -403,7 +406,7 @@ public class master extends User implements Menu{
                     String picturepath = sc.next();
                     String postfix = picturepath.substring(picturepath.lastIndexOf('.')+1);
                     if(!(postfix.equals("jpg") || postfix.equals("png")) ){
-                        System.out.println("图片路径格式错误");
+                        System.out.println("图片路径格式错误！");
                     }
                     //System.out.println(postfix);
                     a.setCertificate(picturepath);

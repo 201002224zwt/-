@@ -2,15 +2,13 @@
 package User;
 //import User.*;
 
-import DAOS.DAO;
 import DAOS.DAOFactory;
 import Entity.*;
 
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @author caoqike
@@ -23,66 +21,114 @@ public class Administrator extends User implements Menu{
     //**
     private static final int TIME=5;
     public void menu() {
-
-        while(true)
+        boolean if_continue = true;
+        while(if_continue)
         {
             System.out.println("\n\n\n");
             System.out.println("-------------研究生培养管理员功能菜单-------------");
+            System.out.println("1.信息录入模块");
+            System.out.println("2.终审学生成果的真实情况");
+            System.out.println("3.控制选课子模块进度");
+            System.out.println("4.学生毕业要求达成");
+            System.out.println("5.退出系统");
+            System.out.println("请选择：");
+            boolean flag = true;
+            while(flag){
+                Scanner sc=new Scanner(System.in);
+                String choose=sc.next();
+                switch (choose)
+                {
+                    case "1":
+                        InfoEnter();
+                        flag = false;
+                        break;
+                    case "2":
+                        Achievemodule();
+                        flag = false;
+                        break;
+                    case "3":
+                        changeChooseState();
+                        flag = false;
+                        break;
+                    case "4":
+                        grad_requiremodule();
+                        flag = false;
+                        break;
+                    case "5":
+                        System.out.println("感谢使用！");
+                        flag = false;
+                        if_continue = false;
+                        break;
+                        //return;
+                    default:
+                        System.out.println("输入错误，请重新输入:");
+                }
+            }
+
+        }
+
+    }
+
+    private void InfoEnter(){
+        boolean if_continue = true;
+        while (if_continue) {
+            System.out.println("------------信息录入模块-------------");
             System.out.println("1.录入学科负责人信息");
             System.out.println("2.录入授课教师信息");
             System.out.println("3.录入导师信息");
             System.out.println("4.录入学生信息");
             System.out.println("5.录入学科基本信息");
             System.out.println("6.录入课程基本信息");
-            System.out.println("7.终审学生成果的真实情况");
-            System.out.println("8.控制选课子模块进度");
-            System.out.println("9.退出系统");
+            System.out.println("7.退出系统");
             System.out.println("请选择：");
-            Scanner sc=new Scanner(System.in);
-            int choose=sc.nextInt();
-            switch (choose)
-            {
-                case 1:
-                    addSubjectMaster();
-                    break;
-
-                //补全
-                case 2:
-                    addTeacher();
-                    break;
-
-                case 3:
-                    addMentor();
-                    break;
-                case 4:
-                    try {
-                        addMaster();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-
-                case 5:
-                    addSubject();
-                    break;
-
-                case 6:
-                    addCourse();
-                    break;
-                case 7:
-                    Achievemodule();
-                    break;
-                case 8:
-                    changeChooseState();
-                    break;
-                case 9:
-                    System.out.println("感谢使用！");
-                    return;
+            String choose;
+            boolean flag = true;
+            while(flag){
+                Scanner sc = new Scanner(System.in);
+                choose = sc.next();
+                switch (choose) {
+                    case "1":
+                        addSubjectMaster();
+                        flag = false;
+                        break;
+                    case "2":
+                        addTeacher();
+                        flag = false;
+                        break;
+                    case "3":
+                        addMentor();
+                        flag = false;
+                        break;
+                    case "4":
+                        try {
+                            addMaster();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        flag = false;
+                        break;
+                    case "5":
+                        addSubject();
+                        flag = false;
+                        break;
+                    case "6":
+                        addCourse();
+                        flag = false;
+                        break;
+                    case "7":
+                        flag = false;
+                        if_continue = false;
+                        break;
+                    default:
+                        System.out.println("输入错误，请重新输入:");
+                }
             }
-        }
 
+        }
     }
 
+
+    //成果审核模块
     private void Achievemodule() {
         boolean if_continue = true;
         while (if_continue) {
@@ -195,6 +241,9 @@ public class Administrator extends User implements Menu{
             String res = sc.next();
             award.setLast_view(res);
             DAOFactory.getawardDAO().lastsubmit(award);
+            //补充，若终审通过，在毕业要求表相关次数栏+1
+            if(Objects.equals(res, "pass"))
+                DAOFactory.getGraduationRequirementsDAO().AddAwardTimes(mid);
         }
         System.out.println("审核完成，辛苦老师！");
     }
@@ -236,6 +285,10 @@ public class Administrator extends User implements Menu{
             String res = sc.next();
             paper.setLast_view(res);
             DAOFactory.getpaperDAO().lastsubmit(paper);
+
+            //补充，若终审通过，在毕业要求表相关次数栏+1
+            if(Objects.equals(res, "pass"))
+                DAOFactory.getGraduationRequirementsDAO().AddPaperTimes(mid);
         }
         System.out.println("审核完成，辛苦老师！");
 
@@ -281,6 +334,9 @@ public class Administrator extends User implements Menu{
             String res = sc.next();
             standard.setLast_view(res);
             DAOFactory.getstandardDAO().lastsubmit(standard);
+            //补充，若终审通过，在毕业要求表相关次数栏+1
+            if(Objects.equals(res, "pass"))
+                DAOFactory.getGraduationRequirementsDAO().AddStandardTimes(mid);;
         }
 
         System.out.println("审核完成，辛苦老师！");
@@ -324,6 +380,10 @@ public class Administrator extends User implements Menu{
             String res = sc.next();
             report.setLast_view(res);
             DAOFactory.getreportDAO().lastsubmit(report);
+
+            //补充，若终审通过，在毕业要求表相关次数栏+1
+            if(Objects.equals(res, "pass"))
+                DAOFactory.getGraduationRequirementsDAO().AddReportTimes(mid);
         }
         System.out.println("审核完成，辛苦老师！");
     }
@@ -365,6 +425,9 @@ public class Administrator extends User implements Menu{
             String res = sc.next();
             patent.setLast_view(res);
             DAOFactory.getpatentDAO().lastsubmit(patent);
+            //补充，若终审通过，在毕业要求表相关次数栏+1
+            if(Objects.equals(res, "pass"))
+                DAOFactory.getGraduationRequirementsDAO().AddPatentTimes(mid);
         }
         System.out.println("审核完成，辛苦老师！");
     }
@@ -406,6 +469,9 @@ public class Administrator extends User implements Menu{
             String res = sc.next();
             platform.setLast_view(res);
             DAOFactory.getplatformDAO().lastsubmit(platform);
+            //补充，若终审通过，在毕业要求表相关次数栏+1
+            if(Objects.equals(res, "pass"))
+                DAOFactory.getGraduationRequirementsDAO().Addhs_platformTimes(mid);
         }
         System.out.println("审核完成，辛苦老师！");
 
@@ -449,6 +515,9 @@ public class Administrator extends User implements Menu{
             String res = sc.next();
             textbook.setLast_view(res);
             DAOFactory.gettextbookDAO().lastsubmit(textbook);
+            //补充，若终审通过，在毕业要求表相关次数栏+1
+            if(Objects.equals(res, "pass"))
+                DAOFactory.getGraduationRequirementsDAO().AddtextbookTimes(mid);
         }
         System.out.println("审核完成，辛苦老师！");
     }
@@ -614,6 +683,7 @@ public class Administrator extends User implements Menu{
         master m = new master(UserType.Master,id,passwd);
 
         DAOFactory.getUserDAO().addUser(m);
+        DAOFactory.getGraduationRequirementsDAO().AddNewmaster(master.getSid());
         System.out.println("录入研究生信息成功!");
 
     }
@@ -705,7 +775,97 @@ public class Administrator extends User implements Menu{
 
         System.out.println("修改成功");
 
+    }
+
+    //毕业要求达成
+    private void grad_requiremodule(){
+        boolean if_continue = true;
+        while (if_continue) {
+            System.out.println("--------------毕业要求达成模块---------------");
+            System.out.println("1.查询研究生毕业要求达成情况");
+            System.out.println("2.导出所有研究生毕业要求达成情况");
+            System.out.println("3.退出系统");
+            System.out.println("请选择：");
+            String choose;
+            boolean flag = true;
+            while(flag){
+                Scanner sc = new Scanner(System.in);
+                choose = sc.next();
+                switch (choose) {
+                    case "1":
+                        queryMasterRequirement();
+                        flag = false;
+                        break;
+                    case "2":
+                        exportToFile();
+                        flag = false;
+                        break;
+                    case "3":
+                        flag = false;
+                        if_continue = false;
+                        break;
+                    default:
+                        System.out.println("输入错误，请重新输入:");
+                }
+            }
+
+        }
+    }
+
+    private void queryMasterRequirement(){
+        System.out.println("请输入研究生学号：");
+        Scanner scan = new Scanner(System.in);
+        String masterid = scan.next();
+        GraduationRequirements g = DAOFactory.getGraduationRequirementsDAO().GetLogById(masterid);
+        if(g.getMaster_id()!=null){
+            System.out.println("查询结果如下：");
+            System.out.println(g);
+        }else{
+            System.out.println("未查到该学号情况！");
+        }
+    }
+
+    private void exportToFile(){
+        //第一步：设置输出的文件路径
+        //如果该目录下不存在该文件，则文件会被创建到指定目录下。如果该目录有同名文件，那么该文件将被覆盖。
+        SimpleDateFormat dateFormate = new SimpleDateFormat("MM-dd:hh:mm:ss");
+        java.util.Date date = new java.util.Date();
+        String path= "毕业要求完成情况"+dateFormate.format(date)+".csv";
+        File writeFile = new File("毕业要求完成情况.csv");
+        try{
+            //第二步：通过BufferedReader类创建一个使用默认大小输出缓冲区的缓冲字符输出流
+            BufferedWriter writeText = new BufferedWriter(new FileWriter(writeFile));
+            writeText.write("研究生学号,助教完成次数,学术交流活动次数,论文发表次数,奖励次数,标准制订次数,报告提交次数,专利数,软硬件平台数,教材编写次数,项目参与次数,是否达标");
+            //第三步：将文档的下一行数据赋值给lineData，并判断是否为空，若不为空则输出
+            List<GraduationRequirements> grlist = DAOFactory.getGraduationRequirementsDAO().showalllog();
+            Iterator<GraduationRequirements> iter = grlist.listIterator();
+            while(iter.hasNext()){
+                writeText.newLine();
+                GraduationRequirements temp = iter.next();
+                String If_Pass;
+                if(temp.getTeachingAssistant()>0 && temp.getAcademicActivity()>1 && (temp.getPaper()+temp.getAward()+temp.getPatent()+temp.getTextbook()
+                +temp.getReport()+temp.getHs_platform()+temp.getStandard())>1 && temp.getProjectCertification()>0){
+                    If_Pass = "通过";
+                }
+                else
+                    If_Pass = "不通过";
+
+                writeText.write(temp.getMaster_id()+','+temp.getTeachingAssistant()+','+temp.getAcademicActivity()+','+temp.getPaper()+','+temp.getAward()+','
+                +temp.getStandard()+','+temp.getReport()+','+temp.getPatent()+','+temp.getHs_platform()+','+temp.getTextbook()+','+temp.getProjectCertification()+','+If_Pass);
+            }
+            System.out.println("已保存！");
+            //使用缓冲区的刷新方法将数据刷到目的地中
+            writeText.flush();
+            //关闭缓冲区，缓冲区没有调用系统底层资源，真正调用底层资源的是FileWriter对象，缓冲区仅仅是一个提高效率的作用
+            //因此，此处的close()方法关闭的是被缓存的流对象
+            writeText.close();
+        }catch (FileNotFoundException e){
+            System.out.println("没有找到指定文件");
+        }catch (IOException e){
+            System.out.println("文件读写出错");
+        }
 
     }
+
 
 }

@@ -133,23 +133,22 @@ public class AcademicActivity {
 
     @Override
     public String toString() {
-        return "AcademicActivity{" +
-                "activity_id='" + activity_id + '\'' +
-                ", master_id='" + master_id + '\'' +
-                ", activity_name='" + activity_name + '\'' +
-                ", date=" + date +
-                ", report_name='" + report_name + '\'' +
-                ", image_type='" + image_type + '\'' +
-                ", tutor_view=" + tutor_view +
-                ", master_view=" + master_view +
+        return  "学术交流活动ID：" + activity_id +
+                "学号：" + master_id +
+                ", 学术活动名称：" + activity_name +
+                ", 日期：" + date +
+                ", 报告名称：" + report_name +
+                ", 图片格式：" + image_type +
+                ", 导师意见" + tutor_view +
+                ", 学科负责人意见：" + master_view +
                 '}';
     }
 
     public String tutorToString(){
-        return  "activity_id='" + activity_id + '\'' +
-                ", activity_name='" + activity_name + '\'' +
-                ", date=" + date +
-                ", report_name='" + report_name ;
+        return  "学术交流活动ID：" + activity_id  +
+                ", 学术活动名称：" + activity_name +
+                ", 学术活动日期：" + date +
+                ", 报告名称：" + report_name ;
     }
 
 }

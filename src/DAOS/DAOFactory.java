@@ -1,5 +1,7 @@
 package DAOS;
 
+import Entity.GraduationRequirements;
+
 import javax.xml.bind.UnmarshallerHandler;
 
 /**
@@ -99,4 +101,6 @@ public class DAOFactory {
     public static ResultDAO getResultDAO() { return new ResultDAOimp();    }
 
     public static TutorTableDAO getTutorTableDAO(){return new TutorTableDAOimp();}
+
+    public static GraduationRequirementsDAO getGraduationRequirementsDAO(){return new GraduationRequirementsDAOimp();}
 }

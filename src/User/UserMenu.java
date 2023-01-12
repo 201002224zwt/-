@@ -29,7 +29,7 @@ public class UserMenu{
             UserManage um=new UserManage();
             switch (choice){
                 case "1":
-                    System.out.println("login");
+                    //System.out.println("login");
                     try {
                         um.login();
                         //calling(ut);

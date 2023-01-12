@@ -67,7 +67,7 @@ public class ShowPicture extends JFrame
         icon = createAutoAdjustIcon(filename,true);
         JButton button = new JButton();
         button.setIcon(icon);
-
+        this.setTitle("证明材料展示");
         this.getContentPane().add(button);
         this.setVisible(true);
 

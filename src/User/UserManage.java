@@ -95,7 +95,7 @@ public class UserManage {
         LinkedList<User> objs = DAOFactory.getUserDAO().getAllUsers();
 
 
-        System.out.println(objs.size());
+        //System.out.println(objs.size());
         Iterator<User> itr = objs.iterator();
 
         //在此设置学生登录权限，有权限进行第二次选课的学生，包括没有参与第一次选课的，和参与第一次选课但都没有中。**
@@ -105,12 +105,12 @@ public class UserManage {
             if (u.loadname.trim().equals(name)){
                 flag=1;
                 if (u.passwd.trim().equals(passwd)){
-                    System.out.println("登录成功");
+                    System.out.println("登录成功!");
                     u.menu();
                 }
                 else
                 {
-                    System.out.println("密码错误");
+                    System.out.println("密码错误!");
                 }
                 break;
             }

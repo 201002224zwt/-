@@ -51,7 +51,7 @@ public class paperDAOImpl extends DAOBase implements paperDAO{
             psmt.setString(1, mid);
             ResultSet rs = psmt.executeQuery();
             ResultSetMetaData rsm = rs.getMetaData();
-            //Í¨¹ıResultSetMetaData»ñÈ¡½á¹û¼¯ÖĞµÄÁĞÊı
+            //é€šè¿‡ResultSetMetaDataè·å–ç»“æœé›†ä¸­çš„åˆ—æ•°
             int count = rsm.getColumnCount();
             ArrayList<paper> list = new ArrayList<paper>();
             int num = 1;
@@ -132,6 +132,7 @@ public class paperDAOImpl extends DAOBase implements paperDAO{
             e.printStackTrace();
         }finally {
             try{
+                assert con != null;
                 con.close();
             }catch (Exception e){
                 e.printStackTrace();

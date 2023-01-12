@@ -19,7 +19,7 @@ public class mentor extends User implements Menu{
         masterlist = DAOFactory.getMasterDAO().getMasterByMentor(m.getMenid());
     }
 
-
+    //展示该导师所有研究生信息。
     private void ShowStudent(){
         System.out.println(m.getMenid());
         //List<Master> masterlist = DAOFactory.getMasterDAO().getMasterByMentor(m.getMenid());
@@ -45,14 +45,16 @@ public class mentor extends User implements Menu{
     }
 
     private void Academicmodule(){
-        System.out.println("--------学生学术成果初审认定--------");
+        System.out.println("--------学生学术交流活动初审认定--------");
         //将该导师下面所有研究生的所有成果进行展示。
         Iterator<Master> iterator = masterlist.iterator();
+        //编号
         int count = 0;
+        //按照编号将学术交流活动主键存储在列表中
         String [] logActivityId = new String[MAX];
         while(iterator.hasNext()){
             Master temp = iterator.next();
-            System.out.println(temp.toString());
+            System.out.println("\t学号："+temp.getSid()+"\t学生姓名："+temp.getName());
             List<AcademicActivity> a = DAOFactory.getAcademicActivityDAO().getAcademicActivity(temp.getSid());
             Iterator<AcademicActivity> iter = a.listIterator();
             while(iter.hasNext()){
@@ -69,7 +71,7 @@ public class mentor extends User implements Menu{
         }
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("请输入要审核的学术活动编号：");
+        System.out.println("请输入要审核的学术交流活动编号：");
         int choice = sc.nextInt();
         if(choice>0 && choice <= count){
             System.out.println("请选择：\nY.通过 \nF.不通过 \n其它任意键退出审核");
@@ -157,7 +159,8 @@ public class mentor extends User implements Menu{
             System.out.println("1.查看学生基本信息");
             System.out.println("2.学术交流活动认证模块");
             System.out.println("3.成果初审模块");
-            System.out.println("4.退出系统");
+            System.out.println("4.研究生项目认定");
+            System.out.println("5.退出系统");
             System.out.println("请选择：");
             String choose;
             boolean flag = true;
@@ -179,6 +182,10 @@ public class mentor extends User implements Menu{
                         flag = false;
                         break;
                     case "4":
+                        projectMenu();
+                        flag = false;
+                        break;
+                    case "5":
                         flag = false;
                         if_continue = false;
                         break;
@@ -593,6 +600,10 @@ public class mentor extends User implements Menu{
                             //填写认定
                             projectcertification.setMentorsign(1);
                             DAOFactory.getProjectCertificationDAO().updateProjectCertification(projectcertification);
+                            //补充：如果两个签字都确定，则在研究生毕业要求表的相关项加一
+                            if(projectcertification.getManagersign()==1){
+                                DAOFactory.getGraduationRequirementsDAO().AddProjectCertificationTimes(projectcertification.getSid());
+                            }
                             System.out.println("承担工作折合经费认定成功！");
                             return;
                         case 2:
@@ -656,6 +667,10 @@ public class mentor extends User implements Menu{
                             //填写认定
                             projectcertification.setManagersign(1);
                             DAOFactory.getProjectCertificationDAO().updateProjectCertification(projectcertification);
+                            //补充：如果两个签字都确定，则在研究生毕业要求表的相关项加一
+                            if(projectcertification.getMentorsign()==1){
+                                DAOFactory.getGraduationRequirementsDAO().AddProjectCertificationTimes(projectcertification.getSid());
+                            }
                             System.out.println("承担工作折合经费认定成功！");
                             return;
                         case 2:

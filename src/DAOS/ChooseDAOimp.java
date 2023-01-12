@@ -221,7 +221,7 @@ public class ChooseDAOimp extends DAOBase implements ChooseDAO{
     }
 
     @Override
-    public void deleteAllChooses() {
+    public void deleteAllChooses(){
         String sql="delete from choose";
 
         Connection con = null;

@@ -136,7 +136,6 @@ public class teacher extends User implements Menu{
         while(true){
             System.out.println("---------------------授课教师功能菜单----------------------");
             System.out.println("1.选择课程助教子模块");
-
             System.out.println("2.评价课程助教工作");
             System.out.println("3.退出系统");
             System.out.println("请选择:");
@@ -305,6 +304,10 @@ public class teacher extends User implements Menu{
 
                 DAOFactory.getTutorTableDAO().updateTutorTable(tutorTable);
 
+                //补充，更新毕业要求统计表的相关内容
+                if(res == 1)
+                    DAOFactory.getGraduationRequirementsDAO().AddTeachingAssistantTimes(master.getSid());
+
                 System.out.println("评价助教工作成功！");
                 //助教工作表更新如下：
                 tableAllInfo.setResult(tutorTable.getResult());
@@ -352,8 +355,6 @@ public class teacher extends User implements Menu{
     public void Printlist(LinkedList<Course> courseList){
 
         System.out.println("教师名称\t课程号"+"\t课程名称\t助教");
-
-
 
         Iterator<Course> iterator=courseList.iterator();
         while(iterator.hasNext()){

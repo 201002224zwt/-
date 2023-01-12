@@ -2,6 +2,7 @@ package DAOS;
 
 import Entity.Choose;
 
+import java.sql.SQLException;
 import java.util.LinkedList;
 
 /**
@@ -18,6 +19,6 @@ public interface ChooseDAO {
     LinkedList<Choose> getAllChooses();
     void deleteothermaster(Choose choose);
 
-    void deleteAllChooses();
+    void deleteAllChooses() throws SQLException;
 }
 
