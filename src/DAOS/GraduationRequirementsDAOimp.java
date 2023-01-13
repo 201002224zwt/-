@@ -16,7 +16,7 @@ public class GraduationRequirementsDAOimp extends DAOBase implements GraduationR
         Connection con;
         con = getConnection();
         try {
-            String sql="Update GraduationRequirements set TeachingAssistant=TeachingAssistant+1 where masterid = ? ";
+            String sql="Update GraduationRequirements set TeachingAssistant=TeachingAssistant+1 where mid = ? ";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, masterid);
             psmt.executeUpdate();
@@ -40,7 +40,7 @@ public class GraduationRequirementsDAOimp extends DAOBase implements GraduationR
         Connection con;
         con = getConnection();
         try {
-            String sql="Update GraduationRequirements set AcademicActivity=AcademicActivity+1 where masterid = ? ";
+            String sql="Update GraduationRequirements set AcademicActivity=AcademicActivity+1 where mid = ? ";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, masterid);
             psmt.executeUpdate();
@@ -64,7 +64,7 @@ public class GraduationRequirementsDAOimp extends DAOBase implements GraduationR
         Connection con;
         con = getConnection();
         try {
-            String sql="Update GraduationRequirements set Paper=Paper+1 where masterid = ? ";
+            String sql="Update GraduationRequirements set Paper=Paper+1 where mid = ? ";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, masterid);
             psmt.executeUpdate();
@@ -88,7 +88,7 @@ public class GraduationRequirementsDAOimp extends DAOBase implements GraduationR
         Connection con;
         con = getConnection();
         try {
-            String sql="Update GraduationRequirements set Award=Award+1 where masterid = ? ";
+            String sql="Update GraduationRequirements set Award=Award+1 where mid = ? ";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, masterid);
             psmt.executeUpdate();
@@ -112,7 +112,7 @@ public class GraduationRequirementsDAOimp extends DAOBase implements GraduationR
         Connection con;
         con = getConnection();
         try {
-            String sql="Update GraduationRequirements set Award=Award+1 where masterid = ? ";
+            String sql="Update GraduationRequirements set Award=Award+1 where mid = ? ";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, masterid);
             psmt.executeUpdate();
@@ -136,7 +136,7 @@ public class GraduationRequirementsDAOimp extends DAOBase implements GraduationR
         Connection con;
         con = getConnection();
         try {
-            String sql="Update GraduationRequirements set Award=Award+1 where masterid = ? ";
+            String sql="Update GraduationRequirements set Award=Award+1 where mid = ? ";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, masterid);
             psmt.executeUpdate();
@@ -160,7 +160,7 @@ public class GraduationRequirementsDAOimp extends DAOBase implements GraduationR
         Connection con;
         con = getConnection();
         try {
-            String sql="Update GraduationRequirements set Award=Award+1 where masterid = ? ";
+            String sql="Update GraduationRequirements set Award=Award+1 where mid = ? ";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, masterid);
             psmt.executeUpdate();
@@ -184,7 +184,7 @@ public class GraduationRequirementsDAOimp extends DAOBase implements GraduationR
         Connection con;
         con = getConnection();
         try {
-            String sql="Update GraduationRequirements set hs_platform=hs_platform+1 where masterid = ? ";
+            String sql="Update GraduationRequirements set hs_platform=hs_platform+1 where mid = ? ";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, masterid);
             psmt.executeUpdate();
@@ -208,7 +208,7 @@ public class GraduationRequirementsDAOimp extends DAOBase implements GraduationR
         Connection con;
         con = getConnection();
         try {
-            String sql="Update GraduationRequirements set textbook=textbook+1 where masterid = ? ";
+            String sql="Update GraduationRequirements set textbook=textbook+1 where mid = ? ";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, masterid);
             psmt.executeUpdate();
@@ -232,7 +232,7 @@ public class GraduationRequirementsDAOimp extends DAOBase implements GraduationR
         Connection con;
         con = getConnection();
         try {
-            String sql="Update GraduationRequirements set ProjectCertification=ProjectCertification+1 where masterid = ? ";
+            String sql="Update GraduationRequirements set ProjectCertification=ProjectCertification+1 where mid = ? ";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1, masterid);
             psmt.executeUpdate();
