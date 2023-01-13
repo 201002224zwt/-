@@ -54,7 +54,7 @@ public class mentor extends User implements Menu{
         String [] logActivityId = new String[MAX];
         while(iterator.hasNext()){
             Master temp = iterator.next();
-            System.out.println("\t学号："+temp.getSid()+"\t学生姓名："+temp.getName());
+            System.out.println("学号："+temp.getSid()+"\t学生姓名："+temp.getName());
             List<AcademicActivity> a = DAOFactory.getAcademicActivityDAO().getAcademicActivity(temp.getSid());
             Iterator<AcademicActivity> iter = a.listIterator();
             while(iter.hasNext()){
@@ -69,24 +69,30 @@ public class mentor extends User implements Menu{
                 }
             }
         }
-
-        Scanner sc = new Scanner(System.in);
-        System.out.println("请输入要审核的学术交流活动编号：");
-        int choice = sc.nextInt();
-        if(choice>0 && choice <= count){
-            System.out.println("请选择：\nY.通过 \nF.不通过 \n其它任意键退出审核");
-            String c = sc.next();
-            if(c.trim().equals("Y") || c.trim().equals("y")){
-                DAOFactory.getAcademicActivityDAO().updateTutorView(true,logActivityId[choice-1]);
-                System.out.println("记录（ActivityId:"+logActivityId[choice-1]+")已通过初审！");
-            }
-            else if(c.trim().equals("F") || c.trim().equals("f")){
-                DAOFactory.getAcademicActivityDAO().deleteAcademicActivity(logActivityId[choice-1]);
-                System.out.println("记录（ActivityId:"+logActivityId[choice-1]+")已判定为不合格！");
-            }
-        }else{
-            System.out.println("您输入的编号有误！");
+        if(count==0){
+            System.out.println("暂无学术交流活动记录！");
         }
+        else{
+            Scanner sc = new Scanner(System.in);
+            System.out.println("请输入要审核的学术交流活动编号：");
+            int choice = sc.nextInt();
+            if(choice>0 && choice <= count){
+                System.out.println("请选择：\nY.通过 \nF.不通过 \n其它任意键退出审核");
+                String c = sc.next();
+                if(c.trim().equals("Y") || c.trim().equals("y")){
+                    DAOFactory.getAcademicActivityDAO().updateTutorView(true,logActivityId[choice-1]);
+                    System.out.println("记录（ActivityId:"+logActivityId[choice-1]+")已通过初审！");
+                }
+                else if(c.trim().equals("F") || c.trim().equals("f")){
+                    DAOFactory.getAcademicActivityDAO().deleteAcademicActivity(logActivityId[choice-1]);
+                    System.out.println("记录（ActivityId:"+logActivityId[choice-1]+")已判定为不合格！");
+                }
+            }else{
+                System.out.println("您输入的编号有误！");
+            }
+        }
+
+
     }
 
     private static void Achievemodule(){
@@ -155,7 +161,7 @@ public class mentor extends User implements Menu{
     public void menu() {
         boolean if_continue = true;
         while (if_continue) {
-            System.out.println("--------------研究生功能菜单---------------");
+            System.out.println("--------------导师功能菜单---------------");
             System.out.println("1.查看学生基本信息");
             System.out.println("2.学术交流活动认证模块");
             System.out.println("3.成果初审模块");

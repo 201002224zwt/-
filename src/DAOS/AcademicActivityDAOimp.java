@@ -251,7 +251,7 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
                     DataOutputStream sos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(path)));
                     int len;
                     byte[] b = new byte[1024];
-                    System.out.println(in);
+                    //System.out.println(in);
                     while((len = in.read(b))!= -1){
                         sos.write(b,0,len);
                     }
@@ -289,7 +289,7 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
             String sql="select * from AcademicActivity where ActivityId = ?";
             PreparedStatement psmt = con.prepareStatement(sql);
             psmt.setString(1,ActivityId);
-            System.out.println(ActivityId);
+            //System.out.println(ActivityId);
             ResultSet rs = psmt.executeQuery();
             AcademicActivity a = new AcademicActivity();
             while(rs.next()){
@@ -307,7 +307,7 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
                     DataOutputStream sos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(path)));
                     int len;
                     byte[] b = new byte[1024];
-                    System.out.println(in);
+                   // System.out.println(in);
                     while((len = in.read(b))!= -1){
 //                        ByteArrayInputStream bin = new ByteArrayInputStream(b);
 //                        BufferedImage image = null;

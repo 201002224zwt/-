@@ -79,7 +79,9 @@ public class Administrator extends User implements Menu{
             System.out.println("4.录入学生信息");
             System.out.println("5.录入学科基本信息");
             System.out.println("6.录入课程基本信息");
-            System.out.println("7.退出系统");
+            System.out.println("7.录入导师项目信息");
+            System.out.println("8.录入项目证明");
+            System.out.println("9.退出系统");
             System.out.println("请选择：");
             String choose;
             boolean flag = true;
@@ -116,6 +118,18 @@ public class Administrator extends User implements Menu{
                         flag = false;
                         break;
                     case "7":
+                        addProject();
+                        flag = false;
+                        break;
+                    case "8":
+                        try {
+                            addProjectCertification();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        flag = false;
+                        break;
+                    case "9":
                         flag = false;
                         if_continue = false;
                         break;
@@ -140,9 +154,7 @@ public class Administrator extends User implements Menu{
             System.out.println("5.终审专利成果");
             System.out.println("6.终审软硬件平台成果");
             System.out.println("7.终审教材成果");
-            System.out.println("8.录入导师项目信息");
-            System.out.println("9.录入项目证明");
-            System.out.println("10.退出系统");
+            System.out.println("8.退出系统");
             System.out.println("请选择：");
             String choose;
             boolean flag = true;
@@ -180,18 +192,6 @@ public class Administrator extends User implements Menu{
                         flag = false;
                         break;
                     case "8":
-                        addProject();
-                        flag = false;
-                        break;
-                    case "9":
-                        try {
-                            addProjectCertification();
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        flag = false;
-                        break;
-                    case "10":
                         flag = false;
                         if_continue = false;
                         break;
