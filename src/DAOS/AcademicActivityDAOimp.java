@@ -297,6 +297,7 @@ public class AcademicActivityDAOimp extends DAOBase implements AcademicActivityD
                 a.setActivity_id(rs.getString("ActivityId"));
                 a.setActivity_name(rs.getString("ActivityName"));
                 a.setDate(rs.getDate("Date"));
+                a.setMaster_id(rs.getString("mid"));
                 a.setTutor_view(rs.getBoolean("TutorView"));
                 a.setMaster_view(rs.getBoolean("MasterView"));
                 a.setImage_type(rs.getString("ImageType"));

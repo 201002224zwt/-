@@ -372,7 +372,7 @@ public class master extends User implements Menu{
         int count = 0;
         while(iterator.hasNext()){
             AcademicActivity temp = iterator.next();
-            if(temp.isTutor_view() && !temp.isMaster_view()){
+            if(temp.isTutor_view() && !temp.isMaster_view() && temp.getImage_type()==null){
                 System.out.println(count + 1 + "\t"+temp.getActivity_name()+"\t"+temp.getDate());
                 log[count] = temp.getActivity_id().trim();
                 count++;
@@ -418,11 +418,14 @@ public class master extends User implements Menu{
     private void ShowAcademicProcess(){
         List<AcademicActivity> al = DAOFactory.getAcademicActivityDAO().getAcademicActivity(m.getSid());
         Iterator<AcademicActivity> iterator = al.iterator();
-        System.out.println("学术活动编号\t学术活动名称\t学术活动时间\t学术活动状态");
+        System.out.println("学术交流活动编号\t学术交流活动名称\t学术交流活动时间\t学术交流活动状态");
         while(iterator.hasNext()){
             AcademicActivity temp = iterator.next();
             if(!temp.isTutor_view()){
                 System.out.println(temp.getActivity_id()+ "\t"+temp.getActivity_name()+"\t"+temp.getDate()+"\t导师认证未通过");
+            }
+            else if(!temp.isMaster_view() && temp.getImage_type() == null){
+                System.out.println(temp.getActivity_id()+ "\t"+temp.getActivity_name()+"\t"+temp.getDate()+"\t等待提交证明材料");
             }
             else if(!temp.isMaster_view()){
                 System.out.println(temp.getActivity_id()+ "\t"+temp.getActivity_name()+"\t"+temp.getDate()+"\t学院认证未通过");
@@ -756,7 +759,7 @@ public class master extends User implements Menu{
         while (if_continue) {
             System.out.println("--------------研究生功能菜单---------------");
             System.out.println("1.助教课程子模块");
-            System.out.println("2.学术活动认证模块");
+            System.out.println("2.学术交流活动认证模块");
             System.out.println("3.成果提交模块");
             System.out.println("4.提交助教工作评定表");
             System.out.println("5.退出系统");

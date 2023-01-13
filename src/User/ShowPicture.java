@@ -70,6 +70,7 @@ public class ShowPicture extends JFrame
         this.setTitle("证明材料展示");
         this.getContentPane().add(button);
         this.setVisible(true);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
     }
 

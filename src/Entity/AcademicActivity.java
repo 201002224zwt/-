@@ -147,8 +147,7 @@ public class AcademicActivity {
     public String tutorToString(){
         return  "学术交流活动ID：" + activity_id  +
                 ", 学术活动名称：" + activity_name +
-                ", 学术活动日期：" + date +
-                ", 报告名称：" + report_name ;
+                ", 学术活动日期：" + date  ;
     }
 
 }

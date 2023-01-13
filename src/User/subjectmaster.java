@@ -26,7 +26,7 @@ public class subjectmaster extends User implements Menu{
             System.out.println("--------------学科负责人功能菜单---------------");
             System.out.println("1.确定待选课程列表");
             System.out.println("2.两轮选择后课程助教随机分配");
-            System.out.println("3.研究生学术活动审核");
+            System.out.println("3.研究生学术交流活动审核");
             System.out.println("4.退出系统");
             System.out.println("请选择：");
             String choose;
@@ -34,7 +34,7 @@ public class subjectmaster extends User implements Menu{
             while(flag){
                 Scanner sc = new Scanner(System.in);
                 //choose = sc.next();
-                choose = sc.nextLine();
+                choose = sc.next();
                 switch (choose.trim()) {
                     case "1":
                         makeCourseList();
@@ -125,8 +125,7 @@ public class subjectmaster extends User implements Menu{
             System.out.println("请选择对助教课程列表的操作");
             System.out.println("1.增加记录");
             System.out.println("2.删除记录");
-            System.out.println("3.修改记录");
-            System.out.println("4.返回上级菜单");
+            System.out.println("3.返回上级菜单");
             int choose=0;
             //System.out.println("");
             Scanner sc=new Scanner(System.in);
@@ -136,12 +135,10 @@ public class subjectmaster extends User implements Menu{
                 case 1:
                     System.out.println("请输入要加入列表课程的行号");
                     int row=sc.nextInt();
-
                     Course tmp=noChooseCourse.get(row-1);
                     noChooseCourse.remove(tmp);
                     tmp.setState(1);
                     needTutorCourses.add(tmp);
-
                     DAOFactory.getCourseDAO().changeCourseState(tmp.getCouseid(), 1);
                     System.out.println("更新后的助教列表如下");
                     showCourseList(needTutorCourses);
@@ -149,7 +146,7 @@ public class subjectmaster extends User implements Menu{
                 case 2:
                     System.out.println("请输入要删除列表课程的行号");
                     break;
-                case 4:
+                case 3:
                     return;
             }
         }
@@ -292,6 +289,7 @@ public class subjectmaster extends User implements Menu{
                 if(c.trim().equals("Y") || c.trim().equals("y")){
                     DAOFactory.getAcademicActivityDAO().updateSubjectMasterView(true,logActivityId[choice-1]);
                     //补充，在毕业认定表相关项中增加次数
+                    System.out.println(atemp.getMaster_id());
                     DAOFactory.getGraduationRequirementsDAO().AddAcademicActivityTimes(atemp.getMaster_id());
                     System.out.println("记录（ActivityId:"+logActivityId[choice-1]+")已通过终审！");
                 }
@@ -299,6 +297,7 @@ public class subjectmaster extends User implements Menu{
                     DAOFactory.getAcademicActivityDAO().deleteAcademicActivity(logActivityId[choice-1]);
                     System.out.println("记录（ActivityId:"+logActivityId[choice-1]+")已判定为不合格！");
                 }else{
+
                     System.out.println("记录未做修改！");
                 }
             }else{
