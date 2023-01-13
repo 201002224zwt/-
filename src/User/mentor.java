@@ -14,7 +14,7 @@ public class mentor extends User implements Menu{
     private List<Master> masterlist;
     public mentor(UserType type, String loadname, String passwd) {
         super(type, loadname, passwd);
-        System.out.println(loadname);
+        //System.out.println(loadname);
         m = DAOFactory.getMentorDAO().getMentor(loadname);
         masterlist = DAOFactory.getMasterDAO().getMasterByMentor(m.getMenid());
     }
