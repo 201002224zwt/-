@@ -227,18 +227,8 @@ public class master extends User implements Menu{
     }
 
     public  void submitMenu(){
-        System.out.println("--------------提交认证成果--------------");
-        System.out.println("1.提交助教工作评定表");
-        System.out.println("请选择：");
-        int choose;
-        Scanner sc=new Scanner(System.in);
-        choose=sc.nextInt();
-        switch (choose){
-            case 1:
-                submitTutorTable();
-                break;
-
-        }
+        System.out.println("--------------提交助教工作表--------------");
+        submitTutorTable();
 
     }
 
@@ -768,7 +758,7 @@ public class master extends User implements Menu{
             System.out.println("1.助教课程子模块");
             System.out.println("2.学术活动认证模块");
             System.out.println("3.成果提交模块");
-            System.out.println("4.提交毕业认证成果");
+            System.out.println("4.提交助教工作评定表");
             System.out.println("5.退出系统");
             System.out.println("请选择：");
             String choose;

@@ -90,7 +90,7 @@ public class subjectmaster extends User implements Menu{
 
     private void makeCourseList(){
         //查看自己学科的所有课程列表
-        LinkedList<Course> courses= DAOFactory.getCourseDAO().getAllCourses(s.getSmid());
+        LinkedList<Course> courses= DAOFactory.getCourseDAO().getAllCourses(s.getSubid().trim());
         Iterator<Course> itr = courses.iterator();
         LinkedList<Course> needTutorCourses=new LinkedList<>();
         LinkedList<Course> noChooseCourse=new LinkedList<>();
