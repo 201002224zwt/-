@@ -683,7 +683,7 @@ public class Administrator extends User implements Menu{
         master m = new master(UserType.Master,id,passwd);
 
         DAOFactory.getUserDAO().addUser(m);
-        DAOFactory.getGraduationRequirementsDAO().AddNewmaster(master.getSid());
+       // DAOFactory.getGraduationRequirementsDAO().AddNewmaster(master.getSid());
         System.out.println("录入研究生信息成功!");
 
     }
